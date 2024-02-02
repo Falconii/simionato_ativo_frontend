@@ -1,0 +1,130 @@
+<div class="div-barra">
+  <mat-toolbar>
+    <span class="example-spacer">Imobilizados:</span>
+    <app-navegator [controle]="controlePaginas" (changePage)="onChangePage()"></app-navegator>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon"
+      (click)="getImoIvenContador()" matTooltip="Atualizar" matTooltipPosition="above">
+      <mat-icon>rotate_right</mat-icon>
+    </button>
+    <button mat-icon-button aria-label="Example icon-button with share icon " matTooltipPosition="above"
+      (click)="onSaveConfig()" matTooltip="Salvar Parâmetros" matTooltipPosition="above">
+      <mat-icon>brightness_high</mat-icon>
+    </button>
+    <button mat-icon-button aria-label="Example icon-button with share icon " matTooltipPosition="above"
+      (click)="onHome()" matTooltip="Retorno" matTooltipPosition="above">
+      <mat-icon>home</mat-icon>
+    </button>
+    <button mat-icon-button aria-label="Example icon-button with share icon " (click)="onNovo()"
+      [matTooltip]="getTexto().incluir" matTooltipPosition="above">
+      <mat-icon>add_circle_outline</mat-icon>
+    </button>
+  </mat-toolbar>
+</div>
+<div>
+  <form [formGroup]="parametros" autocomplete="off">
+    <div class="col-med-5">
+      <mat-form-field field appearance="outline" class="col-max column-span-3">
+        <mat-label>Centros Custos</mat-label>
+        <mat-select formControlName="ccs" (selectionChange)="onChangeParametros()">
+          <mat-option *ngFor="let cc of ccs" [value]="cc.codigo">
+            {{cc.descricao}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field field appearance="outline" class="col-max">
+        <mat-label>Grupos</mat-label>
+        <mat-select formControlName="grupos" (selectionChange)="onChangeParametros()">
+          <mat-option *ngFor="let grupo of grupos" [value]="grupo.codigo">
+            {{grupo.descricao}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field field appearance="outline" class="col-max">
+        <mat-label>Situações</mat-label>
+        <mat-select formControlName="situacoes" (selectionChange)="onChangeParametros()">
+          <mat-option *ngFor="let situacao of situacoesInventario" [value]="situacao.id">
+            {{situacao.descricao}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="col-med-2">
+      <mat-form-field appearance="outline" class="col-max">
+        <mat-label>Código</mat-label>
+        <input matInput formControlName="codigo">
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="col-max">
+        <mat-label>Descrição</mat-label>
+        <input matInput formControlName="descricao">
+      </mat-form-field>
+    </div>
+  </form>
+</div>
+<cdk-virtual-scroll-viewport [itemSize]="50" class="content">
+  <table class="Browse_Lanc">
+    <tr class="coluna-cabec">
+      <th>Cód Imobil.</th>
+      <th>Descrição/CC</th>
+      <th>Novos</th>
+      <th>Lançamento</th>
+      <th>NFE & Serie</th>
+      <th>AÇÕES</th>
+    </tr>
+    <tr *cdkVirtualFor="let imo of imoinv ">
+      <td>
+        <div>
+          <mat-label class="Browse_Lanc_td">{{imo.id_imobilizado}}</mat-label>
+        </div>
+        <div>
+          <mat-label class="Browse_Lanc_td">{{imo.imo_origem | origem}}</mat-label>
+        </div>
+        <div>
+          <mat-label class="Browse_Lanc_td">{{imo.status | situacao}}</mat-label>
+        </div>
+      </td>
+      <td>
+        <div>
+          <mat-label class="Browse_Lanc_td">{{imo.imo_descricao}}</mat-label>
+        </div>
+        <div>
+          <mat-label class="Browse_Lanc_td">{{imo.cc_descricao | embrancopipe}}</mat-label>
+        </div>
+        <div>
+          <mat-label class="Browse_Lanc_td">{{imo.grupo_descricao}}</mat-label>
+        </div>
+      </td>
+      <td>
+        <div>
+          <mat-label class="Browse_Lanc_td">Cód:{{imo.new_codigo | zerotospacepipe}}</mat-label>
+        </div>
+        <div>
+          <mat-label class="Browse_Lanc_td" [matTooltip]="imo.new_cc_descricao" matTooltipPosition="above">
+            C.C.:{{imo.new_cc}}
+          </mat-label>
+        </div>
+      </td>
+      <td>
+        <div>
+          <mat-label class="Browse_Lanc_td">Lanç:{{imo.id_lanca | zerotospacepipe}}</mat-label>
+        </div>
+        <div>
+          <mat-label class="Browse_Lanc_td">Resp:{{imo.usu_razao | firstName}}</mat-label>
+        </div>
+        <div>
+          <mat-label class="Browse_Lanc_td">Data:{{imo.lanc_dt_lanca}}</mat-label>
+        </div>
+      </td>
+      <td>
+        <div>
+          <mat-label class="Browse_Lanc_td">{{imo.imo_nfe}}-{{imo.imo_serie}}</mat-label>
+        </div>
+      </td>
+      <td class="acoes">
+        <barra-acoes [EXCLUIR]="imo.id_lanca > 0" [CONSULTAR]="imo.id_lanca > 0" [BARRA_VERTICAL]="true"
+          [BARRA_NFE]="imo.imo_nfe !== ''" [BARRA_VALORES]="true" [BARRA_EXCLUIR]="false" [BARRA_ATIVIDADES]="false"
+          (changeOpcao)="escolha($event,imo)">
+        </barra-acoes>
+      </td>
+    </tr>
+  </table>
+</cdk-virtual-scroll-viewport>
