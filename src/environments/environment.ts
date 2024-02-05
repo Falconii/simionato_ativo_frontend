@@ -10,6 +10,6 @@ export const environment = {
   data: '09/11/2023',
   production: false,
   ambiente: 'Desenvolvimento',
-  apiURL: 'https://controle-inventario-backend-production.up.railway.app/api/',
+  apiURL: 'https://simionatoativobackend-production.up.railway.app/api/',
 };
 */
