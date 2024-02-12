@@ -120,6 +120,13 @@ const routes: Routes = [
       ),
     canActivate: [],
   },
+
+  {
+    path: 'keys',
+    loadChildren: () =>
+      import('./modules/sobre/sobre.module').then((m) => m.SobreModule),
+    canActivate: [],
+  },
   {
     path: '**',
     redirectTo: 'home',

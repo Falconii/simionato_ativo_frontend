@@ -32,6 +32,7 @@ export class ViewProdutoComponent implements OnInit {
   readOnly: boolean = true;
 
   inscricaoRota!: Subscription;
+
   inscricaoAcao!: Subscription;
 
   labelCadastro: string = '';
