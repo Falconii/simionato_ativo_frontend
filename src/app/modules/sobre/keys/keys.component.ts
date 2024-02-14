@@ -27,6 +27,8 @@ export class KeysComponent implements OnInit {
 
   inscricaoCrud!: Subscription;
 
+  inscricaoInstall!: Subscription;
+
   labelCadastro: string = '';
 
   constructor(
@@ -54,6 +56,7 @@ export class KeysComponent implements OnInit {
 
   ngOnDestroy(): void {
     this.inscricaoCrud?.unsubscribe();
+    this.inscricaoInstall?.unsubscribe();
   }
 
   onSubmit() {
@@ -162,7 +165,12 @@ export class KeysComponent implements OnInit {
           .parametroInsert(this.parametro)
           .subscribe(
             async (data: ParametroModel) => {
-              this.onRetorno();
+              this.globalService.setSpin(false);
+              this.appSnackBar.openSuccessSnackBar(
+                `Chave Salva No Banco De Dados...`,
+                'OK'
+              );
+              this.instalKey();
             },
             (error: any) => {
               this.globalService.setSpin(false);
@@ -181,12 +189,16 @@ export class KeysComponent implements OnInit {
           .subscribe(
             async (data: any) => {
               this.globalService.setSpin(false);
-              this.onRetorno();
+              this.appSnackBar.openSuccessSnackBar(
+                `Chave Atualizado No Banco De Dados...`,
+                'OK'
+              );
+              this.instalKey();
             },
             (error: any) => {
               this.globalService.setSpin(false);
               this.appSnackBar.openFailureSnackBar(
-                `Erro Na Alteração ${messageError(error)}`,
+                `Erro Na Atualização ${messageError(error)}`,
                 'OK'
               );
             }
@@ -218,6 +230,28 @@ export class KeysComponent implements OnInit {
       default:
         break;
     }
+  }
+
+  instalKey() {
+    this.inscricaoInstall = this.parametroService
+      .parametroInstallKey()
+      .subscribe(
+        async (data: any) => {
+          this.globalService.setSpin(false);
+          this.appSnackBar.openSuccessSnackBar(
+            `Chave Instalada Com Sucesso!`,
+            'OK'
+          );
+          this.onRetorno();
+        },
+        (error: any) => {
+          this.globalService.setSpin(false);
+          this.appSnackBar.openFailureSnackBar(
+            `Instalação Da Chave ${messageError(error)}`,
+            'OK'
+          );
+        }
+      );
   }
 
   getAcoes() {
