@@ -132,22 +132,22 @@ export class KeysComponent implements OnInit {
     switch (+op) {
       case CadastroAcoes.Inclusao:
         this.acao = 'Gravar';
-        this.labelCadastro = 'Padrão - Inclusão.';
+        this.labelCadastro = 'Google Drive Key - Inclusão.';
         this.readOnly = false;
         break;
       case CadastroAcoes.Edicao:
         this.acao = 'Gravar';
-        this.labelCadastro = 'Padrão - Alteração.';
+        this.labelCadastro = 'Google Drive Key - Alteração.';
         this.readOnly = false;
         break;
       case CadastroAcoes.Consulta:
         this.acao = 'Voltar';
-        this.labelCadastro = 'Padrão - Consulta.';
+        this.labelCadastro = 'Google Drive Key - Consulta.';
         this.readOnly = true;
         break;
       case CadastroAcoes.Exclusao:
         this.acao = 'Excluir';
-        this.labelCadastro = 'Padrão - Exclusão.';
+        this.labelCadastro = 'Google Drive Key - Exclusão.';
         this.readOnly = true;
         break;
       default:
