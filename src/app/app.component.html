@@ -1,17 +1,18 @@
 <div>
-    <mat-toolbar color="primary" class="div-barra">
-        <button routerLink="" mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon" (click)="setOpcao('')">
+  <mat-toolbar color="primary" class="div-barra">
+    <button routerLink="" mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon"
+      (click)="setOpcao('')">
       <mat-icon>menu</mat-icon>
     </button>
-        <span>Simionato Auditores</span>
-        <span *ngIf="showMenu">
+    <span>Simionato Auditores</span>
+    <span *ngIf="showMenu">
       <button mat-button [matMenuTriggerFor]="cadastros">Cadastros</button>
       <button mat-button [matMenuTriggerFor]="locais">Locais</button>
       <button mat-button [matMenuTriggerFor]="inventarios">Inventários</button>
       <button mat-button [matMenuTriggerFor]="gerencial">Gerencial</button>
       <button mat-button [matMenuTriggerFor]="sobre">Sobre</button>
     </span>
-        <span>
+    <span>
       <!-- #docregion sub-menu -->
       <mat-menu #cadastros="matMenu">
         <button mat-menu-item routerLink="empresas">Empresas</button>
@@ -49,17 +50,18 @@
         <button mat-menu-item routerLink="keys">Chaves Do Google</button>
       </mat-menu>
     </span>
-        <span class="example-spacer"></span>
-        <label>{{getUsuario()}}</label>
-        <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon" matTooltip="LOGIN" matTooltipPosition="above" (click)="onLogin()">
+    <span class="example-spacer"></span>
+    <label>{{getUsuario()}}</label>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon" matTooltip="LOGIN"
+      matTooltipPosition="above" (click)="onLogin()">
       <mat-icon>person</mat-icon>
     </button>
-    </mat-toolbar>
+  </mat-toolbar>
 </div>
 
 <app-show-ativos></app-show-ativos>
 
-
+<p>Ola</p>
 <div class="container">
-    <router-outlet></router-outlet>
+  <router-outlet></router-outlet>
 </div>
