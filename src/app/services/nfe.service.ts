@@ -25,10 +25,12 @@ export class NfeService {
     id_empresa: number,
     id_filial: number,
     id_imobilizado: number,
-    nfe: string
+    nfe: string,
+    serie: String,
+    item: string
   ): Observable<NfeModel[]> {
     return this.http.get<NfeModel[]>(
-      `${this.apiURL}nfebyimobilizado/${id_empresa}/${id_filial}/${id_imobilizado}/${nfe}`
+      `${this.apiURL}nfebyimobilizado/${id_empresa}/${id_filial}/${id_imobilizado}/${nfe}/${serie}/${item}`
     );
   }
   nfeInsert(nfe: NfeModel): Observable<NfeModel> {
