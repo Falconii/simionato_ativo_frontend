@@ -143,7 +143,9 @@ export class CrudImoinventarioComponent implements OnInit {
         imobilizado.id_empresa,
         imobilizado.id_filial,
         imobilizado.id_imobilizado,
-        imobilizado.imo_nfe
+        imobilizado.imo_nfe,
+        imobilizado.imo_serie,
+        imobilizado.imo_item
       )
       .subscribe(
         (data: NfeModel[]) => {

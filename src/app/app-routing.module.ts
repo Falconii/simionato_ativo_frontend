@@ -78,7 +78,6 @@ const routes: Routes = [
       import('./modules/grupo/grupo.module').then((m) => m.GrupoModule),
     canActivate: [],
   },
-
   {
     path: 'centroscustos',
     loadChildren: () =>
@@ -87,12 +86,19 @@ const routes: Routes = [
       ),
     canActivate: [],
   },
-
   {
     path: 'inventarios',
     loadChildren: () =>
       import('./modules/inventario/inventario.module').then(
         (m) => m.InventarioModule
+      ),
+    canActivate: [],
+  },
+  {
+    path: 'ambientes',
+    loadChildren: () =>
+      import('./modules/ambiente/ambiente.module').then(
+        (m) => m.AmbienteModule
       ),
     canActivate: [],
   },

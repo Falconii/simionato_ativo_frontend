@@ -34,7 +34,8 @@
         <button mat-menu-item routerLink="centroscustos">Centros Custos</button>
       </mat-menu>
       <mat-menu #inventarios="matMenu">
-        <button mat-menu-item routerLink="inventarios">Cad.Inventários</button>
+        <button mat-menu-item routerLink="inventarios">Cad. Inventários</button>
+        <button mat-menu-item routerLink="ambientes">Cad. Ambientes</button>
         <button mat-menu-item routerLink="imoinventarios" *ngIf="getInventarioId() !== 0">Inventário x
           Imobilizado</button>
         <button mat-menu-item routerLink="monitoramento" *ngIf="getInventarioId() !== 0">Monitoramento</button>

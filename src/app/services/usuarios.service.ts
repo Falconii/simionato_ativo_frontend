@@ -8,6 +8,7 @@ import { UsuarioModel } from '../models/usuario-model';
 import { UsuarioQuery_03Model } from '../models/usuario-query_03-model';
 import { ParametroUsuario03 } from '../parametros/parametro-usuario03';
 import { UsuarioQuery_04Model } from '../models/usuario-query_04-model';
+import { UsuarioQuery_05Model } from '../models/usuario-query_05-model';
 
 @Injectable({
   providedIn: 'root',
@@ -48,6 +49,15 @@ export class UsuariosService {
 
   getusuarios_01(params: ParametroUsuario01): Observable<UsuarioModel[]> {
     return this.http.post<UsuarioModel[]>(`${this.apiURL}usuarios`, params);
+  }
+
+  getusuarios_05(
+    params: ParametroUsuario01
+  ): Observable<UsuarioQuery_05Model[]> {
+    return this.http.post<UsuarioQuery_05Model[]>(
+      `${this.apiURL}usuariosbyambiente`,
+      params
+    );
   }
 
   UsuarioInsert(usuario: UsuarioModel) {
