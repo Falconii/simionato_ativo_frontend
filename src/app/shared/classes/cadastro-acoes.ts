@@ -9,5 +9,7 @@ export enum CadastroAcoes {
   Sub_Conta = 8,
   Visualizar_Estrtura = 9,
   EdicaoMultipla = 10,
+  Inclusao_Ambiente = 20,
+  Exclusao_Ambiente = 21,
   None = 99,
 }

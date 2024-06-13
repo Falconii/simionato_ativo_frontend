@@ -1,3 +1,4 @@
+import { PadraoService } from 'src/app/services/padrao.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -19,8 +20,10 @@ import { LocalService } from 'src/app/services/local.service';
 import { ParametrosService } from 'src/app/services/parametros.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 import { AppSnackbar } from 'src/app/shared/classes/app-snackbar';
+import { CadastroAcoes } from 'src/app/shared/classes/cadastro-acoes';
 import { Opcoes } from 'src/app/shared/classes/opcoes';
 import { messageError } from 'src/app/shared/classes/util';
+import { PadraoModel } from 'src/app/models/padrao-model';
 
 @Component({
   selector: 'app-crud-ambiente',
@@ -35,6 +38,8 @@ export class CrudAmbienteComponent implements OnInit {
   inscricaoInventarios!: Subscription;
 
   inscricaoUsuarios!: Subscription;
+
+  inscricaoPadrao!: Subscription;
 
   empresas: EmpresaQuery01Model[] = [];
   empresa: EmpresaQuery01Model = new EmpresaQuery01Model();
@@ -58,6 +63,7 @@ export class CrudAmbienteComponent implements OnInit {
     private localService: LocalService,
     private inventarioService: InventarioService,
     private usuarioService: UsuariosService,
+    private padraoService: PadraoService,
     private parametrosService: ParametrosService,
     private router: Router,
     private appSnackBar: AppSnackbar
@@ -82,7 +88,6 @@ export class CrudAmbienteComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getUsuarios();
     this.onGetEmpresas();
   }
 
@@ -91,6 +96,7 @@ export class CrudAmbienteComponent implements OnInit {
     this.inscricaoLocais?.unsubscribe();
     this.inscricaoInventarios?.unsubscribe();
     this.inscricaoUsuarios?.unsubscribe();
+    this.inscricaoPadrao?.unsubscribe();
   }
 
   onGetEmpresas() {
@@ -185,6 +191,26 @@ export class CrudAmbienteComponent implements OnInit {
   }
 
   getUsuarios() {
+    let idx: number = this.empresas.findIndex(
+      (obj) => obj.id === this.parametros.value?.empresa
+    );
+    if (idx >= 0) {
+      this.empresa = this.empresas[idx];
+    }
+
+    idx = this.locais.findIndex(
+      (obj) => obj.id === this.parametros.value?.local
+    );
+    if (idx >= 0) {
+      this.local = this.locais[idx];
+    }
+    idx = this.inventarios.findIndex(
+      (obj) => obj.codigo === this.parametros.value?.inventario
+    );
+    if (idx >= 0) {
+      this.inventario = this.inventarios[idx];
+    }
+
     let par = new ParametroUsuario01();
 
     par.id_empresa = this.globalService.getIdEmpresa();
@@ -214,6 +240,49 @@ export class CrudAmbienteComponent implements OnInit {
       }
     );
   }
+
+  deletePadrao(usuario: UsuarioQuery_05Model) {
+    this.globalService.setSpin(true);
+    this.inscricaoPadrao = this.padraoService
+      .padraoDelete(usuario.id_empresa, usuario.id)
+      .subscribe(
+        (data: any) => {
+          this.globalService.setSpin(false);
+          usuario.tem_padrao = 'N';
+          usuario.empresa = '';
+          usuario.local = '';
+          usuario.inventario = '';
+        },
+        (error: any) => {
+          this.globalService.setSpin(false);
+          this.appSnackBar.openSuccessSnackBar(
+            `Falha Na Exclusão ${messageError(error)}`,
+            'OK'
+          );
+        }
+      );
+  }
+
+  savePadrao(padrao: PadraoModel, usuario: UsuarioQuery_05Model) {
+    this.globalService.setSpin(true);
+    this.inscricaoPadrao = this.padraoService.padraoInsert(padrao).subscribe(
+      (data: any) => {
+        this.globalService.setSpin(false);
+        usuario.tem_padrao = 'S';
+        usuario.empresa = this.empresa.razao;
+        usuario.local = this.local.razao;
+        usuario.inventario = this.inventario.descricao;
+      },
+      (error: any) => {
+        this.globalService.setSpin(false);
+        this.appSnackBar.openSuccessSnackBar(
+          `Falha Na Inclusão ${messageError(error)}`,
+          'OK'
+        );
+      }
+    );
+  }
+
   setValues() {
     this.parametros.setValue({
       empresa: this.empresa.id,
@@ -234,9 +303,20 @@ export class CrudAmbienteComponent implements OnInit {
     this.onGetLocais();
   }
 
-  onChangeAcao(usuario: UsuarioQuery_05Model) {}
-
-  onAcao(event: any, opcao: Opcoes) {
-    console.log(event, opcao);
+  escolha(opcao: number, usuario: UsuarioQuery_05Model) {
+    if (opcao == CadastroAcoes.Inclusao_Ambiente) {
+      let padrao = new PadraoModel();
+      padrao.id_empresa = usuario.id_empresa;
+      padrao.id_usuario = usuario.id;
+      padrao.id_empresa_padrao = this.empresa.id;
+      padrao.id_local_padrao = this.local.id;
+      padrao.id_inv_padrao = this.inventario.codigo;
+      padrao.user_insert = this.globalService.getUsuario().id;
+      padrao.user_update = 0;
+      this.savePadrao(padrao, usuario);
+    }
+    if (opcao == CadastroAcoes.Exclusao_Ambiente) {
+      this.deletePadrao(usuario);
+    }
   }
 }

@@ -26,6 +26,7 @@ import { ImobilizadoDialogComponent } from './components/imobilizado-dialog/imob
 import { NfeDialogComponent } from './nfe-dialog/nfe-dialog.component';
 import { ValoresDialogComponent } from './valores-dialog/valores-dialog.component';
 import { OrigemPipe } from './pipes/origem.pipe';
+import { BarraAcoesAmbienteComponent } from './components/barra-acoes-ambiente/barra-acoes-ambiente.component';
 @NgModule({
   declarations: [
     SimNaoPipe,
@@ -53,6 +54,7 @@ import { OrigemPipe } from './pipes/origem.pipe';
     ImobilizadoDialogComponent,
     NfeDialogComponent,
     ValoresDialogComponent,
+    BarraAcoesAmbienteComponent,
   ],
   imports: [CommonModule, MaterialModule, FormsModule, ReactiveFormsModule],
   exports: [
@@ -63,6 +65,7 @@ import { OrigemPipe } from './pipes/origem.pipe';
     ShowAtivosComponent,
     SharedNavegatorComponent,
     BarraAcoesComponent,
+    BarraAcoesAmbienteComponent,
     EstadoProdutoPipe,
     SituacaoPipe,
     EmBrancoPipe,
