@@ -21,12 +21,12 @@ body {
 
 .labelTitleFirst {
     font-size: small;
-    color: #0000CC;
+    color: #0000cc;
 }
 
 .labelTitle {
     font-size: small;
-    color: #0000CC;
+    color: #0000cc;
     margin-left: 5px;
 }
 
@@ -77,7 +77,7 @@ body {
 }
 
 .linha :hover {
-    background-color: #CCCC99
+    background-color: #cccc99;
 }
 
 .col-med-1 {
@@ -217,15 +217,15 @@ body {
 }
 
 .red-icon {
-    color: red
+    color: red;
 }
 
 .yellow-icon {
-    color: #E3BD11;
+    color: #e3bd11;
 }
 
 .blue-icon {
-    color: #0000CC;
+    color: #0000cc;
 }
 
 .Browse_Lanc {
@@ -246,17 +246,17 @@ body {
 
 .Browse_Lanc_td {
     font-size: small;
-    color: #0000CC;
+    color: #0000cc;
 }
 
 .Browse_Lanc_td_large {
     font-size: large;
-    color: #0000CC;
+    color: #0000cc;
 }
 
 .Browse_Lanc_td_medium {
     font-size: medium;
-    color: #0000CC;
+    color: #0000cc;
 }
 
 .acoes {
@@ -278,8 +278,14 @@ body {
 }
 
 .mat-tooltip {
-    font-family: 'Times New Roman', Times, serif;
+    font-family: "Times New Roman", Times, serif;
     font-size: large;
-    color: #0000CC;
+    color: #0000cc;
     background-color: coral;
+}
+
+.box {
+    margin-bottom: 20px;
+    border: 2px solid black;
+    box-shadow: 10px 10px 5px 6px gray;
 }

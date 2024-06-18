@@ -36,4 +36,8 @@ export class HomeComponent implements OnInit {
   getInventario(): InventarioModel {
     return this.globalService.getInventario();
   }
+
+  existeInventario(): Boolean {
+    return this.globalService.getInventario().codigo > 0;
+  }
 }

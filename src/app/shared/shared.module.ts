@@ -27,6 +27,7 @@ import { NfeDialogComponent } from './nfe-dialog/nfe-dialog.component';
 import { ValoresDialogComponent } from './valores-dialog/valores-dialog.component';
 import { OrigemPipe } from './pipes/origem.pipe';
 import { BarraAcoesAmbienteComponent } from './components/barra-acoes-ambiente/barra-acoes-ambiente.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 @NgModule({
   declarations: [
     SimNaoPipe,
@@ -55,6 +56,7 @@ import { BarraAcoesAmbienteComponent } from './components/barra-acoes-ambiente/b
     NfeDialogComponent,
     ValoresDialogComponent,
     BarraAcoesAmbienteComponent,
+    DashboardComponent,
   ],
   imports: [CommonModule, MaterialModule, FormsModule, ReactiveFormsModule],
   exports: [
@@ -73,6 +75,7 @@ import { BarraAcoesAmbienteComponent } from './components/barra-acoes-ambiente/b
     FirstNamePipe,
     OrigemPipe,
     SetfocusDirective,
+    DashboardComponent,
   ],
 })
 export class SharedModule {}
