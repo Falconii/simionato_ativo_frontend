@@ -12,6 +12,7 @@ import { GlobalService } from 'src/app/services/global.service';
 import { InventarioService } from 'src/app/services/inventario.service';
 import { LocalService } from 'src/app/services/local.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
+import { ValidatorDate } from 'src/app/shared/Validators/validator-date';
 import { ValidatorStringLen } from 'src/app/shared/Validators/validator-string-len';
 import { AppSnackbar } from 'src/app/shared/classes/app-snackbar';
 import { CadastroAcoes } from 'src/app/shared/classes/cadastro-acoes';
@@ -59,12 +60,12 @@ export class InventarioViewComponent implements OnInit {
     this.formulario = formBuilder.group({
       id: [{ value: '', disabled: true }],
       descricao: [{ value: '' }, [ValidatorStringLen(3, 100, true)]],
-      data_inicial: [{ value: '' }],
-      data_final: [{ value: '' }],
+      data_inicial: [{ value: '' }, [ValidatorDate(true)]],
+      data_final: [{ value: '' }, [ValidatorDate(true)]],
       data_encerramento: [{ value: '' }],
-      local: [{ value: 0 }, [Validators.required, Validators.min(0)]],
-      local_: [{ value: '' }],
-      responsavel: [{ value: 0 }, [Validators.required, Validators.min(0)]],
+      id_filial: [{ value: 0 }, [Validators.required, Validators.min(1)]],
+      id_filial_: [{ value: '' }],
+      responsavel: [{ value: 0 }, [Validators.required, Validators.min(1)]],
       responsavel_: [{ value: '' }],
     });
     this.inventario = new InventarioModel();
@@ -181,8 +182,8 @@ export class InventarioViewComponent implements OnInit {
         this.idAcao == CadastroAcoes.Exclusao
           ? this.inventario.resp_razao
           : '',
-      local: this.inventario.id_filial,
-      local_:
+      id_filial: this.inventario.id_filial,
+      id_filial_:
         this.idAcao == CadastroAcoes.Consulta ||
         this.idAcao == CadastroAcoes.Exclusao
           ? this.inventario.local_razao
@@ -194,7 +195,8 @@ export class InventarioViewComponent implements OnInit {
     if (this.formulario.valid) {
       this.executaAcao();
     } else {
-      this.appSnackBar.openFailureSnackBar(
+      this.formulario.markAllAsTouched();
+      this.appSnackBar.openSuccessSnackBar(
         `Formulário Com Campos Inválidos.`,
         'OK'
       );
@@ -245,7 +247,7 @@ export class InventarioViewComponent implements OnInit {
     this.inventario.descricao = this.formulario.value.descricao;
     this.inventario.data_inicial = this.formulario.value.data_inicial;
     this.inventario.data_final = this.formulario.value.data_final;
-    this.inventario.id_filial = this.formulario.value.local;
+    this.inventario.id_filial = this.formulario.value.id_filial;
     this.inventario.id_responsavel = this.formulario.value.responsavel;
     console.log('Inventario=>', this.inventario);
     switch (+this.idAcao) {
@@ -317,6 +319,16 @@ export class InventarioViewComponent implements OnInit {
     return CadastroAcoes;
   }
 
+  NoValidtouchedOrDirty(campo: string): boolean {
+    if (
+      !this.formulario.get(campo)?.valid &&
+      (this.formulario.get(campo)?.touched || this.formulario.get(campo)?.dirty)
+    ) {
+      return true;
+    }
+    return false;
+  }
+
   touchedOrDirty(campo: string): boolean {
     if (
       this.formulario.get(campo)?.touched ||
@@ -325,5 +337,16 @@ export class InventarioViewComponent implements OnInit {
       return true;
     }
     return false;
+  }
+
+  getValidfield(field: string): boolean {
+    return (
+      this.formulario.get(field)?.errors?.ValidatorStringLen &&
+      this.touchedOrDirty(field)
+    );
+  }
+
+  getMensafield(field: string): string {
+    return this.formulario.get(field)?.errors?.message;
   }
 }

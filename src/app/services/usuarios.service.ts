@@ -9,6 +9,7 @@ import { UsuarioQuery_03Model } from '../models/usuario-query_03-model';
 import { ParametroUsuario03 } from '../parametros/parametro-usuario03';
 import { UsuarioQuery_04Model } from '../models/usuario-query_04-model';
 import { UsuarioQuery_05Model } from '../models/usuario-query_05-model';
+import { AmbienteModel } from '../models/ambiente-model';
 
 @Injectable({
   providedIn: 'root',
@@ -80,6 +81,15 @@ export class UsuariosService {
     return this.http.post<UsuarioQuery_03Model[]>(
       `${this.apiURL}usuariosbyinventario`,
       params
+    );
+  }
+
+  getambiente(
+    id_empresa: number,
+    id_usuario: number
+  ): Observable<AmbienteModel> {
+    return this.http.get<AmbienteModel>(
+      `${this.apiURL}ambiente/${id_empresa}/${id_usuario}`
     );
   }
 

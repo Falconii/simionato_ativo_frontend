@@ -109,18 +109,19 @@ export class CrudAmbienteComponent implements OnInit {
       .getEmpresasParametro_01(par)
       .subscribe(
         (data: EmpresaModel[]) => {
+          this.globalService.setSpin(false);
           this.empresas = data;
           this.empresa = this.empresas[0];
           this.setValues();
           this.onGetLocais();
         },
         (error: any) => {
+          this.globalService.setSpin(false);
           this.empresas = [];
           this.appSnackBar.openFailureSnackBar(
             `Pesquisa Nas Empresas ${messageError(error)}`,
             'OK'
           );
-          this.globalService.setSpin(false);
         }
       );
   }
@@ -140,6 +141,9 @@ export class CrudAmbienteComponent implements OnInit {
           this.globalService.setSpin(false);
           this.locais = data;
           this.local = this.locais[0];
+          this.parametros.patchValue({
+            local: this.local.id,
+          });
           this.onGetInventarios();
         },
         (error: any) => {
@@ -170,11 +174,15 @@ export class CrudAmbienteComponent implements OnInit {
       .getInventariosParametro_01(par)
       .subscribe(
         (data: any[]) => {
+          this.globalService.setSpin(false);
           this.inventarios = data;
-          this.inventario = this.inventarios[0];
-          this.setValues();
+          this.inventario = data[0];
+          this.parametros.patchValue({
+            inventario: this.inventario.codigo,
+          });
         },
         (error: any) => {
+          this.globalService.setSpin(false);
           this.empresas = [];
           this.empresa = new EmpresaQuery01Model();
           this.locais = [];
@@ -300,7 +308,13 @@ export class CrudAmbienteComponent implements OnInit {
   }
 
   onChangeLocal() {
-    this.onGetLocais();
+    let idx: number = this.locais.findIndex(
+      (obj) => obj.id === this.parametros.value?.local
+    );
+    if (idx >= 0) {
+      this.local = this.locais[idx];
+      this.onGetInventarios();
+    }
   }
 
   escolha(opcao: number, usuario: UsuarioQuery_05Model) {

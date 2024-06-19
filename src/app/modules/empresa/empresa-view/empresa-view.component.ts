@@ -99,10 +99,10 @@ export class EmpresaViewComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.formulario);
     if (this.formulario.valid) {
       this.executaAcao();
     } else {
+      this.formulario.markAllAsTouched();
       this.appSnackBar.openSuccessSnackBar(
         `Formulário Com Campos Inválidos.`,
         'OK'
@@ -294,6 +294,16 @@ export class EmpresaViewComponent implements OnInit {
 
   getAcoes() {
     return CadastroAcoes;
+  }
+
+  NoValidtouchedOrDirty(campo: string): boolean {
+    if (
+      !this.formulario.get(campo)?.valid &&
+      (this.formulario.get(campo)?.touched || this.formulario.get(campo)?.dirty)
+    ) {
+      return true;
+    }
+    return false;
   }
 
   touchedOrDirty(campo: string): boolean {

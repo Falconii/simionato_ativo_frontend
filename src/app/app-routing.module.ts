@@ -87,6 +87,14 @@ const routes: Routes = [
     canActivate: [],
   },
   {
+    path: 'upload-excel',
+    loadChildren: () =>
+      import('./modules/upload-files/upload-files.module').then(
+        (m) => m.UploadFilesModule
+      ),
+    canActivate: [],
+  },
+  {
     path: 'inventarios',
     loadChildren: () =>
       import('./modules/inventario/inventario.module').then(

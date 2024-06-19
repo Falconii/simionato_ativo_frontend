@@ -65,6 +65,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
     SharedNavegatorComponent,
     ProgressBarComponent,
     ShowAtivosComponent,
+    SpinsComponent,
     SharedNavegatorComponent,
     BarraAcoesComponent,
     BarraAcoesAmbienteComponent,

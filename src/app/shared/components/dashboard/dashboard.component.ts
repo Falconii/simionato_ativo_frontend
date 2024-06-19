@@ -1,5 +1,4 @@
 import { InventarioService } from 'src/app/services/inventario.service';
-import { ImobilizadoinventarioService } from './../../../services/imobilizadoinventario.service';
 import { LancamentoService } from 'src/app/services/lancamento.service';
 import { GlobalService } from './../../../services/global.service';
 import { Component, OnInit } from '@angular/core';
@@ -9,7 +8,9 @@ import { messageError } from '../../classes/util';
 import { AppSnackbar } from '../../classes/app-snackbar';
 import { ResumoLancamentosUsuariosModel } from 'src/app/models/resumo-lancamentos-usuario-model';
 import { ResumoInventarioModel } from 'src/app/models/resumo-inventario-model';
-import { ParametroResumoInventario } from 'src/app/parametros/parametro-resumo-inventario';
+import { InventarioModel } from 'src/app/models/inventario-model';
+import { UsuariosService } from 'src/app/services/usuarios.service';
+import { AmbienteModel } from 'src/app/models/ambiente-model';
 declare var google: any;
 
 @Component({
@@ -20,28 +21,67 @@ declare var google: any;
 export class DashboardComponent implements OnInit {
   inscricaoExecutores!: Subscription;
   inscricaoResumo!: Subscription;
+  inscricaoAmbiente!: Subscription;
 
   executores: ResumoLancamentosUsuariosModel[] = [];
   resumo: ResumoInventarioModel = new ResumoInventarioModel();
+  inventario: InventarioModel = new InventarioModel();
+  ambiente: AmbienteModel = new AmbienteModel();
 
   constructor(
     private globalService: GlobalService,
     private lancamentoService: LancamentoService,
     private inventarioService: InventarioService,
+    private usuarioService: UsuariosService,
     private appSnackBar: AppSnackbar
-  ) {}
+  ) {
+    google.charts.load('current', { packages: ['corechart'] });
+  }
 
   ngOnInit(): void {
-    this.getExecutores();
+    this.inventario = this.globalService.getInventario();
+    this.getAmbiente();
   }
 
   ngOnDestroy() {
     this.inscricaoExecutores?.unsubscribe();
     this.inscricaoResumo?.unsubscribe();
+    this.inscricaoAmbiente?.unsubscribe();
   }
 
   onAtualizar() {
-    this.getExecutores();
+    this.getAmbiente();
+  }
+
+  getAmbiente() {
+    this.globalService.setSpin(true);
+    this.ambiente.id_retorno = 400;
+    this.ambiente.mensa_retorno = 'Buscando Dados Do Inventário';
+    this.inscricaoAmbiente = this.usuarioService
+      .getambiente(
+        this.globalService.getEmpresa().id,
+        this.globalService.getUsuario().id
+      )
+      .subscribe(
+        (data: AmbienteModel) => {
+          this.globalService.setSpin(false);
+          this.ambiente = data;
+          if (this.ambiente.id_retorno == 200) {
+            this.getExecutores();
+          }
+        },
+        (error: any) => {
+          this.globalService.setSpin(false);
+          this.ambiente = new AmbienteModel();
+          this.ambiente.id_retorno = 409;
+          this.ambiente.mensa_retorno =
+            'Ambiente Não Encontado Ou Incomplento!';
+          this.appSnackBar.openFailureSnackBar(
+            `Pesquisa Ambiente ${messageError(error)}`,
+            'OK'
+          );
+        }
+      );
   }
 
   getExecutores() {
@@ -94,6 +134,7 @@ export class DashboardComponent implements OnInit {
           this.resumo.situacao_4 = data.situacao_4;
           this.resumo.situacao_5 = data.situacao_5;
           this.resumo.fotos = data.fotos;
+          this.Atualizar();
         },
         (error: any) => {
           this.globalService.setSpin(false);
@@ -104,5 +145,42 @@ export class DashboardComponent implements OnInit {
           );
         }
       );
+  }
+
+  Atualizar() {
+    if (this.globalService.logado) {
+      this.buidChartExecutores();
+    }
+  }
+
+  buidChartExecutores() {
+    var func = (chart: any) => {
+      var horas: number = 0;
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Topping');
+      data.addColumn('number', 'Slices');
+      const qtd_inventario =
+        this.resumo.situacao_1 +
+        this.resumo.situacao_2 +
+        this.resumo.situacao_3 +
+        this.resumo.situacao_4 +
+        this.resumo.situacao_5;
+      data.addRows([['Não Inventariado', this.resumo.situacao_0]]);
+      data.addRows([['Inventariado', qtd_inventario]]);
+      // dados.forEach((exec) => {
+      //  data.addRows([[this.firstName.transform(exec.nome), exec.horas]]);
+      //   horas += exec.horas;
+      // });
+      var options = {
+        title: `SITUAÇÃO DO INVENTÁRIO `,
+        width: 400,
+        height: 300,
+      };
+      chart().draw(data, options);
+    };
+    var chart = () =>
+      new google.visualization.PieChart(document.getElementById('chart_div'));
+    var callBack = () => func(chart);
+    google.charts.setOnLoadCallback(callBack);
   }
 }
