@@ -1,3 +1,4 @@
+import { InventarioModel } from './../../../models/inventario-model';
 import { ValoresDialogComponent } from './../../../shared/valores-dialog/valores-dialog.component';
 import { CadastroAcoes } from 'src/app/shared/classes/cadastro-acoes';
 import { LancaDialogComponent } from './../../../shared/components/lanca-dialog/lanca-dialog.component';
@@ -87,6 +88,8 @@ export class CrudImoinventarioComponent implements OnInit {
 
   valor: ValorModel = new ValorModel();
 
+  inventario: InventarioModel = new InventarioModel();
+
   constructor(
     private formBuilder: FormBuilder,
     private globalService: GlobalService,
@@ -120,10 +123,12 @@ export class CrudImoinventarioComponent implements OnInit {
       ...this.situacoesInventario,
       ...this.globalService.getSituacoesInventario(),
     ];
-    this.getCentroCustos();
+    this.loadParametros();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.inventario = this.globalService.getInventario();
+  }
 
   ngOnDestroy(): void {
     this.inscricaoGetAll?.unsubscribe();
@@ -530,7 +535,47 @@ export class CrudImoinventarioComponent implements OnInit {
          "new": false,
          "id_retorno":0
        }`;
-    this.getParametro();
+    this.opcoesOrdenacao = GetValueJsonStringArray(
+      this.parametro.getParametro(),
+      'ordenacao'
+    );
+    this.opcoesCampo = GetValueJsonStringArray(
+      this.parametro.getParametro(),
+      'pesquisar'
+    );
+    if (this.retorno && this.globalService.estadoFind('imoinv') !== null) {
+      const par = this.globalService.estadoFind('imoinv');
+      if (par != null) {
+        if (GetValueJsonBoolean(par.getParametro(), 'new')) {
+          let config = this.parametro.getParametro();
+          Object(config).id_retorno = GetValueJsonNumber(
+            par.getParametro(),
+            'id_retorno'
+          );
+          this.parametro.parametro = JSON.stringify(config);
+          this.setPosicaoInclusao();
+        } else {
+          this.controlePaginas.setPaginaAtual(
+            GetValueJsonNumber(par.getParametro(), 'page')
+          );
+          this.parametro.setParametro(par.getParametro());
+        }
+        this.globalService.estadoDelete(par);
+        this.setValues();
+        this.getImoIvenContador();
+      }
+    } else {
+      this.getParametro();
+    }
+  }
+
+  setPosicaoInclusao() {
+    const config = this.parametro.getParametro();
+    Object(config).op_ordenacao = 0;
+    Object(config).op_pesquisar = 0;
+    Object(config).descricao = '';
+    Object(config).new = true;
+    this.parametro.setParametro(config);
   }
 
   getParametro() {

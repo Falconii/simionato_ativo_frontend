@@ -1,6 +1,6 @@
 <div class="div-barra">
   <mat-toolbar>
-    <span class="example-spacer">Imobilizados:</span>
+    <span class="example-spacer">Inventário: {{inventario.descricao}}</span>
     <app-navegator [controle]="controlePaginas" (changePage)="onChangePage()"></app-navegator>
     <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon"
       (click)="getImoIvenContador()" matTooltip="Atualizar" matTooltipPosition="above">
