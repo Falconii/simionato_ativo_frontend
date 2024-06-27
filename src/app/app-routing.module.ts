@@ -1,3 +1,4 @@
+import { AnexarProdutosModule } from './modules/anexar-produtos/anexar-produtos.module';
 import { ImobilizadoinventarioModel } from './models/imobilizadoinventario-model';
 import { ImoinventarioModule } from './modules/imoinventario/imoinventario.module';
 import { NgModule } from '@angular/core';
@@ -35,6 +36,15 @@ const routes: Routes = [
     path: 'locais',
     loadChildren: () =>
       import('./modules/local/local.module').then((m) => m.LocalModule),
+    canActivate: [],
+  },
+
+  {
+    path: 'anexar-produtos',
+    loadChildren: () =>
+      import('./modules/anexar-produtos/anexar-produtos.module').then(
+        (m) => m.AnexarProdutosModule
+      ),
     canActivate: [],
   },
   {

@@ -12,6 +12,8 @@ export class LancamentoModel {
   public estado: number = 0;
   public new_codigo: number = 0;
   public new_cc: string = '';
+  public condicao: number = 0;
+  public book: string = '';
   public user_insert: number = 0;
   public user_update: number = 0;
   public imo_inv_status: number = 0;

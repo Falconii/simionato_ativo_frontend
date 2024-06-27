@@ -478,6 +478,8 @@ export class CrudImoinventarioComponent implements OnInit {
       this.lancamento.id_inventario = imobilizado.id_inventario;
       this.lancamento.imo_cod_cc = imobilizado.imo_cod_cc;
       this.lancamento.imo_cod_grupo = imobilizado.imo_cod_grupo;
+      this.lancamento.condicao = imobilizado.condicao;
+      this.lancamento.book = imobilizado.book;
       this.lancamento.id_usuario = this.globalService.getUsuario().id;
       this.lancamento.usu_razao = this.globalService.getUsuario().razao;
       this.lancamento.imo_descricao = imobilizado.imo_descricao;
@@ -535,14 +537,14 @@ export class CrudImoinventarioComponent implements OnInit {
          "new": false,
          "id_retorno":0
        }`;
-    this.opcoesOrdenacao = GetValueJsonStringArray(
-      this.parametro.getParametro(),
-      'ordenacao'
-    );
-    this.opcoesCampo = GetValueJsonStringArray(
-      this.parametro.getParametro(),
-      'pesquisar'
-    );
+    // this.opcoesOrdenacao = GetValueJsonStringArray(
+    //   this.parametro.getParametro(),
+    //  'ordenacao'
+    //);
+    //this.opcoesCampo = GetValueJsonStringArray(
+    //  this.parametro.getParametro(),
+    // 'pesquisar'
+    //);
     if (this.retorno && this.globalService.estadoFind('imoinv') !== null) {
       const par = this.globalService.estadoFind('imoinv');
       if (par != null) {

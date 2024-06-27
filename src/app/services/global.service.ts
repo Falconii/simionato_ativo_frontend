@@ -12,6 +12,7 @@ import { ParametroModel } from '../models/parametro-model';
 import { LocalModel } from '../models/local-model';
 import { EstadoProduto } from '../shared/classes/estado-produto';
 import { SituacaoInventario } from '../shared/classes/situacao-inventario';
+import { Condicoes } from '../shared/classes/condicoes';
 
 @Injectable({
   providedIn: 'root',
@@ -25,6 +26,7 @@ export class GlobalService {
   logado: boolean = false;
   showSpin: boolean = false;
   estadoProduto: EstadoProduto[] = [];
+  lsCondicoes: Condicoes[] = [];
 
   guadiaoMestre: GuardiaoMestre[] = [];
   guardiaoOpcoes: GuardiaoOpcoes[] = [];
@@ -52,8 +54,17 @@ export class GlobalService {
     this.loadEstadoProduto();
     this.loadGuardiaoMestre();
     this.loadGuardiaoOpcoes();
+    this.loadCondicoes();
   }
 
+  loadCondicoes() {
+    this.lsCondicoes = [
+      new Condicoes(0, 'Não Classificado'),
+      new Condicoes(1, 'Bom'),
+      new Condicoes(2, 'Regular'),
+      new Condicoes(3, 'Ruim'),
+    ];
+  }
   loadSituacoesInventario() {
     this.situacoesInventario = [];
     let sit: SituacaoInventario = new SituacaoInventario();
@@ -101,6 +112,10 @@ export class GlobalService {
     estado.codigo = 2;
     estado.descricao = 'USADO';
     this.estadoProduto.push(estado);
+  }
+
+  getCondicoes(): Condicoes[] {
+    return this.lsCondicoes;
   }
 
   getEstados(): EstadoProduto[] {

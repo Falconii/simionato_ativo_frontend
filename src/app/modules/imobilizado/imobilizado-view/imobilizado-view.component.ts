@@ -17,6 +17,7 @@ import { ParametroGrupo01 } from 'src/app/parametros/parametro-grupo01';
 import { GrupoService } from 'src/app/services/grupo.service';
 import { CentrocustoService } from 'src/app/services/centrocusto.service';
 import { ParametroCentrocusto01 } from 'src/app/parametros/parametro-centrocusto01';
+import { Condicoes } from 'src/app/shared/classes/condicoes';
 
 @Component({
   selector: 'app-imobilizado-view',
@@ -47,6 +48,8 @@ export class ImobilizadoViewComponent implements OnInit {
 
   labelCadastro: string = '';
 
+  lsCondicoes: Condicoes[] = [];
+
   constructor(
     private formBuilder: FormBuilder,
     private imobilizadoService: ImobilizadoService,
@@ -64,6 +67,9 @@ export class ImobilizadoViewComponent implements OnInit {
       grupo_: [{ value: '' }],
       cc: [{ value: '' }],
       cc_: [{ value: '' }],
+      condicao: [{ value: '' }],
+      condicao_: [{ value: '' }],
+      apelido: [{ value: '' }, [ValidatorStringLen(0, 30, false)]],
     });
     this.imobilizado = new ImobilizadoModel();
     this.inscricaoRota = route.params.subscribe((params: any) => {
@@ -73,6 +79,8 @@ export class ImobilizadoViewComponent implements OnInit {
       this.idAcao = params.acao;
       this.setAcao(params.acao);
     });
+    this.lsCondicoes = globalService.getCondicoes();
+    console.log('lsCondicoes', this.lsCondicoes);
   }
 
   ngOnInit(): void {
@@ -139,6 +147,7 @@ export class ImobilizadoViewComponent implements OnInit {
         (data: ImobilizadoModel) => {
           this.globalService.setSpin(false);
           this.imobilizado = data;
+          console.log('IMOBILIZADO', this.imobilizado);
           this.setValue();
         },
         (error: any) => {
@@ -249,6 +258,13 @@ export class ImobilizadoViewComponent implements OnInit {
         this.idAcao == CadastroAcoes.Exclusao
           ? this.imobilizado.cc_descricao
           : '',
+      condicao: this.imobilizado.condicao,
+      condicao_:
+        this.idAcao == CadastroAcoes.Consulta ||
+        this.idAcao == CadastroAcoes.Exclusao
+          ? this.lsCondicoes[this.imobilizado.condicao].descricao
+          : '',
+      apelido: this.imobilizado.apelido,
     });
   }
 
@@ -292,6 +308,8 @@ export class ImobilizadoViewComponent implements OnInit {
     this.imobilizado.descricao = this.formulario.value.descricao;
     this.imobilizado.cod_grupo = this.formulario.value.grupo;
     this.imobilizado.cod_cc = this.formulario.value.cc;
+    this.imobilizado.condicao = this.formulario.value.condicao;
+    this.imobilizado.apelido = this.formulario.value.apelido;
     switch (+this.idAcao) {
       case CadastroAcoes.Inclusao:
         this.imobilizado.origem = 'M';

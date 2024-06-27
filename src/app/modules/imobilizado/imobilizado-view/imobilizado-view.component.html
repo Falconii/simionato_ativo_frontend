@@ -59,4 +59,26 @@
       <input matInput formControlName="cc_" [readonly]="readOnly">
     </mat-form-field>
   </div>
+  <div class="col-med-2">
+    <mat-form-field field appearance="outline" class="col-max"
+      *ngIf="( (idAcao != getAcoes()[ 'Consulta']) && (idAcao != getAcoes()[ 'Exclusao']) && (idAcao != getAcoes()[ 'Atualizacao']))">
+      <mat-label>Condicao</mat-label>
+      <mat-select formControlName="condicao">
+        <mat-option *ngFor="let condicao of lsCondicoes" [value]="condicao.idx">
+          {{condicao.descricao}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="NoValidtouchedOrDirty('condicao')">{{getMensafield('condicao')}}</mat-error>
+    </mat-form-field>
+    <mat-form-field field appearance="outline" class="col-max"
+      *ngIf="( (idAcao == getAcoes()[ 'Consulta']) || (idAcao == getAcoes()[ 'Exclusao']) )">
+      <mat-label>Condicao</mat-label>
+      <input matInput formControlName="condicao_" [readonly]="readOnly">
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="col-max">
+      <mat-label>Apelido</mat-label>
+      <input matInput formControlName="apelido" oninput="this.value = this.value.toUpperCase()" [readonly]="readOnly">
+      <mat-error *ngIf="NoValidtouchedOrDirty('apelido')">{{getMensafield('apelido')}}</mat-error>
+    </mat-form-field>
+  </div>
 </form>

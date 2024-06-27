@@ -7,6 +7,8 @@ export class ImobilizadoinventarioModel {
   public status: number = 0;
   public new_codigo: number = 0;
   public new_cc: string = '';
+  public condicao: number = 0;
+  public book: string = 'N';
   public user_insert: number = 0;
   public user_update: number = 0;
   public imo_descricao: string = '';

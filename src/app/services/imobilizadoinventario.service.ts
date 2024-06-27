@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ImobilizadoinventarioModel } from '../models/imobilizadoinventario-model';
 import { ParametroImobilizadoinventario01 } from '../parametros/parametro-imobilizadoinventario01';
+import { ParametroAnexarProduto } from '../parametros/parametro-anexar-produto';
 
 @Injectable({
   providedIn: 'root',
@@ -60,5 +61,9 @@ export class ImobilizadoinventarioService {
     return this.http.delete<any>(
       `${this.apiURL}imobilizadoinventario/${id_empresa}/${id_filial}/${id_inventario}/${id_imobilizado}`
     );
+  }
+
+  anexarProdutoInventario(params: ParametroAnexarProduto): Observable<any> {
+    return this.http.post<any>(`${this.apiURL}anexarprodutoinventario`, params);
   }
 }
