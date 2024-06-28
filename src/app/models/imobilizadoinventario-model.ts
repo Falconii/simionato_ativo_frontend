@@ -24,6 +24,8 @@ export class ImobilizadoinventarioModel {
   public lanc_dt_lanca: string = '';
   public lanc_obs: string = '';
   public lanc_estado: number = 0;
+  public lanc_condicao: number = 0;
+  public lanc_book: string = 'N';
   public usu_razao: string = '';
   public new_cc_descricao: string = '';
 }

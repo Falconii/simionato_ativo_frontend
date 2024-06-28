@@ -90,6 +90,10 @@ export class CrudImoinventarioComponent implements OnInit {
 
   inventario: InventarioModel = new InventarioModel();
 
+  browse: boolean = true;
+
+  idAcao: CadastroAcoes = CadastroAcoes.Consulta;
+
   constructor(
     private formBuilder: FormBuilder,
     private globalService: GlobalService,
@@ -123,6 +127,7 @@ export class CrudImoinventarioComponent implements OnInit {
       ...this.situacoesInventario,
       ...this.globalService.getSituacoesInventario(),
     ];
+    this.getCentroCustos();
     this.loadParametros();
   }
 
@@ -432,7 +437,9 @@ export class CrudImoinventarioComponent implements OnInit {
         (data: any) => {
           this.globalService.setSpin(false);
           this.lancamento = data;
-          this.openLancaDialog(opcao, imobilizado);
+          //this.openLancaDialog(opcao, imobilizado);
+          this.idAcao = opcao;
+          this.browse = false;
         },
         (error: any) => {
           this.globalService.setSpin(false);
@@ -484,7 +491,9 @@ export class CrudImoinventarioComponent implements OnInit {
       this.lancamento.usu_razao = this.globalService.getUsuario().razao;
       this.lancamento.imo_descricao = imobilizado.imo_descricao;
       this.lancamento.estado = imobilizado.status;
-      this.openLancaDialog(CadastroAcoes.Inclusao, imobilizado);
+      this.idAcao = CadastroAcoes.Inclusao;
+      this.browse = false;
+      //this.openLancaDialog(CadastroAcoes.Inclusao, imobilizado);
     } else {
       this.getLancamento(opcao, imobilizado);
     }
@@ -513,7 +522,8 @@ export class CrudImoinventarioComponent implements OnInit {
   }
 
   onNovo() {
-    this.openImobilizadoDialog();
+    this.browse = !this.browse;
+    //this.openImobilizadoDialog();
   }
 
   onSaveConfig() {
@@ -729,6 +739,7 @@ export class CrudImoinventarioComponent implements OnInit {
     dialogConfig.disableClose = true;
     dialogConfig.id = 'imobilizado';
     dialogConfig.width = '1200px';
+    dialogConfig.height = '1200px';
     dialogConfig.data = data;
     const modalDialog = this.LancaDialog.open(
       ImobilizadoDialogComponent,

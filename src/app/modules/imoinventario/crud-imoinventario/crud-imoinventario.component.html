@@ -1,4 +1,4 @@
-<div class="div-barra">
+<div class="div-barra" *ngIf="browse">
   <mat-toolbar>
     <span class="example-spacer">Inventário: {{inventario.descricao}}</span>
     <app-navegator [controle]="controlePaginas" (changePage)="onChangePage()"></app-navegator>
@@ -21,6 +21,9 @@
   </mat-toolbar>
 </div>
 <div>
+  <app-imoinventario-view [lancamento]="lancamento" [ccs]="ccs" *ngIf="!browse"></app-imoinventario-view>
+</div>
+<div *ngIf="browse">
   <form [formGroup]="parametros" autocomplete="off">
     <div class="col-med-5">
       <mat-form-field field appearance="outline" class="col-max column-span-3">
@@ -60,7 +63,8 @@
     </div>
   </form>
 </div>
-<cdk-virtual-scroll-viewport [itemSize]="50" class="content">
+
+<cdk-virtual-scroll-viewport [itemSize]="50" class="content" *ngIf="browse">
   <table class="Browse_Lanc">
     <tr class="coluna-cabec">
       <th>Cód Imobil.</th>

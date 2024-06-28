@@ -11,6 +11,8 @@ import { CentrocustoModel } from 'src/app/models/centrocusto-model';
 import { LancamentoModel } from 'src/app/models/lancamento-model';
 import { messageError } from '../../classes/util';
 import { SituacaoInventario } from '../../classes/situacao-inventario';
+import { Condicoes } from '../../classes/condicoes';
+import { SimNao } from '../../classes/sim-nao';
 
 @Component({
   selector: 'app-lanca-dialog',
@@ -30,6 +32,9 @@ export class LancaDialogComponent implements OnInit {
   situacoes: SituacaoInventario[] = this.globalService
     .getSituacoesInventario()
     .filter((sit) => sit.id >= 0);
+
+  lsCondicoes: Condicoes[] = [];
+  respostas: SimNao[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -51,8 +56,22 @@ export class LancaDialogComponent implements OnInit {
       cc_original: [{ value: '' }],
       cc_novo: [{ value: '' }],
       cc_novo_: [{ value: '' }],
+      condicao: [{ value: '' }],
+      condicao_: [{ value: '' }],
+      book: [{ value: '' }],
+      book_: [{ value: '' }],
       obs: [{ value: '' }],
     });
+    const sim: SimNao = new SimNao();
+    sim.sigla = 'S';
+    sim.descricao = 'SIM';
+    const nao: SimNao = new SimNao();
+    nao.sigla = 'N';
+    nao.descricao = 'NÃO';
+    this.respostas.push(sim);
+    this.respostas.push(nao);
+    this.lsCondicoes = globalService.getCondicoes();
+
     this.setValue();
   }
 
@@ -243,9 +262,21 @@ export class LancaDialogComponent implements OnInit {
       descricao: this.data.lancamento.imo_descricao,
       cc_original:
         idx == -1 ? 'C.C. NÃO CADASTRADO!' : this.data.ccs[idx].descricao,
-      obs: this.data.lancamento.obs,
       cc_novo: this.data.lancamento.new_cc,
       cc_novo_: 'TESTE',
+      condicao: this.data.lancamento.condicao,
+      condicao_:
+        this.idAcao == CadastroAcoes.Consulta ||
+        this.idAcao == CadastroAcoes.Exclusao
+          ? this.lsCondicoes[this.data.lancamento.condicao].descricao
+          : '',
+      book: this.data.lancamento.book,
+      book_:
+        this.idAcao == CadastroAcoes.Consulta ||
+        this.idAcao == CadastroAcoes.Exclusao
+          ? this.respostas[this.data.lancamento.book == 'S' ? 0 : 1].descricao
+          : '',
+      obs: this.data.lancamento.obs,
     });
   }
 

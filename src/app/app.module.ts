@@ -19,6 +19,8 @@ import localePt from '@angular/common/locales/pt';
 import { FirstNamePipe } from './shared/pipes/first-name.pipe';
 import { SituacaoPipe } from './shared/pipes/situacao.pipe';
 import { OrigemPipe } from './shared/pipes/origem.pipe';
+import { MAT_DIALOG_SCROLL_STRATEGY } from '@angular/material/dialog';
+import { ScrollStrategyOptions } from '@angular/cdk/overlay';
 
 registerLocaleData(localePt);
 
