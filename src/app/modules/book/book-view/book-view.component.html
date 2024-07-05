@@ -1,0 +1,77 @@
+<div class="div-barra">
+  <mat-toolbar>
+    <span class="example-spacer">Ativos Que Estão No Book</span>
+    <app-navegator [controle]="controlePaginas" (changePage)="onChangePage()"></app-navegator>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon"
+      (click)="getImoIvenContador()" matTooltip="Atualizar" matTooltipPosition="above">
+      <mat-icon>rotate_right</mat-icon>
+    </button>
+    <button mat-icon-button aria-label="Example icon-button with share icon " matTooltipPosition="above"
+      (click)="onSaveConfig()" matTooltip="Salvar Parâmetros" matTooltipPosition="above">
+      <mat-icon>brightness_high</mat-icon>
+    </button>
+    <button mat-icon-button aria-label="Example icon-button with share icon " matTooltipPosition="above"
+      (click)="onHome()" matTooltip="Retorno" matTooltipPosition="above">
+      <mat-icon>home</mat-icon>
+    </button>
+  </mat-toolbar>
+</div>
+<form [formGroup]="parametros" autocomplete="off">
+  <div class="col-med-5">
+    <mat-form-field field appearance="outline" class="col-max column-span-3">
+      <mat-label>Centros Custos</mat-label>
+      <mat-select formControlName="ccs" (selectionChange)="onChangeParametros()">
+        <mat-option *ngFor="let cc of ccs" [value]="cc.codigo">
+          {{cc.descricao}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field field appearance="outline" class="col-max">
+      <mat-label>Grupos</mat-label>
+      <mat-select formControlName="grupos" (selectionChange)="onChangeParametros()">
+        <mat-option *ngFor="let grupo of grupos" [value]="grupo.codigo">
+          {{grupo.descricao}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field field appearance="outline" class="col-max">
+      <mat-label>Situações</mat-label>
+      <mat-select formControlName="situacoes" (selectionChange)="onChangeParametros()">
+        <mat-option *ngFor="let situacao of situacoesInventario" [value]="situacao.id">
+          {{situacao.descricao}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="col-med-4">
+    <mat-form-field appearance="outline" class="col-max">
+      <mat-label>Código</mat-label>
+      <input matInput formControlName="codigo">
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="col-max">
+      <mat-label>Novo</mat-label>
+      <input matInput formControlName="novo">
+    </mat-form-field>
+    <mat-form-field field appearance="outline" class="col-max">
+      <mat-label>Condição</mat-label>
+      <mat-select formControlName="condicao" (selectionChange)="onChangeParametros()">
+        <mat-option *ngFor="let condicao of condicoes" [value]="condicao.idx">
+          {{condicao.descricao}}
+        </mat-option>
+      </mat-select>
+
+      <mat-form-field field appearance="outline" class="col-max">
+        <mat-label>Book</mat-label>
+        <mat-select formControlName="book" (selectionChange)="onChangeParametros()">
+          <mat-option *ngFor="let book of condicoes" [value]="condicao.idx">
+            {{condicao.descricao}}
+          </mat-option>
+        </mat-select>
+  </div>
+  <div class="col-med-1">
+    <mat-form-field appearance="outline" class="col-max">
+      <mat-label>Descrição</mat-label>
+      <input matInput formControlName="descricao">
+    </mat-form-field>
+  </div>
+</form>

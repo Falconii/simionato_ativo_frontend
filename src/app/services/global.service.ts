@@ -59,10 +59,11 @@ export class GlobalService {
 
   loadCondicoes() {
     this.lsCondicoes = [
-      new Condicoes(0, 'Não Classificado'),
+      new Condicoes(0, 'Todos'),
       new Condicoes(1, 'Bom'),
       new Condicoes(2, 'Regular'),
       new Condicoes(3, 'Ruim'),
+      new Condicoes(9, 'Não Classificado'),
     ];
   }
   loadSituacoesInventario() {

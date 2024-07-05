@@ -1,6 +1,3 @@
-import { AnexarProdutosModule } from './modules/anexar-produtos/anexar-produtos.module';
-import { ImobilizadoinventarioModel } from './models/imobilizadoinventario-model';
-import { ImoinventarioModule } from './modules/imoinventario/imoinventario.module';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
@@ -129,11 +126,9 @@ const routes: Routes = [
     canActivate: [],
   },
   {
-    path: 'monitoramento',
+    path: 'book',
     loadChildren: () =>
-      import('./modules/monitoramento/monitoramento.module').then(
-        (m) => m.MonitoramentoModule
-      ),
+      import('./modules/book/book.module').then((m) => m.BookModule),
     canActivate: [],
   },
   {

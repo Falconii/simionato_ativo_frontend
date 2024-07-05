@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { MonitoramentoRoutingModule } from './monitoramento-routing.module';
-import { ShowMonitoramentoComponent } from './show-monitoramento/show-monitoramento.component';
+import { BookRoutingModule } from './book-routing.module';
+import { BookViewComponent } from './book-view/book-view.component';
 import { MaterialModule } from 'src/app/material/material.module';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -10,10 +10,10 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { NgxMaskModule } from 'ngx-mask';
 
 @NgModule({
-  declarations: [ShowMonitoramentoComponent],
+  declarations: [BookViewComponent],
   imports: [
     CommonModule,
-    MonitoramentoRoutingModule,
+    BookRoutingModule,
     MaterialModule,
     ScrollingModule,
     FormsModule,
@@ -22,4 +22,4 @@ import { NgxMaskModule } from 'ngx-mask';
     NgxMaskModule.forChild(),
   ],
 })
-export class MonitoramentoModule {}
+export class BookModule {}

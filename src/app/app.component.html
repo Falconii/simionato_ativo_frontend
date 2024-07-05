@@ -37,9 +37,9 @@
         <button mat-menu-item routerLink="inventarios">Cad. Inventários</button>
         <button mat-menu-item routerLink="ambientes">Cad. Ambientes</button>
         <button mat-menu-item routerLink="anexar-produtos" *ngIf="getInventarioId() !== 0">Anexar Produtos</button>
-        <button mat-menu-item routerLink="imoinventarios" *ngIf="getInventarioId() !== 0">Inventário x
-          Imobilizado</button>
-        <button mat-menu-item routerLink="monitoramento" *ngIf="getInventarioId() !== 0">Monitoramento</button>
+        <button mat-menu-item routerLink="imoinventarios" *ngIf="getInventarioId() !== 0">Movimento De
+          Inventário</button>
+        <button mat-menu-item routerLink="book" *ngIf="getInventarioId() !== 0">Book</button>
         <button mat-menu-item routerLink="apontamentos" *ngIf="getInventarioId() !== 0">Apontamento</button>
       </mat-menu>
       <mat-menu #gerencial="matMenu">
