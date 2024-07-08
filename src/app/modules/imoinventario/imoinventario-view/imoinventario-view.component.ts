@@ -8,8 +8,10 @@ import { LancamentoService } from 'src/app/services/lancamento.service';
 import { AppSnackbar } from 'src/app/shared/classes/app-snackbar';
 import { CadastroAcoes } from 'src/app/shared/classes/cadastro-acoes';
 import { Condicoes } from 'src/app/shared/classes/condicoes';
+import { RetornoLancamento } from 'src/app/shared/classes/retorno-lancamento';
 import { SimNao } from 'src/app/shared/classes/sim-nao';
 import { SituacaoInventario } from 'src/app/shared/classes/situacao-inventario';
+import { messageError } from 'src/app/shared/classes/util';
 
 @Component({
   selector: 'app-imoinventario-view',
@@ -19,11 +21,11 @@ import { SituacaoInventario } from 'src/app/shared/classes/situacao-inventario';
 export class ImoinventarioViewComponent implements OnInit {
   @Input('lancamento') lancamento: LancamentoModel = new LancamentoModel();
   @Input('ccs') ccs: CentrocustoModel[] = [];
-  @Output('changePage') change = new EventEmitter();
+  @Input('idAcao') idAcao: number = 0;
+  @Output('submmit') submmit = new EventEmitter<RetornoLancamento>();
 
   inscricaoAcao!: Subscription;
   formulario: FormGroup;
-  idAcao: number = 0;
   acao: string = '';
   labelCadastro: string = '';
   readOnly: boolean = false;
@@ -73,7 +75,6 @@ export class ImoinventarioViewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.idAcao = CadastroAcoes.Consulta;
     this.setAcao(this.idAcao);
     this.setValue();
   }
@@ -82,7 +83,7 @@ export class ImoinventarioViewComponent implements OnInit {
     this.inscricaoAcao?.unsubscribe();
   }
 
-  actionFunction() {
+  onSubmit() {
     if (this.formulario.valid || this.idAcao == CadastroAcoes.Exclusao) {
       this.executaAcao();
     } else {
@@ -134,103 +135,104 @@ export class ImoinventarioViewComponent implements OnInit {
   }
 
   executaAcao() {
-    /*
-      this.data.processar = true;
+    this.lancamento.new_codigo = this.formulario.value.novo_codigo;
+    this.lancamento.new_cc = this.formulario.value.cc_novo;
+    this.lancamento.obs = this.formulario.value.obs;
 
-      this.data.lancamento.new_codigo = this.formulario.value.novo_codigo;
-      this.data.lancamento.new_cc = this.formulario.value.cc_novo;
-      this.data.lancamento.obs = this.formulario.value.obs;
-      /*
-      if (this.formulario.value.situacao !== 5) {
-        if (
-          this.data.lancamento.new_codigo != 0 &&
-          this.data.lancamento.id_imobilizado !=
-            this.data.lancamento.new_codigo &&
-          this.data.lancamento.new_cc.trim() != '' &&
-          this.data.lancamento.imo_cod_cc != this.data.lancamento.new_cc
-        ) {
-          this.data.lancamento.estado = 4;
-        } else {
-          this.data.lancamento.estado = 1;
-          if (
-            this.data.lancamento.new_codigo != 0 &&
-            this.data.lancamento.id_imobilizado != this.data.lancamento.new_codigo
-          ) {
-            this.data.lancamento.estado = 2;
-          }
-          if (
-            this.data.lancamento.new_cc.trim() != '' &&
-            this.data.lancamento.imo_cod_cc != this.data.lancamento.new_cc
-          ) {
-            this.data.lancamento.estado = 3;
-          }
-        }
+    if (this.formulario.value.situacao !== 5) {
+      if (
+        this.lancamento.new_codigo != 0 &&
+        this.lancamento.id_imobilizado != this.lancamento.new_codigo &&
+        this.lancamento.new_cc.trim() != '' &&
+        this.lancamento.imo_cod_cc != this.lancamento.new_cc
+      ) {
+        this.lancamento.estado = 4;
       } else {
-        this.data.lancamento.estado = 5;
+        this.lancamento.estado = 1;
+        if (
+          this.lancamento.new_codigo != 0 &&
+          this.lancamento.id_imobilizado != this.lancamento.new_codigo
+        ) {
+          this.lancamento.estado = 2;
+        }
+        if (
+          this.lancamento.new_cc.trim() != '' &&
+          this.lancamento.imo_cod_cc != this.lancamento.new_cc
+        ) {
+          this.lancamento.estado = 3;
+        }
       }
+    } else {
+      this.lancamento.estado = 5;
+    }
 
-      switch (+this.idAcao) {
-        case CadastroAcoes.Inclusao:
-          this.data.lancamento.user_insert = this.globalService.getUsuario().id;
-          this.inscricaoAcao = this.lancamentoService
-            .lancamentoInsert(this.data.lancamento)
-            .subscribe(
-              async (data: LancamentoModel) => {
-                this.closeModal();
-              },
-              (error: any) => {
-                this.gravando = false;
-                console.log('Error', error.error);
-                this.appSnackBar.openFailureSnackBar(
-                  ` Falha Na Inclusão ${messageError(error)}`,
-                  'OK'
-                );
-              }
-            );
-          break;
-        case CadastroAcoes.Edicao:
-          this.data.lancamento.user_update = this.globalService.getUsuario().id;
-          this.inscricaoAcao = this.lancamentoService
-            .lancamentoUpdate(this.data.lancamento)
-            .subscribe(
-              async (data: LancamentoModel) => {
-                this.closeModal();
-              },
-              (error: any) => {
-                this.gravando = false;
-                console.log('Error', error.error);
-                this.appSnackBar.openFailureSnackBar(
-                  ` ${messageError(error)}`,
-                  'OK'
-                );
-              }
-            );
-          break;
-        case CadastroAcoes.Exclusao:
-          this.inscricaoAcao = this.lancamentoService
-            .lancamentoDelete(
-              this.data.lancamento.id_empresa,
-              this.data.lancamento.id_filial,
-              this.data.lancamento.id_inventario,
-              this.data.lancamento.id_imobilizado
-            )
-            .subscribe(
-              async (data: any) => {
-                this.closeModal();
-              },
-              (error: any) => {
-                this.gravando = false;
-                this.appSnackBar.openFailureSnackBar(
-                  `Erro Na Exclusao ${messageError(error)}`,
-                  'OK'
-                );
-              }
-            );
-          break;
-        default:
-          break;
-      }
-          */
+    switch (+this.idAcao) {
+      case CadastroAcoes.Inclusao:
+        this.globalService.setSpin(true);
+        this.lancamento.user_insert = this.globalService.getUsuario().id;
+        this.inscricaoAcao = this.lancamentoService
+          .lancamentoInsert(this.lancamento)
+          .subscribe(
+            async (data: LancamentoModel) => {
+              this.globalService.setSpin(false);
+              this.onRetorno(this.idAcao);
+            },
+            (error: any) => {
+              this.gravando = false;
+              console.log('Error', error.error);
+              this.appSnackBar.openFailureSnackBar(
+                ` Falha Na Inclusão ${messageError(error)}`,
+                'OK'
+              );
+            }
+          );
+        break;
+      case CadastroAcoes.Edicao:
+        this.lancamento.user_update = this.globalService.getUsuario().id;
+        this.globalService.setSpin(true);
+        this.inscricaoAcao = this.lancamentoService
+          .lancamentoUpdate(this.lancamento)
+          .subscribe(
+            async (data: LancamentoModel) => {
+              this.globalService.setSpin(false);
+              this.onRetorno(this.idAcao);
+            },
+            (error: any) => {
+              this.gravando = false;
+              console.log('Error', error.error);
+              this.appSnackBar.openFailureSnackBar(
+                ` ${messageError(error)}`,
+                'OK'
+              );
+            }
+          );
+        break;
+      case CadastroAcoes.Exclusao:
+        this.globalService.setSpin(true);
+        this.inscricaoAcao = this.lancamentoService
+          .lancamentoDelete(
+            this.lancamento.id_empresa,
+            this.lancamento.id_filial,
+            this.lancamento.id_inventario,
+            this.lancamento.id_imobilizado
+          )
+          .subscribe(
+            async (data: any) => {
+              this.globalService.setSpin(false);
+              this.onRetorno(this.idAcao);
+            },
+            (error: any) => {
+              this.gravando = false;
+              this.appSnackBar.openFailureSnackBar(
+                `Erro Na Exclusao ${messageError(error)}`,
+                'OK'
+              );
+            }
+          );
+        break;
+      default:
+        break;
+    }
   }
 
   getLabelCancel() {
@@ -287,5 +289,19 @@ export class ImoinventarioViewComponent implements OnInit {
 
   getMensafield(field: string): string {
     return this.formulario.get(field)?.errors?.message;
+  }
+
+  onRetorno(op: number) {
+    const retorno: RetornoLancamento = new RetornoLancamento();
+    retorno.opcao = op;
+    retorno.lancamento = this.lancamento;
+    this.submmit.emit(retorno);
+  }
+
+  onCancelar() {
+    const retorno: RetornoLancamento = new RetornoLancamento();
+    retorno.opcao = CadastroAcoes.None;
+    retorno.lancamento = new LancamentoModel();
+    this.submmit.emit(retorno);
   }
 }
