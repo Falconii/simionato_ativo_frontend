@@ -12,7 +12,7 @@ export class LancamentoModel {
   public estado: number = 0;
   public new_codigo: number = 0;
   public new_cc: string = '';
-  public condicao: number = 0;
+  public condicao: number = 9;
   public book: string = 'N';
   public user_insert: number = 0;
   public user_update: number = 0;

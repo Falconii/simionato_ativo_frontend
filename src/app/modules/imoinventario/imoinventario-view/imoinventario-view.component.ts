@@ -36,6 +36,7 @@ export class ImoinventarioViewComponent implements OnInit {
     .getSituacoesInventario()
     .filter((sit) => sit.id >= 0);
 
+  ccs_alterados: CentrocustoModel[] = [];
   lsCondicoes: Condicoes[] = [];
   respostas: SimNao[] = [];
 
@@ -71,10 +72,17 @@ export class ImoinventarioViewComponent implements OnInit {
     nao.descricao = 'NÃO';
     this.respostas.push(sim);
     this.respostas.push(nao);
-    this.lsCondicoes = globalService.getCondicoes();
+    globalService.getCondicoes().forEach((obj) => {
+      if (obj.idx > 0) {
+        let cond: Condicoes = new Condicoes(obj.idx, obj.descricao);
+        this.lsCondicoes.push(cond);
+      }
+    });
   }
 
   ngOnInit(): void {
+    this.ccs_alterados = [...this.ccs];
+    this.ccs_alterados[0].descricao = 'Centro Custo Não Alterado!';
     this.setAcao(this.idAcao);
     this.setValue();
   }
@@ -137,6 +145,8 @@ export class ImoinventarioViewComponent implements OnInit {
   executaAcao() {
     this.lancamento.new_codigo = this.formulario.value.novo_codigo;
     this.lancamento.new_cc = this.formulario.value.cc_novo;
+    this.lancamento.condicao = this.formulario.value.condicao;
+    this.lancamento.book = this.formulario.value.book;
     this.lancamento.obs = this.formulario.value.obs;
 
     if (this.formulario.value.situacao !== 5) {
@@ -179,7 +189,7 @@ export class ImoinventarioViewComponent implements OnInit {
             },
             (error: any) => {
               this.gravando = false;
-              console.log('Error', error.error);
+              console.log('Error', error);
               this.appSnackBar.openFailureSnackBar(
                 ` Falha Na Inclusão ${messageError(error)}`,
                 'OK'
@@ -247,6 +257,9 @@ export class ImoinventarioViewComponent implements OnInit {
     const idx = this.ccs.findIndex((cc) => {
       return cc.codigo.trim() == this.lancamento.imo_cod_cc.trim();
     });
+    const idx2 = this.lsCondicoes.findIndex((cond) => {
+      return cond.idx == this.lancamento.condicao;
+    });
     this.formulario.setValue({
       usuario: this.lancamento.usu_razao, //this.data.lancamento.id_usuario,
       nlanc: this.lancamento.id_lanca,
@@ -265,7 +278,7 @@ export class ImoinventarioViewComponent implements OnInit {
       condicao_:
         this.idAcao == CadastroAcoes.Consulta ||
         this.idAcao == CadastroAcoes.Exclusao
-          ? this.lsCondicoes[this.lancamento.condicao].descricao
+          ? this.lsCondicoes[idx2].descricao
           : '',
       book: this.lancamento.book,
       book_:

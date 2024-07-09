@@ -9,7 +9,7 @@ export class ImobilizadoModel {
   public serie: string = '';
   public item: string = '';
   public origem: string = '';
-  public condicao: number = 0;
+  public condicao: number = 9;
   public apelido: string = '';
   public user_insert: number = 0;
   public user_update: number = 0;

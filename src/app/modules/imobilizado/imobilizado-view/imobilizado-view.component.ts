@@ -79,8 +79,12 @@ export class ImobilizadoViewComponent implements OnInit {
       this.idAcao = params.acao;
       this.setAcao(params.acao);
     });
-    this.lsCondicoes = globalService.getCondicoes();
-    console.log('lsCondicoes', this.lsCondicoes);
+    globalService.getCondicoes().forEach((obj) => {
+      if (obj.idx > 0) {
+        let cond: Condicoes = new Condicoes(obj.idx, obj.descricao);
+        this.lsCondicoes.push(cond);
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -243,6 +247,12 @@ export class ImobilizadoViewComponent implements OnInit {
   }
 
   setValue() {
+    let idx2 = this.lsCondicoes.findIndex((cond) => {
+      return cond.idx == this.imobilizado.condicao;
+    });
+    if (idx2 == -1) {
+      idx2 = this.lsCondicoes.length - 1;
+    }
     this.formulario.setValue({
       codigo: this.imobilizado.codigo,
       descricao: this.imobilizado.descricao,
@@ -262,7 +272,7 @@ export class ImobilizadoViewComponent implements OnInit {
       condicao_:
         this.idAcao == CadastroAcoes.Consulta ||
         this.idAcao == CadastroAcoes.Exclusao
-          ? this.lsCondicoes[this.imobilizado.condicao].descricao
+          ? this.lsCondicoes[idx2].descricao
           : '',
       apelido: this.imobilizado.apelido,
     });

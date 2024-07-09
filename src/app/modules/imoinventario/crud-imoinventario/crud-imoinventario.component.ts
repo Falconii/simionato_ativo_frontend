@@ -66,6 +66,7 @@ export class CrudImoinventarioComponent implements OnInit {
   inscricaoValores!: Subscription;
 
   imoinv: ImobilizadoinventarioModel[] = [];
+  atual: ImobilizadoinventarioModel = new ImobilizadoinventarioModel();
 
   grupos: GrupoModel[] = [];
 
@@ -402,13 +403,14 @@ export class CrudImoinventarioComponent implements OnInit {
         (data: ImobilizadoinventarioModel[]) => {
           this.globalService.setSpin(false);
           this.imoinv = data;
-          const idx = this.imoinv.findIndex(
-            (inv) =>
-              inv.id_imobilizado ==
-              GetValueJsonNumber(this.parametro.getParametro(), 'id_retorno')
-          );
-          setTimeout(() => this.viewPort.scrollToIndex(idx), 10);
+          if (this.atual.id_imobilizado !== 0) {
+            const idx = this.imoinv.findIndex(
+              (inv) => inv.id_imobilizado == this.atual.id_imobilizado
+            );
+            setTimeout(() => this.viewPort.scrollToIndex(idx), 10);
+          }
           this.retorno = false;
+          this.atual = new ImobilizadoinventarioModel();
           let config = this.parametro.getParametro();
           Object(config).id_retorno = 0;
           Object(config).new = false;
@@ -599,6 +601,8 @@ export class CrudImoinventarioComponent implements OnInit {
       return;
     }
 
+    this.atual = imobilizado;
+
     if (imobilizado.id_lanca == 0) {
       this.lancamento = new LancamentoModel();
       this.lancamento.id_empresa = imobilizado.id_empresa;
@@ -631,20 +635,6 @@ export class CrudImoinventarioComponent implements OnInit {
 
   onHome() {
     this.router.navigate(['']);
-  }
-
-  onNovo() {
-    this.browse = !this.browse;
-    //this.openImobilizadoDialog();
-  }
-
-  setPosicaoInclusao() {
-    const config = this.parametro.getParametro();
-    Object(config).op_ordenacao = 0;
-    Object(config).op_pesquisar = 0;
-    Object(config).descricao = '';
-    Object(config).new = true;
-    this.parametro.setParametro(config);
   }
 
   onSaveConfig() {
@@ -864,10 +854,18 @@ export class CrudImoinventarioComponent implements OnInit {
   }
 
   onProcessar(retorno: RetornoLancamento) {
-    if ((retorno.opcao = CadastroAcoes.None)) {
+    if (retorno.opcao == CadastroAcoes.None) {
+      if (this.atual.id_imobilizado !== 0) {
+        const idx = this.imoinv.findIndex(
+          (inv) => inv.id_imobilizado == this.atual.id_imobilizado
+        );
+        setTimeout(() => this.viewPort.scrollToIndex(idx), 10);
+      }
+      this.atual = new ImobilizadoinventarioModel();
       this.browse = true;
     } else {
-      this.getImoIvenContador();
+      this.browse = true;
+      this.getImoIven();
     }
   }
 }
