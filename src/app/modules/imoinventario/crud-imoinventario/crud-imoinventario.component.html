@@ -19,10 +19,13 @@
       (click)="onHome()" matTooltip="Retorno" matTooltipPosition="above">
       <mat-icon>home</mat-icon>
     </button>
-
+    <button mat-raised-button color="primary" class="botao" (click)="onFiltro()">{{getLabelFiltro()}}</button>
   </mat-toolbar>
 </div>
-<form [formGroup]="parametros" autocomplete="off" *ngIf="browse">
+<!-- <div class="button-container-right" *ngIf="browse">
+  <button mat-raised-button color="primary" class="botao" (click)="onFiltro()">{{getLabelFiltro()}}</button>
+</div> -->
+<form [formGroup]="parametros" autocomplete="off" *ngIf="browse && showFiltro">
   <div class="col-med-2">
     <mat-form-field field appearance="outline" class="col-max">
       <mat-label>Centro Custo</mat-label>
@@ -55,6 +58,24 @@
       <mat-select formControlName="situacoes" (selectionChange)="onChangeParametros()">
         <mat-option *ngFor="let situacao of situacoesInventario" [value]="situacao.id">
           {{situacao.descricao}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="col-med-2">
+    <mat-form-field field appearance="outline" class="col-max">
+      <mat-label>Origem</mat-label>
+      <mat-select formControlName="origem" (selectionChange)="onChangeParametros()">
+        <mat-option *ngFor="let origem of Origens" [value]="origem.sigla">
+          {{origem.descricao}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field field appearance="outline" class="col-max">
+      <mat-label>Executores</mat-label>
+      <mat-select formControlName="executor" (selectionChange)="onChangeParametros()">
+        <mat-option *ngFor="let executor of executores" [value]="executor.id_usuario">
+          {{executor.razao}}
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -160,3 +181,6 @@
     </tr>
   </table>
 </cdk-virtual-scroll-viewport>
+<div class="rodape">
+  <h3></h3>
+</div>

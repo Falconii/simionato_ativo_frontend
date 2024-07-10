@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { CentrocustoModel } from 'src/app/models/centrocusto-model';
 import { LancamentoModel } from 'src/app/models/lancamento-model';
@@ -53,7 +53,7 @@ export class ImoinventarioViewComponent implements OnInit {
       situacao: [{ value: '' }],
       situacao_: [{ value: '' }],
       codigo: [{ value: '' }],
-      novo_codigo: [{ value: '' }],
+      novo_codigo: [{ value: '' }, [Validators.required, Validators.min(0)]],
       descricao: [{ value: '' }],
       cc_original: [{ value: '' }],
       cc_novo: [{ value: '' }],

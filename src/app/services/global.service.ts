@@ -13,6 +13,7 @@ import { LocalModel } from '../models/local-model';
 import { EstadoProduto } from '../shared/classes/estado-produto';
 import { SituacaoInventario } from '../shared/classes/situacao-inventario';
 import { Condicoes } from '../shared/classes/condicoes';
+import { Origem } from '../shared/classes/Origem';
 
 @Injectable({
   providedIn: 'root',
@@ -27,6 +28,7 @@ export class GlobalService {
   showSpin: boolean = false;
   estadoProduto: EstadoProduto[] = [];
   lsCondicoes: Condicoes[] = [];
+  lsOrigens: Origem[] = [];
 
   guadiaoMestre: GuardiaoMestre[] = [];
   guardiaoOpcoes: GuardiaoOpcoes[] = [];
@@ -55,6 +57,15 @@ export class GlobalService {
     this.loadGuardiaoMestre();
     this.loadGuardiaoOpcoes();
     this.loadCondicoes();
+    this.loadlOrigens();
+  }
+
+  loadlOrigens() {
+    this.lsOrigens = [new Origem('P', 'Planilha'), new Origem('M', 'Manual')];
+  }
+
+  getOrigens(): Origem[] {
+    return this.lsOrigens;
   }
 
   loadCondicoes() {

@@ -47,6 +47,10 @@ import { NfeService } from 'src/app/services/nfe.service';
 import { ValorService } from 'src/app/services/valor.service';
 import { SimNao } from 'src/app/shared/classes/sim-nao';
 import { Condicoes } from 'src/app/shared/classes/condicoes';
+import { Origem } from 'src/app/shared/classes/Origem';
+import { UsuarioModel } from 'src/app/models/usuario-model';
+import { ParametroLancamentoUsuario } from 'src/app/parametros/parametros-lancamento-usuarios';
+import { ResumoLancamentosUsuariosModel } from 'src/app/models/resumo-lancamentos-usuario-model';
 
 @Component({
   selector: 'app-crud-imoinventario',
@@ -64,6 +68,7 @@ export class CrudImoinventarioComponent implements OnInit {
   inscricaoParametro!: Subscription;
   inscricaoNfe!: Subscription;
   inscricaoValores!: Subscription;
+  inscricaoExecutores!: Subscription;
 
   imoinv: ImobilizadoinventarioModel[] = [];
   atual: ImobilizadoinventarioModel = new ImobilizadoinventarioModel();
@@ -95,6 +100,10 @@ export class CrudImoinventarioComponent implements OnInit {
 
   situacoesInventario: SituacaoInventario[] = [];
 
+  Origens: Origem[] = [];
+
+  usuarios: UsuarioModel[] = [];
+
   lancamento: LancamentoModel = new LancamentoModel();
 
   nfe: NfeModel = new NfeModel();
@@ -106,6 +115,10 @@ export class CrudImoinventarioComponent implements OnInit {
   browse: boolean = true;
 
   idAcao: CadastroAcoes = CadastroAcoes.Consulta;
+
+  showFiltro: boolean = true;
+
+  executores: ResumoLancamentosUsuariosModel[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -130,6 +143,8 @@ export class CrudImoinventarioComponent implements OnInit {
       cc_novo: [{ value: '' }],
       grupos: [{ value: '' }],
       situacoes: [{ value: '' }],
+      origem: [{ value: '' }],
+      executor: [{ value: '' }],
       codigo: [{ value: '' }],
       novo: [{ value: '' }],
       condicao: [{ value: '' }],
@@ -138,7 +153,7 @@ export class CrudImoinventarioComponent implements OnInit {
     });
     const semFiltro: SituacaoInventario = new SituacaoInventario();
     semFiltro.id = -1;
-    semFiltro.descricao = 'Todos';
+    semFiltro.descricao = 'Todas';
     this.situacoesInventario.push(semFiltro);
     this.situacoesInventario = [
       ...this.situacoesInventario,
@@ -158,6 +173,10 @@ export class CrudImoinventarioComponent implements OnInit {
     this.respostas.push(todos);
     this.respostas.push(sim);
     this.respostas.push(nao);
+
+    this.Origens.push(new Origem('', 'Todas'));
+    this.Origens = [...this.Origens, ...this.globalService.getOrigens()];
+    this.getExecutores();
     this.setValuesNoParam();
     this.getCentroCustos();
   }
@@ -175,6 +194,7 @@ export class CrudImoinventarioComponent implements OnInit {
     this.inscricaoParametro?.unsubscribe();
     this.inscricaoNfe?.unsubscribe();
     this.inscricaoValores?.unsubscribe();
+    this.inscricaoExecutores.unsubscribe();
   }
 
   getNfe(imobilizado: ImobilizadoinventarioModel) {
@@ -226,6 +246,35 @@ export class CrudImoinventarioComponent implements OnInit {
             `Pesquisa Nos Valores ${messageError(error)}`,
             'OK'
           );
+        }
+      );
+  }
+
+  getExecutores() {
+    let par = new ParametroLancamentoUsuario();
+
+    par.id_empresa = this.globalService.getEmpresa().id;
+    par.id_filial = this.globalService.getLocal().id;
+    par.id_inventario = this.globalService.getInventario().codigo;
+
+    this.globalService.setSpin(true);
+    this.inscricaoExecutores = this.lancamentoService
+      .resumolancamentos(par)
+      .subscribe(
+        (data: ResumoLancamentosUsuariosModel[]) => {
+          this.globalService.setSpin(false);
+          const semFiltro = new ResumoLancamentosUsuariosModel();
+          semFiltro.id_usuario = 0;
+          semFiltro.razao = 'Todos';
+          this.executores.push(semFiltro);
+          this.executores = [...this.executores, ...data];
+        },
+        (error: any) => {
+          this.globalService.setSpin(false);
+          const semFiltro = new ResumoLancamentosUsuariosModel();
+          semFiltro.id_usuario = 0;
+          semFiltro.razao = 'Todos';
+          this.executores.push(semFiltro);
         }
       );
   }
@@ -388,6 +437,18 @@ export class CrudImoinventarioComponent implements OnInit {
       par.descricao = this.parametros.value.descricao;
     }
 
+    key = parseInt(this.parametros.value.executor, 10);
+
+    if (isNaN(key)) {
+      par.id_usuario = 0;
+    } else {
+      par.id_usuario = key;
+    }
+
+    if (this.parametros.value.origem.trim() !== '') {
+      par.origem = this.parametros.value.origem;
+    }
+
     par.contador = 'N';
 
     par.tamPagina = this.tamPagina;
@@ -491,6 +552,22 @@ export class CrudImoinventarioComponent implements OnInit {
       par.descricao = this.parametros.value.descricao;
     }
 
+    if (this.parametros.value.descricao.trim() !== '') {
+      par.descricao = this.parametros.value.descricao;
+    }
+
+    key = parseInt(this.parametros.value.executor, 10);
+
+    if (isNaN(key)) {
+      par.id_usuario = 0;
+    } else {
+      par.id_usuario = key;
+    }
+
+    if (this.parametros.value.origem.trim() !== '') {
+      par.origem = this.parametros.value.origem;
+    }
+
     par.contador = 'S';
 
     par.tamPagina = this.tamPagina;
@@ -566,6 +643,8 @@ export class CrudImoinventarioComponent implements OnInit {
       situacoes: GetValueJsonString(this.parametro.getParametro(), 'situacao'),
       codigo: GetValueJsonNumber(this.parametro.getParametro(), 'codigo'),
       novo: GetValueJsonNumber(this.parametro.getParametro(), 'novo'),
+      origem: GetValueJsonString(this.parametro.getParametro(), 'origem'),
+      executor: GetValueJsonNumber(this.parametro.getParametro(), 'executor'),
       condicao: GetValueJsonNumber(this.parametro.getParametro(), 'condicao'),
       book: GetValueJsonString(this.parametro.getParametro(), 'book'),
       descricao: GetValueJsonString(this.parametro.getParametro(), 'descricao'),
@@ -580,6 +659,8 @@ export class CrudImoinventarioComponent implements OnInit {
       situacoes: 0,
       codigo: '',
       novo: '',
+      origem: '',
+      executor: 0,
       condicao: '0',
       book: '',
       descricao: '',
@@ -652,9 +733,11 @@ export class CrudImoinventarioComponent implements OnInit {
          "cc": "",
          "cc_novo":"",
          "grupo":0,
-         "situacao":0,
+         "situacao":-1,
          "codigo":0,
          "novo":0,
+         "origem":"",
+         "executor":0,
          "condicao":0,
          "book":"",
          "descricao": "",
@@ -737,6 +820,8 @@ export class CrudImoinventarioComponent implements OnInit {
     Object(config).situacao = this.parametros.value.situacoes;
     Object(config).codigo = this.parametros.value.codigo;
     Object(config).novo = this.parametros.value.novo;
+    Object(config).origem = this.parametros.value.origem;
+    Object(config).executor = this.parametros.value.executor;
     Object(config).condicao = this.parametros.value.condicao;
     Object(config).book = this.parametros.value.book;
     Object(config).descricao = this.parametros.value.descricao;
@@ -867,5 +952,13 @@ export class CrudImoinventarioComponent implements OnInit {
       this.browse = true;
       this.getImoIven();
     }
+  }
+
+  onFiltro() {
+    this.showFiltro = !this.showFiltro;
+  }
+
+  getLabelFiltro(): String {
+    return this.showFiltro ? 'Ocultar Filtro' : 'Mostra Filtro';
   }
 }

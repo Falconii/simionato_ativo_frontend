@@ -28,6 +28,10 @@ import { ImobilizadoinventarioModel } from 'src/app/models/imobilizadoinventario
 import { ParametroImobilizadoinventario01 } from 'src/app/parametros/parametro-imobilizadoinventario01';
 import { ImobilizadoinventarioService } from 'src/app/services/imobilizadoinventario.service';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { ParametroLancamentoUsuario } from 'src/app/parametros/parametros-lancamento-usuarios';
+import { LancamentoService } from 'src/app/services/lancamento.service';
+import { ResumoLancamentosUsuariosModel } from 'src/app/models/resumo-lancamentos-usuario-model';
+import { Origem } from 'src/app/shared/classes/Origem';
 
 @Component({
   selector: 'app-book-view',
@@ -68,6 +72,13 @@ export class BookViewComponent implements OnInit {
   inscricaoGetGrupo!: Subscription;
   inscricaoGetCc!: Subscription;
   inscricaoParametro!: Subscription;
+  inscricaoExecutores!: Subscription;
+
+  showFiltro: boolean = true;
+
+  executores: ResumoLancamentosUsuariosModel[] = [];
+
+  Origens: Origem[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -76,6 +87,7 @@ export class BookViewComponent implements OnInit {
     private centrocustoService: CentrocustoService,
     private parametrosService: ParametrosService,
     private imoInventarioService: ImobilizadoinventarioService,
+    private lancamentoService: LancamentoService,
     private router: Router,
     private appSnackBar: AppSnackbar,
     private route: ActivatedRoute
@@ -85,6 +97,8 @@ export class BookViewComponent implements OnInit {
       cc_novo: [{ value: '' }],
       grupos: [{ value: '' }],
       situacoes: [{ value: '' }],
+      origem: [{ value: '' }],
+      executor: [{ value: '' }],
       codigo: [{ value: '' }],
       novo: [{ value: '' }],
       condicao: [{ value: '' }],
@@ -94,7 +108,7 @@ export class BookViewComponent implements OnInit {
 
     const semFiltro: SituacaoInventario = new SituacaoInventario();
     semFiltro.id = -1;
-    semFiltro.descricao = 'Todos';
+    semFiltro.descricao = 'Todas';
     this.situacoesInventario.push(semFiltro);
     this.situacoesInventario = [
       ...this.situacoesInventario,
@@ -114,6 +128,9 @@ export class BookViewComponent implements OnInit {
     this.respostas.push(todos);
     this.respostas.push(sim);
     this.respostas.push(nao);
+    this.Origens.push(new Origem('', 'Todas'));
+    this.Origens = [...this.Origens, ...this.globalService.getOrigens()];
+    this.getExecutores();
     this.setValuesNoParam();
     this.getCentroCustos();
   }
@@ -125,6 +142,36 @@ export class BookViewComponent implements OnInit {
     this.inscricaoGetGrupo?.unsubscribe();
     this.inscricaoGetCc?.unsubscribe();
     this.inscricaoParametro?.unsubscribe();
+    this.inscricaoExecutores.unsubscribe();
+  }
+
+  getExecutores() {
+    let par = new ParametroLancamentoUsuario();
+
+    par.id_empresa = this.globalService.getEmpresa().id;
+    par.id_filial = this.globalService.getLocal().id;
+    par.id_inventario = this.globalService.getInventario().codigo;
+
+    this.globalService.setSpin(true);
+    this.inscricaoExecutores = this.lancamentoService
+      .resumolancamentos(par)
+      .subscribe(
+        (data: ResumoLancamentosUsuariosModel[]) => {
+          this.globalService.setSpin(false);
+          const semFiltro = new ResumoLancamentosUsuariosModel();
+          semFiltro.id_usuario = 0;
+          semFiltro.razao = 'Todos';
+          this.executores.push(semFiltro);
+          this.executores = [...this.executores, ...data];
+        },
+        (error: any) => {
+          this.globalService.setSpin(false);
+          const semFiltro = new ResumoLancamentosUsuariosModel();
+          semFiltro.id_usuario = 0;
+          semFiltro.razao = 'Todos';
+          this.executores.push(semFiltro);
+        }
+      );
   }
 
   getCentroCustos() {
@@ -285,6 +332,18 @@ export class BookViewComponent implements OnInit {
       par.descricao = this.parametros.value.descricao;
     }
 
+    key = parseInt(this.parametros.value.executor, 10);
+
+    if (isNaN(key)) {
+      par.id_usuario = 0;
+    } else {
+      par.id_usuario = key;
+    }
+
+    if (this.parametros.value.origem.trim() !== '') {
+      par.origem = this.parametros.value.origem;
+    }
+
     par.contador = 'N';
 
     par.tamPagina = this.tamPagina;
@@ -387,6 +446,18 @@ export class BookViewComponent implements OnInit {
       par.descricao = this.parametros.value.descricao;
     }
 
+    key = parseInt(this.parametros.value.executor, 10);
+
+    if (isNaN(key)) {
+      par.id_usuario = 0;
+    } else {
+      par.id_usuario = key;
+    }
+
+    if (this.parametros.value.origem.trim() !== '') {
+      par.origem = this.parametros.value.origem;
+    }
+
     par.contador = 'S';
 
     par.tamPagina = this.tamPagina;
@@ -438,6 +509,8 @@ export class BookViewComponent implements OnInit {
       situacoes: GetValueJsonString(this.parametro.getParametro(), 'situacao'),
       codigo: GetValueJsonNumber(this.parametro.getParametro(), 'codigo'),
       novo: GetValueJsonNumber(this.parametro.getParametro(), 'novo'),
+      origem: GetValueJsonString(this.parametro.getParametro(), 'origem'),
+      executor: GetValueJsonNumber(this.parametro.getParametro(), 'executor'),
       condicao: GetValueJsonNumber(this.parametro.getParametro(), 'condicao'),
       book: GetValueJsonString(this.parametro.getParametro(), 'book'),
       descricao: GetValueJsonString(this.parametro.getParametro(), 'descricao'),
@@ -452,6 +525,8 @@ export class BookViewComponent implements OnInit {
       situacoes: 0,
       codigo: '',
       novo: '',
+      origem: '',
+      executor: 0,
       condicao: '0',
       book: '',
       descricao: '',
@@ -477,7 +552,7 @@ export class BookViewComponent implements OnInit {
   loadParametros() {
     this.parametro = new ParametroModel();
     this.parametro.id_empresa = this.globalService.getIdEmpresa();
-    this.parametro.modulo = 'paramimoinv';
+    this.parametro.modulo = 'parambook';
     this.parametro.assinatura = 'V1.00 08/07/2024';
     this.parametro.id_usuario = this.globalService.usuario.id;
     this.parametro.parametro = `
@@ -485,18 +560,20 @@ export class BookViewComponent implements OnInit {
          "cc": "",
          "cc_novo":"",
          "grupo":0,
-         "situacao":0,
+         "situacao":-1,
          "codigo":0,
          "novo":0,
+         "origem":"",
+         "executor":0,
          "condicao":0,
-         "book":"",
+         "book":"S",
          "descricao": "",
          "page": 1,
          "new": false,
          "id_retorno":0
        }`;
-    if (this.retorno && this.globalService.estadoFind('paramimoinv') !== null) {
-      const par = this.globalService.estadoFind('imoinv');
+    if (this.retorno && this.globalService.estadoFind('parambook') !== null) {
+      const par = this.globalService.estadoFind('parambook');
       if (par != null) {
         if (GetValueJsonBoolean(par.getParametro(), 'new')) {
           let config = this.parametro.getParametro();
@@ -570,6 +647,8 @@ export class BookViewComponent implements OnInit {
     Object(config).situacao = this.parametros.value.situacoes;
     Object(config).codigo = this.parametros.value.codigo;
     Object(config).novo = this.parametros.value.novo;
+    Object(config).origem = this.parametros.value.origem;
+    Object(config).executor = this.parametros.value.executor;
     Object(config).condicao = this.parametros.value.condicao;
     Object(config).book = this.parametros.value.book;
     Object(config).descricao = this.parametros.value.descricao;
