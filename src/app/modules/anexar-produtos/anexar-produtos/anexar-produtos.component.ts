@@ -174,6 +174,7 @@ export class AnexarProdutosComponent implements OnInit {
           this.parametros.patchValue({
             inventario: this.inventario.codigo,
           });
+          this.inventario = this.inventarios[0];
         },
         (error: any) => {
           this.globalService.setSpin(false);
