@@ -755,7 +755,6 @@ export class CrudImoinventarioComponent implements OnInit {
             'id_retorno'
           );
           this.parametro.parametro = JSON.stringify(config);
-          //this.setPosicaoInclusao();
         } else {
           this.controlePaginas.setPaginaAtual(
             GetValueJsonNumber(par.getParametro(), 'page')

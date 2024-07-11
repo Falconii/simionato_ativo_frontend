@@ -102,7 +102,6 @@ export class BookViewComponent implements OnInit {
       codigo: [{ value: '' }],
       novo: [{ value: '' }],
       condicao: [{ value: '' }],
-      book: [{ value: '' }],
       descricao: [{ value: '' }],
     });
 
@@ -324,9 +323,7 @@ export class BookViewComponent implements OnInit {
       par.condicao = key;
     }
 
-    if (this.parametros.value.book.trim() !== '') {
-      par.book = this.parametros.value.book;
-    }
+    par.book = 'S';
 
     if (this.parametros.value.descricao.trim() !== '') {
       par.descricao = this.parametros.value.descricao;
@@ -438,9 +435,7 @@ export class BookViewComponent implements OnInit {
       par.condicao = key;
     }
 
-    if (this.parametros.value.book.trim() !== '') {
-      par.book = this.parametros.value.book;
-    }
+    par.book = 'S';
 
     if (this.parametros.value.descricao.trim() !== '') {
       par.descricao = this.parametros.value.descricao;
@@ -512,7 +507,6 @@ export class BookViewComponent implements OnInit {
       origem: GetValueJsonString(this.parametro.getParametro(), 'origem'),
       executor: GetValueJsonNumber(this.parametro.getParametro(), 'executor'),
       condicao: GetValueJsonNumber(this.parametro.getParametro(), 'condicao'),
-      book: GetValueJsonString(this.parametro.getParametro(), 'book'),
       descricao: GetValueJsonString(this.parametro.getParametro(), 'descricao'),
     });
   }
@@ -528,7 +522,6 @@ export class BookViewComponent implements OnInit {
       origem: '',
       executor: 0,
       condicao: '0',
-      book: '',
       descricao: '',
     });
   }
@@ -650,7 +643,7 @@ export class BookViewComponent implements OnInit {
     Object(config).origem = this.parametros.value.origem;
     Object(config).executor = this.parametros.value.executor;
     Object(config).condicao = this.parametros.value.condicao;
-    Object(config).book = this.parametros.value.book;
+    Object(config).book = 'S';
     Object(config).descricao = this.parametros.value.descricao;
     Object(config).page = 0;
     Object(config).new = false;
@@ -670,5 +663,13 @@ export class BookViewComponent implements OnInit {
           );
         }
       );
+  }
+
+  onFiltro() {
+    this.showFiltro = !this.showFiltro;
+  }
+
+  getLabelFiltro(): String {
+    return this.showFiltro ? 'Ocultar Filtro' : 'Mostra Filtro';
   }
 }

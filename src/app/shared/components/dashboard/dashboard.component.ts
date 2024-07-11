@@ -103,10 +103,7 @@ export class DashboardComponent implements OnInit {
         (error: any) => {
           this.globalService.setSpin(false);
           this.executores = [];
-          this.appSnackBar.openFailureSnackBar(
-            `Pesquisa Nos Apontamentos ${messageError(error)}`,
-            'OK'
-          );
+          this.getResumo();
         }
       );
   }
@@ -134,7 +131,9 @@ export class DashboardComponent implements OnInit {
           this.resumo.situacao_4 = data.situacao_4;
           this.resumo.situacao_5 = data.situacao_5;
           this.resumo.fotos = data.fotos;
-          this.Atualizar();
+          if (this.resumo.total_inventariados > 0) {
+            this.Atualizar();
+          }
         },
         (error: any) => {
           this.globalService.setSpin(false);
@@ -182,5 +181,11 @@ export class DashboardComponent implements OnInit {
       new google.visualization.PieChart(document.getElementById('chart_div'));
     var callBack = () => func(chart);
     google.charts.setOnLoadCallback(callBack);
+  }
+
+  getTextoAtivos(): String {
+    return this.resumo.total_ativos == 0
+      ? 'Nenhum Ativo Anexado Neste Invetário'
+      : `${this.resumo.total_inventariados}/${this.resumo.total_ativos}`;
   }
 }

@@ -175,8 +175,8 @@ export class CrudImobilizadoComponent implements OnInit {
           GetValueJsonNumber(this.parametro.getParametro(), 'op_pesquisar')
         ],
       filtro: GetValueJsonString(this.parametro.getParametro(), 'descricao'),
-      grupo: 1,
-      cc: 1,
+      grupo: 0,
+      cc: 0,
     });
   }
 
@@ -196,6 +196,9 @@ export class CrudImobilizadoComponent implements OnInit {
         (data: GrupoModel[]) => {
           this.globalService.setSpin(false);
           this.grupos = data;
+          this.parametros.patchValue({
+            grupo: this.grupos[0].codigo,
+          });
           this.getCentroCustos();
         },
         (error: any) => {
@@ -225,6 +228,9 @@ export class CrudImobilizadoComponent implements OnInit {
         (data: CentrocustoModel[]) => {
           this.globalService.setSpin(false);
           this.ccs = data;
+          this.parametros.patchValue({
+            cc: this.ccs[0].codigo,
+          });
           this.getImobilizadosContador();
         },
         (error: any) => {
@@ -302,7 +308,6 @@ export class CrudImobilizadoComponent implements OnInit {
       .getImobilizadosParametro_01(par)
       .subscribe(
         (data: ImobilizadoModel[]) => {
-          console.log(data);
           this.globalService.setSpin(false);
           this.imobilizados = [];
           this.imobilizados = data;
@@ -357,8 +362,9 @@ export class CrudImobilizadoComponent implements OnInit {
     if (this.parametros.value.campo == 'Grupo')
       par.grupo_cod = this.parametros.value.grupo;
 
-    if (this.parametros.value.campo == 'Centro Custo')
+    if (this.parametros.value.campo == 'Centro Custo') {
       par.cc_cod = this.parametros.value.cc;
+    }
 
     par.orderby = this.parametros.value.ordenacao;
 

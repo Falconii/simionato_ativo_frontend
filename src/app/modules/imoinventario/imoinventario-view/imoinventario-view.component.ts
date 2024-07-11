@@ -257,9 +257,12 @@ export class ImoinventarioViewComponent implements OnInit {
     const idx = this.ccs.findIndex((cc) => {
       return cc.codigo.trim() == this.lancamento.imo_cod_cc.trim();
     });
-    const idx2 = this.lsCondicoes.findIndex((cond) => {
+    let idx2 = this.lsCondicoes.findIndex((cond) => {
       return cond.idx == this.lancamento.condicao;
     });
+    if (idx == -1) {
+      idx2 = this.lsCondicoes.length - 1;
+    }
     this.formulario.setValue({
       usuario: this.lancamento.usu_razao, //this.data.lancamento.id_usuario,
       nlanc: this.lancamento.id_lanca,

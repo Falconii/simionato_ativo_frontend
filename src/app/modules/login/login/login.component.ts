@@ -82,13 +82,12 @@ export class LoginComponent implements OnInit {
       //Valores para desenvolvimento
       this.globalService.empresa.id = 1;
       this.globalService.usuario.id_empresa = 1;
-      this.globalService.usuario.id = 2;
-      this.globalService.usuario.senha = 'sabonete';
+      this.globalService.usuario.id = 0;
+      this.globalService.usuario.senha = '';
       this.globalService.padrao.id_empresa = 1;
-      this.globalService.padrao.id_usuario = 2;
+      this.globalService.padrao.id_usuario = 0;
       this.globalService.padrao.id_empresa_padrao = 1;
     }
-    console.log('getValoresIniciais', this.globalService.padrao);
   }
 
   getUsuario(id: number, password: string) {
