@@ -35,6 +35,7 @@ export class GlobalService {
   lsParametros: ParametroModel[] = [];
 
   situacoesInventario: SituacaoInventario[] = [];
+  situacoesInventarioPar: SituacaoInventario[] = [];
 
   shomMenuEmitter = new EventEmitter<boolean>();
   showSpinEmitter = new EventEmitter<boolean>();
@@ -53,6 +54,7 @@ export class GlobalService {
     this.padrao = new PadraoModel();
     this.logado = false;
     this.loadSituacoesInventario();
+    this.loadSituacoesInventarioPar();
     this.loadEstadoProduto();
     this.loadGuardiaoMestre();
     this.loadGuardiaoOpcoes();
@@ -77,6 +79,7 @@ export class GlobalService {
       new Condicoes(9, 'Não Classificado'),
     ];
   }
+
   loadSituacoesInventario() {
     this.situacoesInventario = [];
     let sit: SituacaoInventario = new SituacaoInventario();
@@ -108,10 +111,68 @@ export class GlobalService {
     sit.id = 5;
     sit.descricao = 'Inv. Não Encontrado';
     this.situacoesInventario.push(sit);
+
+    sit = new SituacaoInventario();
+    sit.id = 6;
+    sit.descricao = 'Inv. Baixado';
+    this.situacoesInventario.push(sit);
   }
 
   getSituacoesInventario(): SituacaoInventario[] {
     return this.situacoesInventario;
+  }
+
+  loadSituacoesInventarioPar() {
+    this.situacoesInventarioPar = [];
+    let sit: SituacaoInventario = new SituacaoInventario();
+
+    sit = new SituacaoInventario();
+    sit.id = -1;
+    sit.descricao = 'Todos Os Imobilizados';
+    this.situacoesInventarioPar.push(sit);
+
+    sit = new SituacaoInventario();
+    sit.id = 0;
+    sit.descricao = 'Não Inventariado';
+    this.situacoesInventarioPar.push(sit);
+
+    sit = new SituacaoInventario();
+    sit.id = 1;
+    sit.descricao = 'Inventariado Sem Troca De Código Ou CC';
+    this.situacoesInventarioPar.push(sit);
+
+    sit = new SituacaoInventario();
+    sit.id = 90;
+    sit.descricao = 'Todos Os Inventariados Sem restrição';
+    this.situacoesInventarioPar.push(sit);
+
+    sit = new SituacaoInventario();
+    sit.id = 2;
+    sit.descricao = 'Inv. Troca Código';
+    this.situacoesInventarioPar.push(sit);
+
+    sit = new SituacaoInventario();
+    sit.id = 3;
+    sit.descricao = 'Inv. Troca CC';
+    this.situacoesInventarioPar.push(sit);
+
+    sit = new SituacaoInventario();
+    sit.id = 4;
+    sit.descricao = 'Inv. Ambos Alterados';
+    this.situacoesInventarioPar.push(sit);
+
+    sit = new SituacaoInventario();
+    sit.id = 5;
+    sit.descricao = 'Inv. Não Encontrado';
+    this.situacoesInventarioPar.push(sit);
+
+    sit = new SituacaoInventario();
+    sit.id = 6;
+    sit.descricao = 'Inv. Baixado';
+    this.situacoesInventarioPar.push(sit);
+  }
+  getSituacoesInventarioPar(): SituacaoInventario[] {
+    return this.situacoesInventarioPar;
   }
 
   loadEstadoProduto() {

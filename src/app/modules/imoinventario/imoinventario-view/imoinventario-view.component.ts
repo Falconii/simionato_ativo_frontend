@@ -12,6 +12,8 @@ import { RetornoLancamento } from 'src/app/shared/classes/retorno-lancamento';
 import { SimNao } from 'src/app/shared/classes/sim-nao';
 import { SituacaoInventario } from 'src/app/shared/classes/situacao-inventario';
 import { messageError } from 'src/app/shared/classes/util';
+import { ValidatorCondicao } from 'src/app/shared/Validators/validador-condicao';
+import { ValidatorCC } from 'src/app/shared/Validators/validator-cc';
 
 @Component({
   selector: 'app-imoinventario-view',
@@ -56,9 +58,9 @@ export class ImoinventarioViewComponent implements OnInit {
       novo_codigo: [{ value: '' }, [Validators.required, Validators.min(0)]],
       descricao: [{ value: '' }],
       cc_original: [{ value: '' }],
-      cc_novo: [{ value: '' }],
+      cc_novo: [{ value: '' }, [Validators.required, ValidatorCC()]],
       cc_novo_: [{ value: '' }],
-      condicao: [{ value: '' }],
+      condicao: [{ value: '' }, [Validators.required, ValidatorCondicao()]],
       condicao_: [{ value: '' }],
       book: [{ value: '' }],
       book_: [{ value: '' }],

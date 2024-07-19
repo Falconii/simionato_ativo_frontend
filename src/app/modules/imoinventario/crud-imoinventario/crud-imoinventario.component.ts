@@ -100,6 +100,8 @@ export class CrudImoinventarioComponent implements OnInit {
 
   situacoesInventario: SituacaoInventario[] = [];
 
+  situacoesInventarioPar: SituacaoInventario[] = [];
+
   Origens: Origem[] = [];
 
   usuarios: UsuarioModel[] = [];
@@ -151,15 +153,9 @@ export class CrudImoinventarioComponent implements OnInit {
       book: [{ value: '' }],
       descricao: [{ value: '' }],
     });
-    const semFiltro: SituacaoInventario = new SituacaoInventario();
-    semFiltro.id = -1;
-    semFiltro.descricao = 'Todas';
-    this.situacoesInventario.push(semFiltro);
-    this.situacoesInventario = [
-      ...this.situacoesInventario,
-      ...this.globalService.getSituacoesInventario(),
-    ];
-
+    this.situacoesInventario = this.globalService.getSituacoesInventario();
+    this.situacoesInventarioPar =
+      this.globalService.getSituacoesInventarioPar();
     this.condicoes = this.globalService.getCondicoes();
     const todos: SimNao = new SimNao();
     todos.sigla = '';
@@ -656,7 +652,7 @@ export class CrudImoinventarioComponent implements OnInit {
       ccs: '',
       cc_novo: '',
       grupos: 0,
-      situacoes: 0,
+      situacoes: -1,
       codigo: '',
       novo: '',
       origem: '',
