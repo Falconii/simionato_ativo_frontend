@@ -43,7 +43,7 @@ export class KeysComponent implements OnInit {
     });
     this.parametro = new ParametroModel();
     this.parametro.id_empresa = this.globalService.getIdEmpresa();
-    this.parametro.modulo = 'key';
+    this.parametro.modulo = 'key-intelli';
     this.parametro.assinatura = 'googledrive';
     this.parametro.id_usuario = 999;
     this.parametro.parametro = '{}';
