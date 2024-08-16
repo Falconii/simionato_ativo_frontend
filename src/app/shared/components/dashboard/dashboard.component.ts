@@ -11,6 +11,8 @@ import { ResumoInventarioModel } from 'src/app/models/resumo-inventario-model';
 import { InventarioModel } from 'src/app/models/inventario-model';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 import { AmbienteModel } from 'src/app/models/ambiente-model';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { ListaMeses } from '../../classes/lista-meses';
 declare var google: any;
 
 @Component({
@@ -28,14 +30,28 @@ export class DashboardComponent implements OnInit {
   inventario: InventarioModel = new InventarioModel();
   ambiente: AmbienteModel = new AmbienteModel();
 
+  parametro: FormGroup;
+
+  anos: number[] = [2023, 2024, 2025, 2026, 2027];
+  hoje: Date = new Date();
+  ano: number = 0;
+  mes: number = 0;
+  mes_ext: string = '';
+  meses: ListaMeses = new ListaMeses();
+
   constructor(
     private globalService: GlobalService,
+    private formBuilder: FormBuilder,
     private lancamentoService: LancamentoService,
     private inventarioService: InventarioService,
     private usuarioService: UsuariosService,
     private appSnackBar: AppSnackbar
   ) {
     google.charts.load('current', { packages: ['corechart'] });
+    this.parametro = formBuilder.group({
+      ano: [{ value: '' }],
+      mes: [{ value: '' }],
+    });
   }
 
   ngOnInit(): void {
@@ -188,4 +204,6 @@ export class DashboardComponent implements OnInit {
       ? 'Nenhum Ativo Anexado Neste Invetário'
       : `${this.resumo.total_inventariados}/${this.resumo.total_ativos}`;
   }
+
+  onParametrosChange() {}
 }

@@ -43,7 +43,38 @@
             </table>
         </div>
     </div>
-</div>
-<div *ngIf="!(ambiente.id_retorno == 200)">
-    <h2>{{ambiente.mensa_retorno}}</h2>
-</div>
+    <div class="col-med-2">
+        <table class="table-main">
+            <tr>
+                <td class="table-main-col">
+                    <div class="box">
+                        <div class="parametros-apontamentos">
+                            <form [formGroup]="parametro" autocomplete="off">
+                                <div>
+                                    <mat-form-field field appearance="outline">
+                                        <mat-label>Ano</mat-label>
+                                        <mat-select formControlName="ano" (selectionChange)="onParametrosChange()">
+                                            <mat-option *ngFor="let ano of anos" [value]="ano">
+                                                {{ano}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field field appearance="outline">
+                                        <mat-label>Mês</mat-label>
+                                        <mat-select formControlName="mes" (selectionChange)="onParametrosChange()">
+                                            <mat-option *ngFor="let mes of meses.meses" [value]="mes.nro">
+                                                {{mes.nome}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div *ngIf="!(ambiente.id_retorno == 200)">
+                        <h2>{{ambiente.mensa_retorno}}</h2>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
