@@ -1,3 +1,4 @@
+import { ParametroLancamento02 } from './../../../parametros/parametro-lancamento02';
 import { InventarioService } from 'src/app/services/inventario.service';
 import { LancamentoService } from 'src/app/services/lancamento.service';
 import { GlobalService } from './../../../services/global.service';
@@ -13,6 +14,8 @@ import { UsuariosService } from 'src/app/services/usuarios.service';
 import { AmbienteModel } from 'src/app/models/ambiente-model';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ListaMeses } from '../../classes/lista-meses';
+import { EvolucaoModel } from 'src/app/models/evolucao-Model';
+
 declare var google: any;
 
 @Component({
@@ -24,6 +27,7 @@ export class DashboardComponent implements OnInit {
   inscricaoExecutores!: Subscription;
   inscricaoResumo!: Subscription;
   inscricaoAmbiente!: Subscription;
+  inscricaoEvolucoes!: Subscription;
 
   executores: ResumoLancamentosUsuariosModel[] = [];
   resumo: ResumoInventarioModel = new ResumoInventarioModel();
@@ -38,6 +42,8 @@ export class DashboardComponent implements OnInit {
   mes: number = 0;
   mes_ext: string = '';
   meses: ListaMeses = new ListaMeses();
+
+  evolucoes: EvolucaoModel[] = [];
 
   constructor(
     private globalService: GlobalService,
@@ -63,6 +69,7 @@ export class DashboardComponent implements OnInit {
     this.inscricaoExecutores?.unsubscribe();
     this.inscricaoResumo?.unsubscribe();
     this.inscricaoAmbiente?.unsubscribe();
+    this.inscricaoEvolucoes?.unsubscribe();
   }
 
   onAtualizar() {
@@ -148,7 +155,12 @@ export class DashboardComponent implements OnInit {
           this.resumo.situacao_5 = data.situacao_5;
           this.resumo.fotos = data.fotos;
           if (this.resumo.total_inventariados > 0) {
-            this.Atualizar();
+            let total_fotos: ResumoLancamentosUsuariosModel =
+              new ResumoLancamentosUsuariosModel();
+            total_fotos.razao = 'TOTAL DE FOTOS';
+            total_fotos.total = this.resumo.fotos;
+            this.executores.push(total_fotos);
+            this.getEvolucoes();
           }
         },
         (error: any) => {
@@ -162,9 +174,34 @@ export class DashboardComponent implements OnInit {
       );
   }
 
+  getEvolucoes() {
+    const par: ParametroLancamento02 = new ParametroLancamento02();
+    par.id_empresa = this.globalService.getEmpresa().id;
+    par.id_filial = this.globalService.getLocal().id;
+    par.id_inventario = this.globalService.getInventario().codigo;
+    par.pagina = 1;
+    par.tamPagina = 5;
+    this.globalService.setSpin(true);
+    this.inscricaoEvolucoes = this.lancamentoService.evolucoes(par).subscribe(
+      (data: EvolucaoModel[]) => {
+        this.globalService.setSpin(false);
+        this.evolucoes = data;
+        this.Atualizar();
+      },
+      (error: any) => {
+        this.globalService.setSpin(false);
+        this.resumo = new ResumoInventarioModel();
+        this.appSnackBar.openFailureSnackBar(
+          `Pesquisa Evoluções ${messageError(error)}`,
+          'OK'
+        );
+      }
+    );
+  }
   Atualizar() {
     if (this.globalService.logado) {
       this.buidChartExecutores();
+      this.buidChartEvolucao();
     }
   }
 
@@ -182,10 +219,6 @@ export class DashboardComponent implements OnInit {
         this.resumo.situacao_5;
       data.addRows([['Não Inventariado', this.resumo.situacao_0]]);
       data.addRows([['Inventariado', qtd_inventario]]);
-      // dados.forEach((exec) => {
-      //  data.addRows([[this.firstName.transform(exec.nome), exec.horas]]);
-      //   horas += exec.horas;
-      // });
       var options = {
         title: `SITUAÇÃO DO INVENTÁRIO `,
         width: 400,
@@ -195,6 +228,46 @@ export class DashboardComponent implements OnInit {
     };
     var chart = () =>
       new google.visualization.PieChart(document.getElementById('chart_div'));
+    var callBack = () => func(chart);
+    google.charts.setOnLoadCallback(callBack);
+  }
+
+  buidChartEvolucao() {
+    var func = (chart: any) => {
+      var horas: number = 0;
+      var dados = [];
+      dados.push(['Data', 'Apontamentos']);
+      for (let i = this.evolucoes.length - 1; i >= 0; i--) {
+        dados.push([
+          this.evolucoes[i].dtlanca.substring(0, 5),
+          Number(this.evolucoes[i].total),
+        ]);
+      }
+
+      /* dados.push(['19/08', Number(this.evolucoes[1].total)]);
+      dados.push(['16/08', 61]);
+      dados.push(['15/08', 43]);
+      dados.push(['14/08', 45]);
+      dados.push(['13/08', 22]); */
+      var data = google.visualization.arrayToDataTable(dados);
+      /* var data = google.visualization.arrayToDataTable([
+        ['Data', 'Apontamentos'],
+        ['19/08', 13],
+        ['16/08', 61],
+        ['15/08', 43],
+        ['14/08', 45],
+        ['13/08', 22],
+      ]); */
+
+      var options = {
+        title: 'Evolução Dos Apontamentos',
+        curveType: 'function',
+        legend: { position: 'bottom' },
+      };
+      chart().draw(data, options);
+    };
+    var chart = () =>
+      new google.visualization.LineChart(document.getElementById('chart_div2'));
     var callBack = () => func(chart);
     google.charts.setOnLoadCallback(callBack);
   }

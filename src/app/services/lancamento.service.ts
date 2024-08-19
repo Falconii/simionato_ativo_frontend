@@ -1,3 +1,4 @@
+import { ParametroLancamento02 } from './../parametros/parametro-lancamento02';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -5,8 +6,8 @@ import { environment } from 'src/environments/environment';
 import { LancamentoModel } from '../models/lancamento-model';
 import { ParametroLancamento01 } from '../parametros/parametro-lancamento01';
 import { ParametroLancamentoUsuario } from '../parametros/parametros-lancamento-usuarios';
-import { ResumoModel } from '../models/resumo-model';
 import { ResumoLancamentosUsuariosModel } from '../models/resumo-lancamentos-usuario-model';
+import { EvolucaoModel } from '../models/evolucao-Model';
 
 @Injectable({
   providedIn: 'root',
@@ -65,5 +66,9 @@ export class LancamentoService {
       `${this.apiURL}resumolancamentos`,
       params
     );
+  }
+
+  evolucoes(params: ParametroLancamento02): Observable<EvolucaoModel[]> {
+    return this.http.post<EvolucaoModel[]>(`${this.apiURL}evolucoes`, params);
   }
 }

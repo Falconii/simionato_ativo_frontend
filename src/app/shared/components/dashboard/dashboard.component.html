@@ -1,80 +1,75 @@
 <div *ngIf="ambiente.id_retorno == 200">
-    <div class="div-barra">
-        <mat-toolbar>
-            <span class="example-spacer">Inventario: {{resumo.descricao}}
+  <div class="div-barra">
+    <mat-toolbar>
+      <span class="example-spacer">Inventario: {{resumo.descricao}}
       </span>
-            <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon" matTooltip="Atualizar" matTooltipPosition="above" (click)="onAtualizar()">
+      <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon"
+        matTooltip="Atualizar" matTooltipPosition="above" (click)="onAtualizar()">
         <mat-icon>rotate_right</mat-icon>
       </button>
-        </mat-toolbar>
-    </div>
-    <h3> Responsável: {{resumo.responsavel}} Situação: {{resumo.situacao}}</h3>
-    <h3> Data Inicial: {{inventario.data_inicial}} Data Final: {{inventario.data_final}} Ativos: {{getTextoAtivos()}}
-    </h3>
-    <div class="col-med-2">
-        <div id="chart_div" class="col-max">
+    </mat-toolbar>
+  </div>
+  <h3> Responsável: {{resumo.responsavel}} Situação: {{resumo.situacao}}</h3>
+  <h3> Data Inicial: {{inventario.data_inicial}} Data Final: {{inventario.data_final}} Ativos: {{getTextoAtivos()}}
+  </h3>
+  <div class="col-med-2">
+    <div id="chart_div" class="col-max">
 
-        </div>
-        <div id="content" #content class="col-max box" *ngIf="executores.length > 0">
-            <h3 class="alinha_centro">EXECUTORES</h3>
-            <table class="Browse_Lanc">
-                <tr class="coluna-cabec">
-                    <th>CÓDIGO</th>
-                    <th>NOME</th>
-                    <th>ATIVOS</th>
-                </tr>
-                <tr *ngFor="let exec of executores">
-                    <td>
-                        <div class="alinha_direita">
-                            <mat-label class="Browse_Lanc_td">{{exec.id_usuario}}</mat-label>
-                        </div>
-                    </td>
-                    <td>
-                        <div>
-                            <mat-label class="Browse_Lanc_td">{{exec.razao}}</mat-label>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="alinha_direita">
-                            <mat-label class="Browse_Lanc_td_rigth">{{exec.total}}</mat-label>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-        </div>
     </div>
-    <div class="col-med-2">
-        <table class="table-main">
-            <tr>
-                <td class="table-main-col">
-                    <div class="box">
-                        <div class="parametros-apontamentos">
-                            <form [formGroup]="parametro" autocomplete="off">
-                                <div>
-                                    <mat-form-field field appearance="outline">
-                                        <mat-label>Ano</mat-label>
-                                        <mat-select formControlName="ano" (selectionChange)="onParametrosChange()">
-                                            <mat-option *ngFor="let ano of anos" [value]="ano">
-                                                {{ano}}
-                                            </mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
-                                    <mat-form-field field appearance="outline">
-                                        <mat-label>Mês</mat-label>
-                                        <mat-select formControlName="mes" (selectionChange)="onParametrosChange()">
-                                            <mat-option *ngFor="let mes of meses.meses" [value]="mes.nro">
-                                                {{mes.nome}}
-                                            </mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    <div *ngIf="!(ambiente.id_retorno == 200)">
-                        <h2>{{ambiente.mensa_retorno}}</h2>
-                    </div>
-                </td>
-            </tr>
-        </table>
+    <div id="content" #content class="col-max box" *ngIf="executores.length > 0">
+      <h3 class="alinha_centro">EXECUTORES</h3>
+      <table class="Browse_Lanc">
+        <tr class="coluna-cabec">
+          <th>CÓDIGO</th>
+          <th>NOME</th>
+          <th>ATIVOS</th>
+        </tr>
+        <tr *ngFor="let exec of executores">
+          <td>
+            <div class="alinha_direita">
+              <mat-label class="Browse_Lanc_td">{{exec.id_usuario | zerotospacepipe}}</mat-label>
+            </div>
+          </td>
+          <td>
+            <div>
+              <mat-label class="Browse_Lanc_td">{{exec.razao}}</mat-label>
+            </div>
+          </td>
+          <td>
+            <div class="alinha_direita">
+              <mat-label class="Browse_Lanc_td_rigth">{{exec.total}}</mat-label>
+            </div>
+          </td>
+        </tr>
+      </table>
     </div>
+  </div>
+  <div class="col-med-2">
+    <div class="box col-max">
+      <h3 class="alinha_centro">EVOLUÇÃO DOS APONTAMENTOS</h3>
+      <table class="Browse_Lanc" *ngIf="evolucoes.length > 0">
+        <tr class="coluna-cabec">
+          <th>DATA</th>
+          <th>APONTAMENTOS</th>
+        </tr>
+        <tr *ngFor="let evolucao of evolucoes">
+          <td>
+            <div class="alinha_centro">
+              <mat-label class="Browse_Lanc_td">{{evolucao.dtlanca}}</mat-label>
+            </div>
+          </td>
+          <td>
+            <div class="alinha_direita">
+              <mat-label class="Browse_Lanc_td">{{evolucao.total}}</mat-label>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="box col-max">
+      <div id="chart_div2" class="col-max">
+
+      </div>
+    </div>
+  </div>
+</div>
