@@ -2,7 +2,10 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { CentrocustoModel } from 'src/app/models/centrocusto-model';
+import { FotoModel } from 'src/app/models/foto-model';
 import { LancamentoModel } from 'src/app/models/lancamento-model';
+import { ParametroFoto01 } from 'src/app/parametros/parametro-foto01';
+import { FotoService } from 'src/app/services/foto.service';
 import { GlobalService } from 'src/app/services/global.service';
 import { LancamentoService } from 'src/app/services/lancamento.service';
 import { AppSnackbar } from 'src/app/shared/classes/app-snackbar';
@@ -27,6 +30,7 @@ export class ImoinventarioViewComponent implements OnInit {
   @Output('submmit') submmit = new EventEmitter<RetornoLancamento>();
 
   inscricaoAcao!: Subscription;
+  inscricaoFoto!: Subscription;
   formulario: FormGroup;
   acao: string = '';
   labelCadastro: string = '';
@@ -42,11 +46,16 @@ export class ImoinventarioViewComponent implements OnInit {
   lsCondicoes: Condicoes[] = [];
   respostas: SimNao[] = [];
 
+  fotos: FotoModel[] = [];
+
+  showFotos: Boolean = false;
+
   constructor(
     private formBuilder: FormBuilder,
     private globalService: GlobalService,
     private appSnackBar: AppSnackbar,
-    private lancamentoService: LancamentoService
+    private lancamentoService: LancamentoService,
+    private fotoService: FotoService
   ) {
     this.formulario = formBuilder.group({
       usuario: [{ value: '' }],
@@ -87,10 +96,14 @@ export class ImoinventarioViewComponent implements OnInit {
     this.ccs_alterados[0].descricao = 'Centro Custo Não Alterado!';
     this.setAcao(this.idAcao);
     this.setValue();
+    if (this.idAcao == CadastroAcoes.Consulta) {
+      this.getFotos();
+    }
   }
 
   ngOnDestroy(): void {
     this.inscricaoAcao?.unsubscribe();
+    this.inscricaoFoto?.unsubscribe();
   }
 
   onSubmit() {
@@ -107,6 +120,38 @@ export class ImoinventarioViewComponent implements OnInit {
 
   getAcoes() {
     return CadastroAcoes;
+  }
+
+  getFotos() {
+    let par = new ParametroFoto01();
+
+    par.id_empresa = this.lancamento.id_empresa;
+
+    par.id_local = this.lancamento.id_filial;
+
+    par.id_inventario = this.lancamento.id_inventario;
+
+    par.id_imobilizado = this.lancamento.id_imobilizado;
+
+    par.contador = 'N';
+
+    this.globalService.setSpin(true);
+
+    this.inscricaoFoto = this.fotoService.getFotosParametro_01(par).subscribe(
+      (data: FotoModel[]) => {
+        this.globalService.setSpin(false);
+        this.fotos = data;
+        console.log('Fotos', this.fotos);
+      },
+      (error: any) => {
+        this.globalService.setSpin(false);
+        this.fotos = [];
+        this.appSnackBar.openFailureSnackBar(
+          `Pesquisa Nas Fotos  ${messageError(error)}`,
+          'OK'
+        );
+      }
+    );
   }
 
   setAcao(op: number) {
@@ -321,5 +366,9 @@ export class ImoinventarioViewComponent implements OnInit {
     retorno.opcao = CadastroAcoes.None;
     retorno.lancamento = new LancamentoModel();
     this.submmit.emit(retorno);
+  }
+
+  onShowFoto() {
+    this.showFotos = !this.showFotos;
   }
 }
