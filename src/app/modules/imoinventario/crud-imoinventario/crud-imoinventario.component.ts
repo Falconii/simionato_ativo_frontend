@@ -616,7 +616,6 @@ export class CrudImoinventarioComponent implements OnInit {
         (data: any) => {
           this.globalService.setSpin(false);
           this.lancamento = data;
-          //this.openLancaDialog(opcao, imobilizado);
           this.idAcao = opcao;
           this.browse = false;
         },
@@ -675,6 +674,17 @@ export class CrudImoinventarioComponent implements OnInit {
 
     if (opcao == 94) {
       this.getValor(imobilizado);
+      return;
+    }
+
+    if (opcao == CadastroAcoes.Fotos) {
+      this.router.navigate([
+        'imoinventarios/imoinventariosfotos',
+        imobilizado.id_empresa,
+        imobilizado.id_filial,
+        imobilizado.id_inventario,
+        imobilizado.id_imobilizado,
+      ]);
       return;
     }
 

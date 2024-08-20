@@ -8,9 +8,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { NgxMaskModule } from 'ngx-mask';
 import { ImoinventarioViewComponent } from './imoinventario-view/imoinventario-view.component';
+import { ShowFotosComponent } from './show-fotos/show-fotos.component';
+import { NgImageSliderModule } from 'ng-image-slider';
 
 @NgModule({
-  declarations: [CrudImoinventarioComponent, ImoinventarioViewComponent],
+  declarations: [
+    CrudImoinventarioComponent,
+    ImoinventarioViewComponent,
+    ShowFotosComponent,
+  ],
   imports: [
     CommonModule,
     ImoinventarioRoutingModule,
@@ -20,6 +26,7 @@ import { ImoinventarioViewComponent } from './imoinventario-view/imoinventario-v
     ReactiveFormsModule,
     SharedModule,
     NgxMaskModule.forChild(),
+    NgImageSliderModule,
   ],
 })
 export class ImoinventarioModule {}

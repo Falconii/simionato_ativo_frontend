@@ -12,6 +12,7 @@ export class BarraAcoesComponent implements OnInit {
   @Input('VISUALIZAR_ESTRUTURA') visualizar: boolean = false;
   @Input('SUBCONTA') subconta: boolean = false;
   @Input('CONSULTAR') consulta: boolean = true;
+  @Input('FOTOS') fotos: boolean = true;
   @Input('ALTERAR') alterar: boolean = true;
   @Input('EXCLUIR') excluir: boolean = true;
   @Input('FINACEIRO') financeiro: boolean = false;

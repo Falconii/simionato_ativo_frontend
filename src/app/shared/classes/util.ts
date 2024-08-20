@@ -73,6 +73,7 @@ export class MensagensBotoes {
   static incluir: string = 'Novo Registro';
   static alterar: string = 'Alterar Registro';
   static consultar: string = 'Consultar registro';
+  static foto: string = 'Visualizar Fotos';
   static excluir: string = 'Excluir Registro';
   static tarefas_incluir = 'Manutenção Das Tarefas';
   static trabalhos_incluir = 'Manutenção Dos Trabalhos';
