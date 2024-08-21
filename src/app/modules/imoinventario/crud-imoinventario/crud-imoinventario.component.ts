@@ -152,6 +152,7 @@ export class CrudImoinventarioComponent implements OnInit {
       condicao: [{ value: '' }],
       book: [{ value: '' }],
       descricao: [{ value: '' }],
+      observacao: [{ value: '' }],
     });
     this.situacoesInventario = this.globalService.getSituacoesInventario();
     this.situacoesInventarioPar =
@@ -433,6 +434,10 @@ export class CrudImoinventarioComponent implements OnInit {
       par.descricao = this.parametros.value.descricao;
     }
 
+    if (this.parametros.value.observacao.trim() !== '') {
+      par.observacao = this.parametros.value.observacao;
+    }
+
     key = parseInt(this.parametros.value.executor, 10);
 
     if (isNaN(key)) {
@@ -552,6 +557,10 @@ export class CrudImoinventarioComponent implements OnInit {
       par.descricao = this.parametros.value.descricao;
     }
 
+    if (this.parametros.value.observacao.trim() !== '') {
+      par.observacao = this.parametros.value.observacao;
+    }
+
     key = parseInt(this.parametros.value.executor, 10);
 
     if (isNaN(key)) {
@@ -643,6 +652,10 @@ export class CrudImoinventarioComponent implements OnInit {
       condicao: GetValueJsonNumber(this.parametro.getParametro(), 'condicao'),
       book: GetValueJsonString(this.parametro.getParametro(), 'book'),
       descricao: GetValueJsonString(this.parametro.getParametro(), 'descricao'),
+      observacao: GetValueJsonString(
+        this.parametro.getParametro(),
+        'observacao'
+      ),
     });
   }
 
@@ -659,6 +672,7 @@ export class CrudImoinventarioComponent implements OnInit {
       condicao: '0',
       book: '',
       descricao: '',
+      observacao: '',
     });
   }
 
@@ -732,7 +746,7 @@ export class CrudImoinventarioComponent implements OnInit {
     this.parametro = new ParametroModel();
     this.parametro.id_empresa = this.globalService.getIdEmpresa();
     this.parametro.modulo = 'paramimoinv';
-    this.parametro.assinatura = 'V1.00 08/07/2024';
+    this.parametro.assinatura = 'V1.00 21/08/2024';
     this.parametro.id_usuario = this.globalService.usuario.id;
     this.parametro.parametro = `
        {
@@ -747,6 +761,7 @@ export class CrudImoinventarioComponent implements OnInit {
          "condicao":0,
          "book":"",
          "descricao": "",
+         "observacao": "",
          "page": 1,
          "new": false,
          "id_retorno":0

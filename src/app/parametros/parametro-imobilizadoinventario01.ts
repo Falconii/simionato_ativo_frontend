@@ -6,6 +6,7 @@ export class ParametroImobilizadoinventario01 {
   public id_cc: string = '';
   public id_grupo: number = 0;
   public descricao: string = '';
+  public observacao: string = '';
   public status: number = -1;
   public new_cc: string = '';
   public new_codigo: number = 0;
