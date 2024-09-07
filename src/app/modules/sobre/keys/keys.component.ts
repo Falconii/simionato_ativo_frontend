@@ -7,7 +7,7 @@ import { GlobalService } from 'src/app/services/global.service';
 import { AppSnackbar } from 'src/app/shared/classes/app-snackbar';
 import { CadastroAcoes } from 'src/app/shared/classes/cadastro-acoes';
 import { messageError } from 'src/app/shared/classes/util';
-import { ParametroService } from 'src/app/services/parametro.service';
+import { ParametrosService } from 'src/app/services/parametros.service';
 
 @Component({
   selector: 'app-keys',
@@ -33,7 +33,7 @@ export class KeysComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private parametroService: ParametroService,
+    private parametrosService: ParametrosService,
     private router: Router,
     private appSnackBar: AppSnackbar,
     private globalService: GlobalService
@@ -81,7 +81,7 @@ export class KeysComponent implements OnInit {
 
   getParametro() {
     this.globalService.setSpin(true);
-    this.inscricaoCrud = this.parametroService
+    this.inscricaoCrud = this.parametrosService
       .getParametro(
         this.parametro.id_empresa,
         this.parametro.modulo,
@@ -92,6 +92,7 @@ export class KeysComponent implements OnInit {
         (data: ParametroModel) => {
           this.globalService.setSpin(false);
           this.parametro = data;
+          console.log("parametro",data);
           this.setValue();
           this.idAcao = CadastroAcoes.Edicao;
           this.setAcao(this.idAcao);
@@ -161,8 +162,8 @@ export class KeysComponent implements OnInit {
       case CadastroAcoes.Inclusao:
         this.parametro.user_insert = this.globalService.getUsuario().id;
         this.globalService.setSpin(true);
-        this.inscricaoCrud = this.parametroService
-          .parametroInsert(this.parametro)
+        this.inscricaoCrud = this.parametrosService
+          .ParametroInsert(this.parametro)
           .subscribe(
             async (data: ParametroModel) => {
               this.globalService.setSpin(false);
@@ -184,8 +185,8 @@ export class KeysComponent implements OnInit {
       case CadastroAcoes.Edicao:
         this.globalService.setSpin(true);
         this.parametro.user_update = this.globalService.getUsuario().id;
-        this.inscricaoCrud = this.parametroService
-          .parametroUpdate(this.parametro)
+        this.inscricaoCrud = this.parametrosService
+          .ParametroUpdate(this.parametro)
           .subscribe(
             async (data: any) => {
               this.globalService.setSpin(false);
@@ -206,8 +207,8 @@ export class KeysComponent implements OnInit {
         break;
       case CadastroAcoes.Exclusao:
         this.globalService.setSpin(true);
-        this.inscricaoCrud = this.parametroService
-          .parametroDelete(
+        this.inscricaoCrud = this.parametrosService
+          .ParametroDelete(
             this.parametro.id_empresa,
             this.parametro.modulo,
             this.parametro.assinatura,
@@ -233,8 +234,8 @@ export class KeysComponent implements OnInit {
   }
 
   instalKey() {
-    this.inscricaoInstall = this.parametroService
-      .parametroInstallKey()
+    this.inscricaoInstall = this.parametrosService
+      .ParametroInstallKey()
       .subscribe(
         async (data: any) => {
           this.globalService.setSpin(false);

@@ -62,4 +62,8 @@ export class ParametrosService {
       `${this.apiURL}parametro/${id_empresa}/${modulo}/${assinatura}/${id_usuario}`
     );
   }
+
+  ParametroInstallKey(): Observable<any> {
+    return this.http.post<any>(`${this.apiURL}fotokey`, { chave: 'nada' });
+  }
 }

@@ -65,7 +65,7 @@ export class CrudValorComponent implements OnInit {
     private formBuilder: FormBuilder,
     private globalService: GlobalService,
     private valorService: ValorService,
-    private parametrosService: ParametrosService,
+    private parametroService: ParametrosService,
     private router: Router,
     private appSnackBar: AppSnackbar,
     private route: ActivatedRoute,
@@ -356,7 +356,7 @@ export class CrudValorComponent implements OnInit {
     par.assinatura = this.parametro.assinatura;
     par.id_usuario = this.parametro.id_usuario;
     par.orderby = 'Usuário';
-    this.inscricaoParametro = this.parametrosService
+    this.inscricaoParametro = this.parametroService
       .getParametrosParametro01(par)
       .subscribe(
         (data: ParametroModel[]) => {
@@ -403,7 +403,7 @@ export class CrudValorComponent implements OnInit {
     Object(config).page = 0;
     Object(config).new = false;
     this.parametro.parametro = JSON.stringify(config);
-    this.inscricaoParametro = this.parametrosService
+    this.inscricaoParametro = this.parametroService
       .ParametroAtualiza(this.parametro)
       .subscribe(
         (data: ParametroModel) => {
