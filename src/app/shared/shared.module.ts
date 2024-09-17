@@ -28,6 +28,8 @@ import { ValoresDialogComponent } from './valores-dialog/valores-dialog.componen
 import { OrigemPipe } from './pipes/origem.pipe';
 import { BarraAcoesAmbienteComponent } from './components/barra-acoes-ambiente/barra-acoes-ambiente.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { FiltroImoinventarioComponent } from './components/filtro-imoinventario/filtro-imoinventario.component';
+import { BrowserFotoComponent } from './components/browser-foto/browser-foto.component';
 @NgModule({
   declarations: [
     SimNaoPipe,
@@ -57,6 +59,8 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
     ValoresDialogComponent,
     BarraAcoesAmbienteComponent,
     DashboardComponent,
+    FiltroImoinventarioComponent,
+    BrowserFotoComponent
   ],
   imports: [CommonModule, MaterialModule, FormsModule, ReactiveFormsModule],
   exports: [
@@ -77,6 +81,8 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
     OrigemPipe,
     SetfocusDirective,
     DashboardComponent,
+    FiltroImoinventarioComponent,
+    BrowserFotoComponent
   ],
 })
 export class SharedModule {}

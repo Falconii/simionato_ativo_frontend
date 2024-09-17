@@ -11,6 +11,7 @@ import { LancamentoService } from 'src/app/services/lancamento.service';
 import { AppSnackbar } from 'src/app/shared/classes/app-snackbar';
 import { CadastroAcoes } from 'src/app/shared/classes/cadastro-acoes';
 import { Condicoes } from 'src/app/shared/classes/condicoes';
+import { FotosAtivo } from 'src/app/shared/classes/fotos-ativo';
 import { RetornoLancamento } from 'src/app/shared/classes/retorno-lancamento';
 import { SimNao } from 'src/app/shared/classes/sim-nao';
 import { SituacaoInventario } from 'src/app/shared/classes/situacao-inventario';
@@ -48,7 +49,6 @@ export class ImoinventarioViewComponent implements OnInit {
 
   fotos: FotoModel[] = [];
 
-  showFotos: Boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -354,6 +354,7 @@ export class ImoinventarioViewComponent implements OnInit {
     return this.formulario.get(field)?.errors?.message;
   }
 
+
   onRetorno(op: number) {
     const retorno: RetornoLancamento = new RetornoLancamento();
     retorno.opcao = op;
@@ -368,7 +369,38 @@ export class ImoinventarioViewComponent implements OnInit {
     this.submmit.emit(retorno);
   }
 
-  onShowFoto() {
-    this.showFotos = !this.showFotos;
+
+  getFotosAtivo():FotosAtivo[]{
+
+    let  result:FotosAtivo[] =  [];
+
+    let  idx:number = 1;
+
+    let ct:number = 0;
+
+    if (this.fotos.length == 0){
+      return result;
+    }
+
+    let tempo:FotosAtivo = new FotosAtivo(idx,[]);
+
+    if(this.fotos.length > 0) {
+
+      this.fotos.forEach(item => {
+
+        if (ct ==3){
+           result.push(tempo);
+           ct = 0;
+           idx++;
+           tempo = new FotosAtivo(idx,[]);
+        }
+        tempo.fotos.push(item);
+        ct++;
+      });
+      if (tempo.fotos.length > 0){
+        result.push(tempo);
+      }
+    }
+    return result;
   }
 }

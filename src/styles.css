@@ -237,6 +237,21 @@ body {
     padding: 4px;
 }
 
+.Browse_fotos {
+  margin-left: auto;
+  margin-right: auto;
+  overflow-y: auto;
+  width: auto;
+  height: auto;
+  padding: 4px;
+}
+
+.column_fotos {
+  width: 400px;
+  height: auto;
+  padding: 4px;
+}
+
 .coluna-cabec {
     height: 30px;
     font-size: medium;
@@ -288,4 +303,8 @@ body {
     margin-bottom: 20px;
     border: 2px solid black;
     box-shadow: 10px 10px 5px 6px gray;
+}
+
+.div-spin{
+  height: 2px;
 }

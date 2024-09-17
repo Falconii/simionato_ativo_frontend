@@ -115,10 +115,6 @@
         </mat-form-field>
       </div>
       <div class="button-container-right">
-        <button mat-raised-button color="secondary" (click)="onShowFoto()">
-          <mat-icon>remove_red_eye</mat-icon>
-          <span>Mostrar Fotos</span>
-        </button>
         <button mat-raised-button color="accent" (click)="onCancelar()">
           <mat-icon>cancel</mat-icon>
           <span>{{getLabelCancel()}}</span>
@@ -131,27 +127,6 @@
     </form>
   </div>
 </div>
-<div *ngIf="showFotos">
-  <table class="Browse_Lanc">
-    <tr class="coluna-cabec">
-      <th>FOTOS</th>
-    </tr>
-    <tr *ngFor="let foto of fotos">
-      <td>
-        <div class="alinha_centro">
-          <img src="https://drive.google.com/thumbnail?id={{foto.id_file.trim()}}&sz=w500">
-        </div>
-        <div class="alinha_centro">
-          <mat-label class="Browse_Lanc_td">Foto Em Destaque:{{foto.destaque}}</mat-label>
-        </div>
-        <div class="alinha_centro">
-          <mat-label class="Browse_Lanc_td">Responsável: {{foto.usu_razao}}</mat-label>
-        </div>
-        <div class="alinha_centro">
-          <mat-label class="Browse_Lanc_td">Obs:{{foto.obs}}</mat-label>
-        </div>
-      </td>
-    </tr>
-
-  </table>
+<div *ngIf="idAcao == 3 && fotos.length > 0" >
+  <app-browser-foto [FOTOS]="getFotosAtivo()"></app-browser-foto>
 </div>

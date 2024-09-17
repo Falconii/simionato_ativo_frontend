@@ -132,14 +132,19 @@ const routes: Routes = [
     canActivate: [],
   },
   {
-    path: 'apontamentos',
+    path: 'consulta_fotos',
     loadChildren: () =>
-      import('./modules/apontamento/apontamento.module').then(
-        (m) => m.ApontamentoModule
+      import('./modules/consulta-foto/consulta-foto.module').then(
+        (m) => m.ConsultaFotoModule
       ),
     canActivate: [],
   },
-
+  {
+    path: 'oauth2',
+    loadChildren: () =>
+      import('./modules/sobre/sobre.module').then((m) => m.SobreModule),
+    canActivate: [],
+  },
   {
     path: 'keys',
     loadChildren: () =>

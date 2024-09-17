@@ -217,12 +217,18 @@ export class DashboardComponent implements OnInit {
         this.resumo.situacao_3 +
         this.resumo.situacao_4 +
         this.resumo.situacao_5;
-      data.addRows([['Não Inventariado', this.resumo.situacao_0]]);
       data.addRows([['Inventariado', qtd_inventario]]);
+      data.addRows([['Não Inventariado', this.resumo.situacao_0]]);
       var options = {
         title: `SITUAÇÃO DO INVENTÁRIO `,
-        width: 400,
-        height: 300,
+        width: 450,
+        height: 350,
+        colors:["green","red"],
+        chartArea:{
+          width: '90%',
+          height: '90%'
+        },
+        is3D : true
       };
       chart().draw(data, options);
     };

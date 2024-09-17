@@ -2,6 +2,7 @@ export const environment = {
   production: false,
   ambiente: 'Desenvolvimento',
   apiURL: 'http://localhost:3000/api/',
+  apiOAuth2: 'http://localhost:3000/',
 };
 
 /* export const environment = {

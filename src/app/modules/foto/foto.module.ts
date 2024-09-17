@@ -9,7 +9,7 @@ import { FotoViewComponent } from './foto-view/foto-view.component';
 @NgModule({
   declarations: [
     CrudFotoComponent,
-    FotoViewComponent
+    FotoViewComponent,
   ],
   imports: [
     CommonModule,

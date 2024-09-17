@@ -1,10 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { KeysComponent } from './keys/keys.component';
+import { Googleoauth2Component } from './googleoauth2/googleoauth2.component';
+import { ParametrosComponent } from './parametros/parametros.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'keys', pathMatch: 'full' },
-  { path: 'keys', component: KeysComponent },
+  { path: '', redirectTo: 'oauth2', pathMatch: 'full' },
+  { path: 'oauth2', component: Googleoauth2Component },
 ];
 
 @NgModule({

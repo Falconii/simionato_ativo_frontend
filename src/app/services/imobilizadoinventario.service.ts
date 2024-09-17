@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { ImobilizadoinventarioModel } from '../models/imobilizadoinventario-model';
 import { ParametroImobilizadoinventario01 } from '../parametros/parametro-imobilizadoinventario01';
 import { ParametroAnexarProduto } from '../parametros/parametro-anexar-produto';
+import { ImobilizadoinventarioFotoModel } from '../models/ImobilizadoinventarioFotoModel';
 
 @Injectable({
   providedIn: 'root',
@@ -22,6 +23,14 @@ export class ImobilizadoinventarioService {
   ): Observable<ImobilizadoinventarioModel[]> {
     return this.http.post<ImobilizadoinventarioModel[]>(
       `${this.apiURL}imobilizadosinventarios`,
+      params
+    );
+  }
+  getImobilizadosinventariosFotos(
+    params: ParametroImobilizadoinventario01
+  ): Observable<ImobilizadoinventarioModel[]> {
+    return this.http.post<ImobilizadoinventarioModel[]>(
+      `${this.apiURL}imobilizadosinventariosfotos`,
       params
     );
   }
@@ -65,5 +74,9 @@ export class ImobilizadoinventarioService {
 
   anexarProdutoInventario(params: ParametroAnexarProduto): Observable<any> {
     return this.http.post<any>(`${this.apiURL}anexarprodutoinventario`, params);
+  }
+
+  getExcelv2(params: ParametroImobilizadoinventario01): Observable<any> {
+    return this.http.post<any>(`${this.apiURL}imobilizadosinventariosexcelv2`, params);
   }
 }

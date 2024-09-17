@@ -71,6 +71,7 @@ export class CrudImoinventarioComponent implements OnInit {
   inscricaoExecutores!: Subscription;
 
   imoinv: ImobilizadoinventarioModel[] = [];
+
   atual: ImobilizadoinventarioModel = new ImobilizadoinventarioModel();
 
   grupos: GrupoModel[] = [];
@@ -83,7 +84,7 @@ export class CrudImoinventarioComponent implements OnInit {
 
   respostas: SimNao[] = [];
 
-  parametros: FormGroup;
+  //parametros: FormGroup;
 
   erro: string = '';
 
@@ -140,41 +141,7 @@ export class CrudImoinventarioComponent implements OnInit {
     private NfeDialog: MatDialog,
     private valorDialog: MatDialog
   ) {
-    this.parametros = formBuilder.group({
-      ccs: [{ value: '' }],
-      cc_novo: [{ value: '' }],
-      grupos: [{ value: '' }],
-      situacoes: [{ value: '' }],
-      origem: [{ value: '' }],
-      executor: [{ value: '' }],
-      codigo: [{ value: '' }],
-      novo: [{ value: '' }],
-      condicao: [{ value: '' }],
-      book: [{ value: '' }],
-      descricao: [{ value: '' }],
-      observacao: [{ value: '' }],
-    });
-    this.situacoesInventario = this.globalService.getSituacoesInventario();
-    this.situacoesInventarioPar =
-      this.globalService.getSituacoesInventarioPar();
-    this.condicoes = this.globalService.getCondicoes();
-    const todos: SimNao = new SimNao();
-    todos.sigla = '';
-    todos.descricao = 'Todos';
-    const sim: SimNao = new SimNao();
-    sim.sigla = 'S';
-    sim.descricao = 'SIM';
-    const nao: SimNao = new SimNao();
-    nao.sigla = 'N';
-    nao.descricao = 'NÃO';
-    this.respostas.push(todos);
-    this.respostas.push(sim);
-    this.respostas.push(nao);
-
-    this.Origens.push(new Origem('', 'Todas'));
-    this.Origens = [...this.Origens, ...this.globalService.getOrigens()];
-    this.getExecutores();
-    this.setValuesNoParam();
+    //this.getExecutores();
     this.getCentroCustos();
   }
 
@@ -247,7 +214,7 @@ export class CrudImoinventarioComponent implements OnInit {
       );
   }
 
-  getExecutores() {
+ /*  getExecutores() {
     let par = new ParametroLancamentoUsuario();
 
     par.id_empresa = this.globalService.getEmpresa().id;
@@ -274,7 +241,7 @@ export class CrudImoinventarioComponent implements OnInit {
           this.executores.push(semFiltro);
         }
       );
-  }
+  } */
 
   getCentroCustos() {
     let par = new ParametroCentrocusto01();
@@ -356,12 +323,10 @@ export class CrudImoinventarioComponent implements OnInit {
           this.grupos = [];
           this.grupos.push(semFiltro);
           this.grupos = [...this.grupos, ...data];
-          this.loadParametros();
         },
         (error: any) => {
           this.globalService.setSpin(false);
           this.grupos = [];
-          this.setValues();
           this.appSnackBar.openFailureSnackBar(
             `Pesquisa Nos Grupos ${messageError(error)}`,
             'OK'
@@ -379,76 +344,7 @@ export class CrudImoinventarioComponent implements OnInit {
 
     par.id_inventario = this.globalService.getInventario().codigo;
 
-    if (this.parametros.value.cc !== '') {
-      par.id_cc = this.parametros.value.ccs;
-    }
-    if (this.parametros.value.cc_novo !== '') {
-      par.new_cc = this.parametros.value.cc_novo;
-    }
-
-    let key = parseInt(this.parametros.value.grupos, 10);
-
-    if (isNaN(key)) {
-      par.id_grupo = 0;
-    } else {
-      par.id_grupo = key;
-    }
-
-    key = parseInt(this.parametros.value.situacoes, 10);
-
-    if (isNaN(key)) {
-      par.status = 0;
-    } else {
-      par.status = key;
-    }
-
-    key = parseInt(this.parametros.value.codigo, 10);
-
-    if (isNaN(key)) {
-      par.id_imobilizado = 0;
-    } else {
-      par.id_imobilizado = key;
-    }
-
-    key = parseInt(this.parametros.value.novo, 10);
-
-    if (isNaN(key)) {
-      par.new_codigo = 0;
-    } else {
-      par.new_codigo = key;
-    }
-
-    key = parseInt(this.parametros.value.condicao, 10);
-
-    if (isNaN(key)) {
-      par.condicao = 0;
-    } else {
-      par.condicao = key;
-    }
-
-    if (this.parametros.value.book.trim() !== '') {
-      par.book = this.parametros.value.book;
-    }
-
-    if (this.parametros.value.descricao.trim() !== '') {
-      par.descricao = this.parametros.value.descricao;
-    }
-
-    if (this.parametros.value.observacao.trim() !== '') {
-      par.observacao = this.parametros.value.observacao;
-    }
-
-    key = parseInt(this.parametros.value.executor, 10);
-
-    if (isNaN(key)) {
-      par.id_usuario = 0;
-    } else {
-      par.id_usuario = key;
-    }
-
-    if (this.parametros.value.origem.trim() !== '') {
-      par.origem = this.parametros.value.origem;
-    }
+    par = this.atualizaParametro(par);
 
     par.contador = 'N';
 
@@ -498,80 +394,7 @@ export class CrudImoinventarioComponent implements OnInit {
 
     par.id_inventario = this.globalService.getInventario().codigo;
 
-    if (this.parametros.value.cc !== '') {
-      par.id_cc = this.parametros.value.ccs;
-    }
-    if (this.parametros.value.cc_novo !== '') {
-      par.new_cc = this.parametros.value.cc_novo;
-    }
-
-    let key = parseInt(this.parametros.value.grupos, 10);
-
-    if (isNaN(key)) {
-      par.id_grupo = 0;
-    } else {
-      par.id_grupo = key;
-    }
-
-    key = parseInt(this.parametros.value.situacoes, 10);
-
-    if (isNaN(key)) {
-      par.status = 0;
-    } else {
-      par.status = key;
-    }
-
-    key = parseInt(this.parametros.value.codigo, 10);
-
-    if (isNaN(key)) {
-      par.id_imobilizado = 0;
-    } else {
-      par.id_imobilizado = key;
-    }
-
-    key = parseInt(this.parametros.value.novo, 10);
-
-    if (isNaN(key)) {
-      par.new_codigo = 0;
-    } else {
-      par.new_codigo = key;
-    }
-
-    key = parseInt(this.parametros.value.condicao, 10);
-
-    if (isNaN(key)) {
-      par.condicao = 0;
-    } else {
-      par.condicao = key;
-    }
-
-    if (this.parametros.value.book.trim() !== '') {
-      par.book = this.parametros.value.book;
-    }
-
-    if (this.parametros.value.descricao.trim() !== '') {
-      par.descricao = this.parametros.value.descricao;
-    }
-
-    if (this.parametros.value.descricao.trim() !== '') {
-      par.descricao = this.parametros.value.descricao;
-    }
-
-    if (this.parametros.value.observacao.trim() !== '') {
-      par.observacao = this.parametros.value.observacao;
-    }
-
-    key = parseInt(this.parametros.value.executor, 10);
-
-    if (isNaN(key)) {
-      par.id_usuario = 0;
-    } else {
-      par.id_usuario = key;
-    }
-
-    if (this.parametros.value.origem.trim() !== '') {
-      par.origem = this.parametros.value.origem;
-    }
+    par = this.atualizaParametro(par);
 
     par.contador = 'S';
 
@@ -639,6 +462,11 @@ export class CrudImoinventarioComponent implements OnInit {
       );
   }
 
+  onChangeParametros(param:ParametroModel) {
+    this.parametro = param;
+    this.getImoIvenContador();
+  }
+/*
   setValues() {
     this.parametros.setValue({
       ccs: GetValueJsonString(this.parametro.getParametro(), 'cc'),
@@ -675,7 +503,7 @@ export class CrudImoinventarioComponent implements OnInit {
       observacao: '',
     });
   }
-
+ */
   getTexto() {
     return MensagensBotoes;
   }
@@ -730,15 +558,12 @@ export class CrudImoinventarioComponent implements OnInit {
     this.getImoIven();
   }
 
-  onChangeParametros() {
-    this.getImoIvenContador();
-  }
 
   onHome() {
     this.router.navigate(['']);
   }
 
-  onSaveConfig() {
+  /* onSaveConfig() {
     this.updateParametros();
   }
 
@@ -845,6 +670,7 @@ export class CrudImoinventarioComponent implements OnInit {
     Object(config).condicao = this.parametros.value.condicao;
     Object(config).book = this.parametros.value.book;
     Object(config).descricao = this.parametros.value.descricao;
+    Object(config).observacao = this.parametros.value.observacao;
     Object(config).page = 0;
     Object(config).new = false;
     this.parametro.parametro = JSON.stringify(config);
@@ -863,7 +689,7 @@ export class CrudImoinventarioComponent implements OnInit {
           );
         }
       );
-  }
+  } */
 
   openNfeDialog(): void {
     const data: NfeData = new NfeData();
@@ -908,11 +734,6 @@ export class CrudImoinventarioComponent implements OnInit {
     Object(config).new = false;
     Object(config).id_retorno = imobilizado.id_imobilizado;
     Object(config).page = this.controlePaginas.getPaginalAtual();
-    Object(config).cc = this.parametros.value.ccs;
-    Object(config).grupo = this.parametros.value.grupos;
-    Object(config).situacao = this.parametros.value.situacao;
-    Object(config).codigo = this.parametros.value.codigo;
-    Object(config).descricao = this.parametros.value.filtro;
     this.parametro.parametro = JSON.stringify(config);
     this.globalService.estadoSave(this.parametro);
     console.log(this.parametro);
@@ -978,7 +799,85 @@ export class CrudImoinventarioComponent implements OnInit {
     this.showFiltro = !this.showFiltro;
   }
 
-  getLabelFiltro(): String {
-    return this.showFiltro ? 'Ocultar Filtro' : 'Mostra Filtro';
+
+  atualizaParametro(par : ParametroImobilizadoinventario01 ) : ParametroImobilizadoinventario01{
+
+    let config = this.parametro.getParametro();
+
+    let key:number = 0;
+
+    if (Object(config).cc !== '') {
+      par.id_cc = Object(config).cc;
+    }
+    if (Object(config).cc_novo !== '') {
+      par.new_cc = Object(config).cc_novo;
+    }
+
+    key = parseInt(Object(config).id_grupo, 10);
+
+    if (isNaN(key)) {
+      par.id_grupo = 0;
+    } else {
+      par.id_grupo = key;
+    }
+
+    key = parseInt(Object(config).situacao, 10);
+
+    if (isNaN(key)) {
+      par.status = 0;
+    } else {
+      par.status = key;
+    }
+
+    key = parseInt(Object(config).codigo, 10);
+
+    if (isNaN(key)) {
+      par.id_imobilizado = 0;
+    } else {
+      par.id_imobilizado = key;
+    }
+
+    key = parseInt(Object(config).novo, 10);
+
+    if (isNaN(key)) {
+      par.new_codigo = 0;
+    } else {
+      par.new_codigo = key;
+    }
+
+    key = parseInt(Object(config).condicao, 10);
+
+    if (isNaN(key)) {
+      par.condicao = 0;
+    } else {
+      par.condicao = key;
+    }
+
+    if (Object(config).book.trim() !== '') {
+      par.book = Object(config).book;
+    }
+
+    if (Object(config).descricao.trim() !== '') {
+      par.descricao = Object(config).descricao;
+    }
+
+    if (Object(config).observacao.trim() !== '') {
+      par.observacao = Object(config).observacao;
+    }
+
+    key = parseInt(Object(config).executor, 10);
+
+    if (isNaN(key)) {
+      par.id_usuario = 0;
+    } else {
+      par.id_usuario = key;
+    }
+
+    if (Object(config).origem.trim() !== '') {
+      par.origem = Object(config).origem;
+    }
+
+    return par;
   }
+
 }

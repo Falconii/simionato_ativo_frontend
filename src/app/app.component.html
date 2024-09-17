@@ -40,7 +40,7 @@
         <button mat-menu-item routerLink="imoinventarios" *ngIf="getInventarioId() !== 0">Movimento De
           Inventário</button>
         <button mat-menu-item routerLink="book" *ngIf="getInventarioId() !== 0">Book</button>
-        <button mat-menu-item routerLink="apontamentos" *ngIf="getInventarioId() !== 0">Apontamento</button>
+        <button mat-menu-item routerLink="consulta_fotos" *ngIf="getInventarioId() !== 0">Consultar Fotos</button>
       </mat-menu>
       <mat-menu #gerencial="matMenu">
         <button mat-menu-item routerLink="ativar">Ativação Inventário</button>
@@ -50,6 +50,7 @@
       <mat-menu #sobre="matMenu">
         <button mat-menu-item routerLink="param">Parâmentos Do Sistema</button>
         <button mat-menu-item routerLink="keys">Chaves Do Google</button>
+        <button mat-menu-item routerLink="oauth2">Google OAuth2</button>
       </mat-menu>
     </span>
     <span class="example-spacer"></span>
@@ -60,7 +61,7 @@
     </button>
   </mat-toolbar>
 </div>
-<div>
+<div class="div-spin">
   <app-spins></app-spins>
 </div>
 <app-show-ativos></app-show-ativos>
