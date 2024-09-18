@@ -8,13 +8,11 @@ import { ParametroModel } from './../../../models/parametro-model';
 import { ImobilizadoinventarioModel } from './../../../models/imobilizadoinventario-model';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { CentrocustoModel } from 'src/app/models/centrocusto-model';
 import { GrupoModel } from 'src/app/models/grupo-model';
 import { ControlePaginas } from 'src/app/shared/classes/controle-paginas';
 import { GlobalService } from 'src/app/services/global.service';
-import { ParametrosService } from 'src/app/services/parametros.service';
 import { GrupoService } from 'src/app/services/grupo.service';
 import { CentrocustoService } from 'src/app/services/centrocusto.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -23,14 +21,10 @@ import { ImobilizadoinventarioService } from 'src/app/services/imobilizadoinvent
 import { ParametroGrupo01 } from 'src/app/parametros/parametro-grupo01';
 import {
   GetValueJsonBoolean,
-  GetValueJsonNumber,
-  GetValueJsonString,
-  GetValueJsonStringArray,
   MensagensBotoes,
   messageError,
 } from 'src/app/shared/classes/util';
 import { ParametroCentrocusto01 } from 'src/app/parametros/parametro-centrocusto01';
-import { ParametroParametro01 } from 'src/app/parametros/parametro-parametro01';
 import { ParametroImobilizadoinventario01 } from 'src/app/parametros/parametro-imobilizadoinventario01';
 import { LancamentoModel } from 'src/app/models/lancamento-model';
 import { LancaData } from 'src/app/shared/components/lanca-dialog/lanca-data';
@@ -49,8 +43,8 @@ import { SimNao } from 'src/app/shared/classes/sim-nao';
 import { Condicoes } from 'src/app/shared/classes/condicoes';
 import { Origem } from 'src/app/shared/classes/Origem';
 import { UsuarioModel } from 'src/app/models/usuario-model';
-import { ParametroLancamentoUsuario } from 'src/app/parametros/parametros-lancamento-usuarios';
 import { ResumoLancamentosUsuariosModel } from 'src/app/models/resumo-lancamentos-usuario-model';
+import { AtualizaParametroImobilizadoInventario01 } from 'src/app/shared/classes/atualiza-parametro-imobilizado-inventario01';
 
 @Component({
   selector: 'app-crud-imoinventario',
@@ -68,7 +62,6 @@ export class CrudImoinventarioComponent implements OnInit {
   inscricaoParametro!: Subscription;
   inscricaoNfe!: Subscription;
   inscricaoValores!: Subscription;
-  inscricaoExecutores!: Subscription;
 
   imoinv: ImobilizadoinventarioModel[] = [];
 
@@ -83,8 +76,6 @@ export class CrudImoinventarioComponent implements OnInit {
   condicoes: Condicoes[] = [];
 
   respostas: SimNao[] = [];
-
-  //parametros: FormGroup;
 
   erro: string = '';
 
@@ -124,10 +115,8 @@ export class CrudImoinventarioComponent implements OnInit {
   executores: ResumoLancamentosUsuariosModel[] = [];
 
   constructor(
-    private formBuilder: FormBuilder,
     private globalService: GlobalService,
     private imoInventarioService: ImobilizadoinventarioService,
-    private parametrosService: ParametrosService,
     private grupoService: GrupoService,
     private centrocustoService: CentrocustoService,
     private lancamentoService: LancamentoService,
@@ -141,7 +130,6 @@ export class CrudImoinventarioComponent implements OnInit {
     private NfeDialog: MatDialog,
     private valorDialog: MatDialog
   ) {
-    //this.getExecutores();
     this.getCentroCustos();
   }
 
@@ -158,7 +146,6 @@ export class CrudImoinventarioComponent implements OnInit {
     this.inscricaoParametro?.unsubscribe();
     this.inscricaoNfe?.unsubscribe();
     this.inscricaoValores?.unsubscribe();
-    this.inscricaoExecutores.unsubscribe();
   }
 
   getNfe(imobilizado: ImobilizadoinventarioModel) {
@@ -214,34 +201,6 @@ export class CrudImoinventarioComponent implements OnInit {
       );
   }
 
- /*  getExecutores() {
-    let par = new ParametroLancamentoUsuario();
-
-    par.id_empresa = this.globalService.getEmpresa().id;
-    par.id_filial = this.globalService.getLocal().id;
-    par.id_inventario = this.globalService.getInventario().codigo;
-
-    this.globalService.setSpin(true);
-    this.inscricaoExecutores = this.lancamentoService
-      .resumolancamentos(par)
-      .subscribe(
-        (data: ResumoLancamentosUsuariosModel[]) => {
-          this.globalService.setSpin(false);
-          const semFiltro = new ResumoLancamentosUsuariosModel();
-          semFiltro.id_usuario = 0;
-          semFiltro.razao = 'Todos';
-          this.executores.push(semFiltro);
-          this.executores = [...this.executores, ...data];
-        },
-        (error: any) => {
-          this.globalService.setSpin(false);
-          const semFiltro = new ResumoLancamentosUsuariosModel();
-          semFiltro.id_usuario = 0;
-          semFiltro.razao = 'Todos';
-          this.executores.push(semFiltro);
-        }
-      );
-  } */
 
   getCentroCustos() {
     let par = new ParametroCentrocusto01();
@@ -344,7 +303,7 @@ export class CrudImoinventarioComponent implements OnInit {
 
     par.id_inventario = this.globalService.getInventario().codigo;
 
-    par = this.atualizaParametro(par);
+    par = AtualizaParametroImobilizadoInventario01(par,this.parametro.getParametro());
 
     par.contador = 'N';
 
@@ -394,7 +353,7 @@ export class CrudImoinventarioComponent implements OnInit {
 
     par.id_inventario = this.globalService.getInventario().codigo;
 
-    par = this.atualizaParametro(par);
+    par =  AtualizaParametroImobilizadoInventario01(par,this.parametro.getParametro());
 
     par.contador = 'S';
 
@@ -421,16 +380,14 @@ export class CrudImoinventarioComponent implements OnInit {
               //'É inclusao ',
               this.controlePaginas.goLast();
             }
-          this.getImoIven();
+            if  (data.total > 0){
+              this.getImoIven();
+            }
         },
         (error: any) => {
           this.globalService.setSpin(false);
           this.imoinv = [];
           this.controlePaginas = new ControlePaginas(this.tamPagina, 1);
-          this.appSnackBar.openFailureSnackBar(
-            `Pesquisa Nos Produtos De Inventário ${messageError(error)}`,
-            'OK'
-          );
         }
       );
   }
@@ -466,44 +423,9 @@ export class CrudImoinventarioComponent implements OnInit {
     this.parametro = param;
     this.getImoIvenContador();
   }
-/*
-  setValues() {
-    this.parametros.setValue({
-      ccs: GetValueJsonString(this.parametro.getParametro(), 'cc'),
-      cc_novo: GetValueJsonString(this.parametro.getParametro(), 'cc_novo'),
-      grupos: GetValueJsonNumber(this.parametro.getParametro(), 'grupo'),
-      situacoes: GetValueJsonString(this.parametro.getParametro(), 'situacao'),
-      codigo: GetValueJsonNumber(this.parametro.getParametro(), 'codigo'),
-      novo: GetValueJsonNumber(this.parametro.getParametro(), 'novo'),
-      origem: GetValueJsonString(this.parametro.getParametro(), 'origem'),
-      executor: GetValueJsonNumber(this.parametro.getParametro(), 'executor'),
-      condicao: GetValueJsonNumber(this.parametro.getParametro(), 'condicao'),
-      book: GetValueJsonString(this.parametro.getParametro(), 'book'),
-      descricao: GetValueJsonString(this.parametro.getParametro(), 'descricao'),
-      observacao: GetValueJsonString(
-        this.parametro.getParametro(),
-        'observacao'
-      ),
-    });
-  }
 
-  setValuesNoParam() {
-    this.parametros.setValue({
-      ccs: '',
-      cc_novo: '',
-      grupos: 0,
-      situacoes: -1,
-      codigo: '',
-      novo: '',
-      origem: '',
-      executor: 0,
-      condicao: '0',
-      book: '',
-      descricao: '',
-      observacao: '',
-    });
-  }
- */
+
+
   getTexto() {
     return MensagensBotoes;
   }
@@ -563,133 +485,6 @@ export class CrudImoinventarioComponent implements OnInit {
     this.router.navigate(['']);
   }
 
-  /* onSaveConfig() {
-    this.updateParametros();
-  }
-
-  loadParametros() {
-    this.parametro = new ParametroModel();
-    this.parametro.id_empresa = this.globalService.getIdEmpresa();
-    this.parametro.modulo = 'paramimoinv';
-    this.parametro.assinatura = 'V1.00 21/08/2024';
-    this.parametro.id_usuario = this.globalService.usuario.id;
-    this.parametro.parametro = `
-       {
-         "cc": "",
-         "cc_novo":"",
-         "grupo":0,
-         "situacao":-1,
-         "codigo":0,
-         "novo":0,
-         "origem":"",
-         "executor":0,
-         "condicao":0,
-         "book":"",
-         "descricao": "",
-         "observacao": "",
-         "page": 1,
-         "new": false,
-         "id_retorno":0
-       }`;
-    if (this.retorno && this.globalService.estadoFind('paramimoinv') !== null) {
-      const par = this.globalService.estadoFind('imoinv');
-      if (par != null) {
-        if (GetValueJsonBoolean(par.getParametro(), 'new')) {
-          let config = this.parametro.getParametro();
-          Object(config).id_retorno = GetValueJsonNumber(
-            par.getParametro(),
-            'id_retorno'
-          );
-          this.parametro.parametro = JSON.stringify(config);
-        } else {
-          this.controlePaginas.setPaginaAtual(
-            GetValueJsonNumber(par.getParametro(), 'page')
-          );
-          this.parametro.setParametro(par.getParametro());
-        }
-        this.globalService.estadoDelete(par);
-        this.setValues();
-        this.getImoIvenContador();
-      }
-    } else {
-      this.getParametro();
-    }
-  }
-
-  getParametro() {
-    this.globalService.setSpin(true);
-    let par = new ParametroParametro01();
-    par.id_empresa = this.parametro.id_empresa;
-    par.modulo = this.parametro.modulo;
-    par.assinatura = this.parametro.assinatura;
-    par.id_usuario = this.parametro.id_usuario;
-    par.orderby = 'Usuário';
-    this.inscricaoParametro = this.parametrosService
-      .getParametrosParametro01(par)
-      .subscribe(
-        (data: ParametroModel[]) => {
-          this.globalService.setSpin(false);
-          this.parametro = new ParametroModel();
-          this.parametro.id_empresa = data[0].id_empresa;
-          this.parametro.modulo = data[0].modulo;
-          this.parametro.id_usuario = data[0].id_usuario;
-          this.parametro.assinatura = data[0].assinatura;
-          this.parametro.parametro = data[0].parametro;
-          this.parametro.user_insert = data[0].user_insert;
-          this.parametro.user_update = data[0].user_update;
-          this.setValues();
-          this.getImoIvenContador();
-        },
-        (error: any) => {
-          this.globalService.setSpin(false);
-          this.setValues();
-          this.getImoIvenContador();
-        }
-      );
-  }
-
-  updateParametros() {
-    this.globalService.setSpin(true);
-    this.parametro.user_insert = this.globalService.usuario.id;
-    this.parametro.user_update = this.globalService.usuario.id;
-    let config = this.parametro.getParametro();
-    let key = parseInt(this.parametros.value.codigo, 10);
-    if (isNaN(key)) {
-      Object(config).codigo = 0;
-    } else {
-      Object(config).codigo = key;
-    }
-    Object(config).cc = this.parametros.value.ccs;
-    Object(config).cc_novo = this.parametros.value.cc_novo;
-    Object(config).grupo = this.parametros.value.grupos;
-    Object(config).situacao = this.parametros.value.situacoes;
-    Object(config).codigo = this.parametros.value.codigo;
-    Object(config).novo = this.parametros.value.novo;
-    Object(config).origem = this.parametros.value.origem;
-    Object(config).executor = this.parametros.value.executor;
-    Object(config).condicao = this.parametros.value.condicao;
-    Object(config).book = this.parametros.value.book;
-    Object(config).descricao = this.parametros.value.descricao;
-    Object(config).observacao = this.parametros.value.observacao;
-    Object(config).page = 0;
-    Object(config).new = false;
-    this.parametro.parametro = JSON.stringify(config);
-    this.inscricaoParametro = this.parametrosService
-      .ParametroAtualiza(this.parametro)
-      .subscribe(
-        (data: ParametroModel) => {
-          this.globalService.setSpin(false);
-          this.appSnackBar.openSuccessSnackBar(`Parâmetros Atualizados`, 'OK');
-        },
-        (error: any) => {
-          this.globalService.setSpin(false);
-          this.appSnackBar.openFailureSnackBar(
-            `Gravação Dos Parametros ${messageError(error)}`,
-            'OK'
-          );
-        }
-      );
-  } */
 
   openNfeDialog(): void {
     const data: NfeData = new NfeData();
@@ -800,7 +595,7 @@ export class CrudImoinventarioComponent implements OnInit {
   }
 
 
-  atualizaParametro(par : ParametroImobilizadoinventario01 ) : ParametroImobilizadoinventario01{
+  /* atualizaParametro(par : ParametroImobilizadoinventario01 ) : ParametroImobilizadoinventario01{
 
     let config = this.parametro.getParametro();
 
@@ -813,7 +608,7 @@ export class CrudImoinventarioComponent implements OnInit {
       par.new_cc = Object(config).cc_novo;
     }
 
-    key = parseInt(Object(config).id_grupo, 10);
+    key = parseInt(Object(config).grupo, 10);
 
     if (isNaN(key)) {
       par.id_grupo = 0;
@@ -853,15 +648,15 @@ export class CrudImoinventarioComponent implements OnInit {
       par.condicao = key;
     }
 
-    if (Object(config).book.trim() !== '') {
+    if (Object(config).book?.trim() !== '') {
       par.book = Object(config).book;
     }
 
-    if (Object(config).descricao.trim() !== '') {
+    if (Object(config).descricao?.trim() !== '') {
       par.descricao = Object(config).descricao;
     }
 
-    if (Object(config).observacao.trim() !== '') {
+    if (Object(config).observacao?.trim() !== '') {
       par.observacao = Object(config).observacao;
     }
 
@@ -879,5 +674,5 @@ export class CrudImoinventarioComponent implements OnInit {
 
     return par;
   }
-
+ */
 }

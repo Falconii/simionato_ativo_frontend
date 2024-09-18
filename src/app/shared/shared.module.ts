@@ -30,6 +30,8 @@ import { BarraAcoesAmbienteComponent } from './components/barra-acoes-ambiente/b
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { FiltroImoinventarioComponent } from './components/filtro-imoinventario/filtro-imoinventario.component';
 import { BrowserFotoComponent } from './components/browser-foto/browser-foto.component';
+import { EmailDialogComponent } from './components/email-dialog/email-dialog.component';
+import { DownloadDialogComponent } from './components/download-dialog/download-dialog.component';
 @NgModule({
   declarations: [
     SimNaoPipe,
@@ -60,7 +62,9 @@ import { BrowserFotoComponent } from './components/browser-foto/browser-foto.com
     BarraAcoesAmbienteComponent,
     DashboardComponent,
     FiltroImoinventarioComponent,
-    BrowserFotoComponent
+    BrowserFotoComponent,
+    EmailDialogComponent,
+    DownloadDialogComponent
   ],
   imports: [CommonModule, MaterialModule, FormsModule, ReactiveFormsModule],
   exports: [

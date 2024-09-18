@@ -308,3 +308,7 @@ body {
 .div-spin{
   height: 2px;
 }
+
+.uppercase {
+   text-transform: uppercase;
+}

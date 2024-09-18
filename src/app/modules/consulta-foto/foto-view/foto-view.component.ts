@@ -13,6 +13,7 @@ import { FotoService } from 'src/app/services/foto.service';
 import { FotoModel } from 'src/app/models/foto-model';
 import { FotosAtivo } from 'src/app/shared/classes/fotos-ativo';
 import { Router } from '@angular/router';
+import { AtualizaParametroImobilizadoInventario01 } from 'src/app/shared/classes/atualiza-parametro-imobilizado-inventario01';
 
 @Component({
   selector: 'app-foto-view',
@@ -148,7 +149,7 @@ export class FotoViewComponent implements OnInit {
 
     par.id_inventario = this.globalService.getInventario().codigo;
 
-    par = this.atualizaParametro(par);
+    par =  AtualizaParametroImobilizadoInventario01(par,this.parametro.getParametro());
 
     par.contador = 'N';
 
@@ -193,7 +194,7 @@ export class FotoViewComponent implements OnInit {
 
     par.id_inventario = this.globalService.getInventario().codigo;
 
-    par = this.atualizaParametro(par);
+    par =  AtualizaParametroImobilizadoInventario01(par,this.parametro.getParametro());
 
     par.contador = 'S';
 
@@ -216,22 +217,20 @@ export class FotoViewComponent implements OnInit {
             this.tamPagina,
             data.total == 0 ? 1 : data.total
           );
-          this.getImoIven();
+          if  (data.total > 0){
+            this.getImoIven();
+          }
         }
         },
         (error: any) => {
           this.globalService.setSpin(false);
           this.imoinv = [];
           this.controlePaginas = new ControlePaginas(this.tamPagina, 1);
-          this.appSnackBar.openFailureSnackBar(
-            `Pesquisa Não Gerou Resultado.\nPor Não Ter Os Produtos Ou As Fotos`,
-            'OK'
-          );
         }
       );
   }
 
-
+/*
   atualizaParametro(par : ParametroImobilizadoinventario01 ) : ParametroImobilizadoinventario01{
 
     let config = this.parametro.getParametro();
@@ -285,15 +284,15 @@ export class FotoViewComponent implements OnInit {
       par.condicao = key;
     }
 
-    if (Object(config).book.trim() !== '') {
+    if (Object(config).book?.trim() !== '') {
       par.book = Object(config).book;
     }
 
-    if (Object(config).descricao.trim() !== '') {
+    if (Object(config).descricao?.trim() !== '') {
       par.descricao = Object(config).descricao;
     }
 
-    if (Object(config).observacao.trim() !== '') {
+    if (Object(config).observacao?.trim() !== '') {
       par.observacao = Object(config).observacao;
     }
 
@@ -311,7 +310,7 @@ export class FotoViewComponent implements OnInit {
 
     return par;
   }
-
+ */
   onChangePage() {
     this.getImoIven();
   }

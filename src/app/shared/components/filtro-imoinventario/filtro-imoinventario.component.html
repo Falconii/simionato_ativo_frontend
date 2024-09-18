@@ -108,7 +108,7 @@
   <div class="col-med-1">
     <mat-form-field appearance="outline" class="col-max">
       <mat-label>Descrição</mat-label>
-      <input matInput formControlName="descricao">
+      <input class="uppercase" matInput  formControlName="descricao">
       <button *ngIf="hasValue('descricao')" matSuffix mat-icon-button aria-label="Clear" (click)="clearValue('descricao')">
         <mat-icon>close</mat-icon>
       </button>
@@ -117,7 +117,7 @@
   <div class="col-med-1">
     <mat-form-field appearance="outline" class="col-max">
       <mat-label>Observação</mat-label>
-      <input matInput formControlName="observacao">
+      <input class="uppercase" matInput  formControlName="observacao">
       <button *ngIf="hasValue('observacao')" matSuffix mat-icon-button aria-label="Clear" (click)="clearValue('observacao')">
         <mat-icon>close</mat-icon>
       </button>

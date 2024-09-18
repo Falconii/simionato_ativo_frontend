@@ -1,5 +1,6 @@
+import { ControlePaginas } from 'src/app/shared/classes/controle-paginas';
 import { ParametrosService } from 'src/app/services/parametros.service';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, Inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CentrocustoService } from 'src/app/services/centrocusto.service';
@@ -17,7 +18,6 @@ import { GrupoModel } from 'src/app/models/grupo-model';
 import { CentrocustoModel } from 'src/app/models/centrocusto-model';
 import { SimNao } from '../../classes/sim-nao';
 import { Condicoes } from '../../classes/condicoes';
-import { ControlePaginas } from '../../classes/controle-paginas';
 import { ParametroCentrocusto01 } from 'src/app/parametros/parametro-centrocusto01';
 import { ParametroGrupo01 } from 'src/app/parametros/parametro-grupo01';
 import { ParametroModel } from 'old/parametro-model';
@@ -31,6 +31,11 @@ import { ParametroSendemailv2 } from 'src/app/parametros/parametro-sendemailv2';
 import { EmailService } from 'src/app/services/email.service';
 import { FileService } from 'src/app/services/file.service';
 import { ParametroDownloadfile } from 'src/app/parametros/parametro-downloadfile';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { EmailDialogData } from '../email-dialog/email-dialog-data';
+import { EmailDialogComponent } from '../email-dialog/email-dialog.component';
+import { DownloadDialogData } from '../download-dialog/download-dialog-data';
+import { DownloadDialogComponent } from '../download-dialog/download-dialog.component';
 
 @Component({
   selector: 'app-filtro-imoinventario',
@@ -43,8 +48,8 @@ export class FiltroImoinventarioComponent implements OnInit {
   @Input('RETORNO')   retorno:boolean = false;
   @Input('EMAIL')     email:boolean = false;
   @Input('DOWNLOAD')  download:boolean = false;
+  @Input('CONTROLE_PAGINAS') controle_paginas:ControlePaginas = new ControlePaginas(50,0);
   @Input('HIDE') hide: boolean = true;
-
   @Output('changeParametro') change = new EventEmitter<ParametroModel>();
 
   inscricaoGetGrupo!: Subscription;
@@ -97,6 +102,8 @@ export class FiltroImoinventarioComponent implements OnInit {
     private emailService:EmailService,
     private fileService:FileService,
     private appSnackBar: AppSnackbar,
+    private EmailDialog: MatDialog,
+    private DownLoadDialog: MatDialog,
     ) {
 
       this.parametros = formBuilder.group({
@@ -142,38 +149,35 @@ export class FiltroImoinventarioComponent implements OnInit {
      this.parametros.get("codigo")?.valueChanges.pipe(
       map(value => value.trim()),
       filter(value => value.length > 0),
-      debounceTime(250),
+      debounceTime(350),
       distinctUntilChanged(),
-      tap(value => console.log(value)),
      ).subscribe((_) => this.onChangeParametros());
 
      this.parametros.get("novo")?.valueChanges.pipe(
       map(value => value.trim()),
       filter(value => value.length > 0),
-      debounceTime(250),
+      debounceTime(350),
       distinctUntilChanged(),
-      tap(value => console.log(value)),
      ).subscribe((_) => this.onChangeParametros());
 
      this.parametros.get("descricao")?.valueChanges.pipe(
       map(value => value.trim().toUpperCase()),
-      filter(value => value.length > 3),
-      debounceTime(250),
+      filter(value => value.length > 0),
+      debounceTime(350),
       distinctUntilChanged(),
-      tap(value => console.log(value)),
      ).subscribe((value:string) => {
-      this.ChangeValue("descricao",value);
+      //this.ChangeValue("descricao",value);
       this.onChangeParametros();
     });
 
      this.parametros.get("observacao")?.valueChanges.pipe(
       map(value => value.trim().toUpperCase()),
-      filter(value => value.length > 3),
-      debounceTime(250),
+      filter(value => value.length > 0),
+      debounceTime(350),
       distinctUntilChanged(),
       tap(value => console.log(value)),
      ).subscribe((value) => {
-      this.ChangeValue("observacao",value)
+      //this.ChangeValue("observacao",value);
       this.onChangeParametros()
     });
 
@@ -314,44 +318,12 @@ export class FiltroImoinventarioComponent implements OnInit {
 
   onGetExcelToEmailOrDownLoad(destino:string) {
 
-    let par = new ParametroImobilizadoinventario01();
-
-    par.id_empresa = this.globalService.getIdEmpresa();
-
-    par.id_filial = this.globalService.getLocal().id;
-
-    par.id_inventario = this.globalService.getInventario().codigo;
-
-    par = this.atualizaParametro(par);
-
-    par.contador = 'N';
-
-    par.pagina = 0
-
-    par.orderby = 'Imobilizado';
-
-    this.globalService.setSpin(true);
-    this.inscricaoExcel = this.imoInventarioService
-      .getExcelv2(par)
-      .subscribe(
-        (data: any) => {
-          this.globalService.setSpin(false);
-          if (destino.toUpperCase() == "E-MAIL"){
-            this.sendMail(data.filename);
-          } else {
-            this.downLoad(data.filename);
-          }
-        },
-        (error: any) => {
-          this.globalService.setSpin(false);
-          this.appSnackBar.openFailureSnackBar(
-            `Pesquisa Nos Produtos De Inventário ${messageError(error)}`,
-            'OK'
-          );
-        }
-      );
+    if (destino.toUpperCase() == "E-MAIL"){
+      this.openEmailDialog();
+    } else {
+      this.openDownLoadDialog();
+    }
   }
-
 
   sendMail(fileName:string) {
 
@@ -393,100 +365,6 @@ export class FiltroImoinventarioComponent implements OnInit {
       );
   }
 
-  downLoad(fileName:string) {
-
-    let par = new ParametroDownloadfile();
-
-    par.id_empresa = this.globalService.getIdEmpresa();
-
-    par.id_filial = this.globalService.getLocal().id;
-
-    par.fileName = fileName;
-
-    const url = this.fileService.urlDowLoad(par);
-
-    window.open(url, '_blank');
-  }
-
-  atualizaParametro(par : ParametroImobilizadoinventario01 ) : ParametroImobilizadoinventario01{
-
-    let config = this.parametro.getParametro();
-
-    let key:number = 0;
-
-    if (Object(config).cc !== '') {
-      par.id_cc = Object(config).cc;
-    }
-    if (Object(config).cc_novo !== '') {
-      par.new_cc = Object(config).cc_novo;
-    }
-
-    key = parseInt(Object(config).id_grupo, 10);
-
-    if (isNaN(key)) {
-      par.id_grupo = 0;
-    } else {
-      par.id_grupo = key;
-    }
-
-    key = parseInt(Object(config).situacao, 10);
-
-    if (isNaN(key)) {
-      par.status = 0;
-    } else {
-      par.status = key;
-    }
-
-    key = parseInt(Object(config).codigo, 10);
-
-    if (isNaN(key)) {
-      par.id_imobilizado = 0;
-    } else {
-      par.id_imobilizado = key;
-    }
-
-    key = parseInt(Object(config).novo, 10);
-
-    if (isNaN(key)) {
-      par.new_codigo = 0;
-    } else {
-      par.new_codigo = key;
-    }
-
-    key = parseInt(Object(config).condicao, 10);
-
-    if (isNaN(key)) {
-      par.condicao = 0;
-    } else {
-      par.condicao = key;
-    }
-
-    if (Object(config).book.trim() !== '') {
-      par.book = Object(config).book;
-    }
-
-    if (Object(config).descricao.trim() !== '') {
-      par.descricao = Object(config).descricao;
-    }
-
-    if (Object(config).observacao.trim() !== '') {
-      par.observacao = Object(config).observacao;
-    }
-
-    key = parseInt(Object(config).executor, 10);
-
-    if (isNaN(key)) {
-      par.id_usuario = 0;
-    } else {
-      par.id_usuario = key;
-    }
-
-    if (Object(config).origem.trim() !== '') {
-      par.origem = Object(config).origem;
-    }
-
-    return par;
-  }
 
   setValues() {
     this.parametros.setValue({
@@ -646,8 +524,8 @@ export class FiltroImoinventarioComponent implements OnInit {
     Object(config).executor   = this.parametros.value.executor;
     Object(config).condicao   = this.parametros.value.condicao;
     Object(config).book       = this.parametros.value.book;
-    Object(config).descricao  = this.parametros.value.descricao;
-    Object(config).observacao = this.parametros.value.observacao;
+    Object(config).descricao  = this.parametros.value.descricao.toUpperCase();
+    Object(config).observacao = this.parametros.value.observacao.toUpperCase();
     Object(config).page = 0;
     Object(config).new = false;
     this.parametro.parametro = JSON.stringify(config);
@@ -708,5 +586,63 @@ ChangeValue(campo: string, value:string){
       observacao: value
   })
 }
+
+
+openEmailDialog(): void {
+  const data: EmailDialogData = new EmailDialogData();
+  data.titulo       = "ENVIAR CONSULTA VIA E-MAIL";
+  data.destinatario = this.globalService.usuario.email;
+  data.escopo       = "T";
+  data.labelBottomNao = "Cancelar";
+  data.labelBottonSim = "Processar";
+  data.id_empresa     = this.globalService.empresa.id;
+  data.id_filial      = this.globalService.local.id;
+  data.id_inventario  = this.globalService.inventario.codigo;
+  data.pagina          = this.controle_paginas.getPaginalAtual();
+  data.parametro       = this.parametro;
+
+  const dialogConfig = new MatDialogConfig();
+
+  dialogConfig.disableClose = true;
+  dialogConfig.id     = 'consulta-email';
+  dialogConfig.width  = '800px';
+  dialogConfig.data = data;
+  const modalDialog = this.EmailDialog.open(
+    EmailDialogComponent,
+    dialogConfig
+  )
+    .beforeClosed()
+    .subscribe((data: EmailDialogData) => {
+    });
+}
+
+
+openDownLoadDialog(): void {
+  const data: DownloadDialogData = new DownloadDialogData();
+  data.titulo       = "DOWNLOAD DE CONSULTA";
+  data.escopo       = "T";
+  data.labelBottomNao = "Cancelar";
+  data.labelBottonSim = "Processar";
+  data.id_empresa     = this.globalService.empresa.id;
+  data.id_filial      = this.globalService.local.id;
+  data.id_inventario  = this.globalService.inventario.codigo;
+  data.pagina          = this.controle_paginas.getPaginalAtual();
+  data.parametro       = this.parametro;
+
+  const dialogConfig = new MatDialogConfig();
+
+  dialogConfig.disableClose = true;
+  dialogConfig.id     = 'consulta-download';
+  dialogConfig.width  = '800px';
+  dialogConfig.data = data;
+  const modalDialog = this.EmailDialog.open(
+    DownloadDialogComponent,
+    dialogConfig
+  )
+    .beforeClosed()
+    .subscribe((data: EmailDialogData) => {
+    });
+}
+
 }
 

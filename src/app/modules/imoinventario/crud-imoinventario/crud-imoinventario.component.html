@@ -17,10 +17,7 @@
     </button>
   </mat-toolbar>
 </div>
-<!-- <div class="button-container-right" *ngIf="browse">
-  <button mat-raised-button color="primary" class="botao" (click)="onFiltro()">{{getLabelFiltro()}}</button>
-</div> -->
-<app-filtro-imoinventario [PARAMETRO]="parametro" [EMAIL]="true" [DOWNLOAD]="true" (changeParametro)="onChangeParametros($event)" *ngIf="browse"></app-filtro-imoinventario>
+<app-filtro-imoinventario [PARAMETRO]="parametro" [EMAIL]="true" [DOWNLOAD]="true" [CONTROLE_PAGINAS]="controlePaginas" (changeParametro)="onChangeParametros($event)" *ngIf="browse"></app-filtro-imoinventario>
 <cdk-virtual-scroll-viewport [itemSize]="50" class="content" *ngIf="browse">
   <table class="Browse_Lanc">
     <tr class="coluna-cabec">
