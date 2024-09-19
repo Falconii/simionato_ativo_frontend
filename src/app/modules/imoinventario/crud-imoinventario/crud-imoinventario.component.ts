@@ -311,8 +311,6 @@ export class CrudImoinventarioComponent implements OnInit {
 
     par.pagina = this.controlePaginas.getPaginalAtual();
 
-    par.orderby = 'Imobilizado';
-
     this.globalService.setSpin(true);
     this.inscricaoGetAll = this.imoInventarioService
       .getImobilizadosinventariosParametro_01(par)
@@ -359,7 +357,6 @@ export class CrudImoinventarioComponent implements OnInit {
 
     par.tamPagina = this.tamPagina;
 
-    par.orderby = 'Imobilizado';
 
     this.globalService.setSpin(true);
     this.inscricaoGetAll = this.imoInventarioService

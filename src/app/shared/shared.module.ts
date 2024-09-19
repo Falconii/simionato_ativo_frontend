@@ -32,6 +32,7 @@ import { FiltroImoinventarioComponent } from './components/filtro-imoinventario/
 import { BrowserFotoComponent } from './components/browser-foto/browser-foto.component';
 import { EmailDialogComponent } from './components/email-dialog/email-dialog.component';
 import { DownloadDialogComponent } from './components/download-dialog/download-dialog.component';
+import { NgxMaskModule } from 'ngx-mask';
 @NgModule({
   declarations: [
     SimNaoPipe,
@@ -66,7 +67,8 @@ import { DownloadDialogComponent } from './components/download-dialog/download-d
     EmailDialogComponent,
     DownloadDialogComponent
   ],
-  imports: [CommonModule, MaterialModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, MaterialModule, FormsModule, ReactiveFormsModule,
+    NgxMaskModule.forChild(),],
   exports: [
     SimNaoPipe,
     CadastroAcoesPipe,

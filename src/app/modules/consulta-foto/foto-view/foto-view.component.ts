@@ -117,8 +117,6 @@ export class FotoViewComponent implements OnInit {
 
     let allFotos = this.fotos.filter(foto => foto.id_imobilizado == ativo);
 
-    //console.log("allFotos",ativo,allFotos);
-
     let tempo:FotosAtivo = new FotosAtivo(idx,[]);
 
     if(allFotos.length > 0) {
@@ -156,9 +154,6 @@ export class FotoViewComponent implements OnInit {
     par.tamPagina = this.tamPagina;
 
     par.pagina = this.controlePaginas.getPaginalAtual();
-
-    par.orderby = 'Imobilizado';
-
 
 	  this.fotos = [];
 
@@ -200,8 +195,7 @@ export class FotoViewComponent implements OnInit {
 
     par.tamPagina = this.tamPagina;
 
-    par.orderby = 'Imobilizado';
-
+    console.log(par);
     this.globalService.setSpin(true);
     this.inscricaoGetAll = this.imoInventarioService
       .getImobilizadosinventariosFotos(par)
@@ -230,87 +224,7 @@ export class FotoViewComponent implements OnInit {
       );
   }
 
-/*
-  atualizaParametro(par : ParametroImobilizadoinventario01 ) : ParametroImobilizadoinventario01{
 
-    let config = this.parametro.getParametro();
-
-    let key:number = 0;
-
-    if (Object(config).cc !== '') {
-      par.id_cc = Object(config).cc;
-    }
-    if (Object(config).cc_novo !== '') {
-      par.new_cc = Object(config).cc_novo;
-    }
-
-    key = parseInt(Object(config).id_grupo, 10);
-
-    if (isNaN(key)) {
-      par.id_grupo = 0;
-    } else {
-      par.id_grupo = key;
-    }
-
-    key = parseInt(Object(config).situacao, 10);
-
-    if (isNaN(key)) {
-      par.status = 0;
-    } else {
-      par.status = key;
-    }
-
-    key = parseInt(Object(config).codigo, 10);
-
-    if (isNaN(key)) {
-      par.id_imobilizado = 0;
-    } else {
-      par.id_imobilizado = key;
-    }
-
-    key = parseInt(Object(config).novo, 10);
-
-    if (isNaN(key)) {
-      par.new_codigo = 0;
-    } else {
-      par.new_codigo = key;
-    }
-
-    key = parseInt(Object(config).condicao, 10);
-
-    if (isNaN(key)) {
-      par.condicao = 0;
-    } else {
-      par.condicao = key;
-    }
-
-    if (Object(config).book?.trim() !== '') {
-      par.book = Object(config).book;
-    }
-
-    if (Object(config).descricao?.trim() !== '') {
-      par.descricao = Object(config).descricao;
-    }
-
-    if (Object(config).observacao?.trim() !== '') {
-      par.observacao = Object(config).observacao;
-    }
-
-    key = parseInt(Object(config).executor, 10);
-
-    if (isNaN(key)) {
-      par.id_usuario = 0;
-    } else {
-      par.id_usuario = key;
-    }
-
-    if (Object(config).origem.trim() !== '') {
-      par.origem = Object(config).origem;
-    }
-
-    return par;
-  }
- */
   onChangePage() {
     this.getImoIven();
   }

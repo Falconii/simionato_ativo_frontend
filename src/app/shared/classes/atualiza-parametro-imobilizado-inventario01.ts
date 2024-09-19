@@ -2,7 +2,22 @@ import { ParametroImobilizadoinventario01 } from "src/app/parametros/parametro-i
 
 export function AtualizaParametroImobilizadoInventario01(par : ParametroImobilizadoinventario01 , config : JSON):ParametroImobilizadoinventario01 {
 
+    try {
+
+
     let key:number = 0;
+
+    if (Object(config).dtinicial?.trim() !== '') {
+      par.dtinicial = Object(config).dtinicial;
+    }
+
+    if (Object(config).dtfinal?.trim() !== '') {
+      par.dtfinal = Object(config).dtfinal;
+    }
+
+    if (Object(config).orderby?.trim() !== '') {
+      par.orderby = Object(config).orderby;
+    }
 
     if (Object(config).cc !== '') {
       par.id_cc = Object(config).cc;
@@ -74,6 +89,8 @@ export function AtualizaParametroImobilizadoInventario01(par : ParametroImobiliz
     if (Object(config).origem.trim() !== '') {
       par.origem = Object(config).origem;
     }
-
+  } catch(error){
+    alert(error);
+  }
     return par;
 }

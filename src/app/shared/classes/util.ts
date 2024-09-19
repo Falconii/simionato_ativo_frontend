@@ -272,3 +272,14 @@ export function GetValueJsonBoolean(obj: JSON, tag: string): boolean {
   const retorno = Object(obj)[tag];
   return retorno;
 }
+
+
+export function ConvertNumberToInt(value:string): number {
+  let key = parseInt(value, 10);
+    if (isNaN(key)) {
+       return  0;
+    } else {
+       return  key;
+    }
+}
+

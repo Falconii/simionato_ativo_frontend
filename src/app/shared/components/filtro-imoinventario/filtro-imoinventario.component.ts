@@ -1,3 +1,4 @@
+import { Orderby } from './../../classes/orderby';
 import { ControlePaginas } from 'src/app/shared/classes/controle-paginas';
 import { ParametrosService } from 'src/app/services/parametros.service';
 import { Component, EventEmitter, Input, OnInit, Output, Inject } from '@angular/core';
@@ -25,17 +26,14 @@ import { GetValueJsonBoolean, GetValueJsonNumber, GetValueJsonString, messageErr
 import { ParametroParametro01 } from 'src/app/parametros/parametro-parametro01';
 import { ParametroLancamentoUsuario } from 'src/app/parametros/parametros-lancamento-usuarios';
 import { LancamentoService } from 'src/app/services/lancamento.service';
-import { ParametroImobilizadoinventario01 } from 'src/app/parametros/parametro-imobilizadoinventario01';
-import { ImobilizadoinventarioService } from 'src/app/services/imobilizadoinventario.service';
 import { ParametroSendemailv2 } from 'src/app/parametros/parametro-sendemailv2';
 import { EmailService } from 'src/app/services/email.service';
-import { FileService } from 'src/app/services/file.service';
-import { ParametroDownloadfile } from 'src/app/parametros/parametro-downloadfile';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { EmailDialogData } from '../email-dialog/email-dialog-data';
 import { EmailDialogComponent } from '../email-dialog/email-dialog.component';
 import { DownloadDialogData } from '../download-dialog/download-dialog-data';
 import { DownloadDialogComponent } from '../download-dialog/download-dialog.component';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-filtro-imoinventario',
@@ -87,9 +85,17 @@ export class FiltroImoinventarioComponent implements OnInit {
 
   hideAcao:string = "Ocultar";
 
-  codigo$!:Observable<any>
+  codigo$!:Observable<any>;
 
-
+  orderby:Orderby[] =  [
+    {sigla:"001" , descricao:"Ativo-Antigo"},
+    {sigla:"002" , descricao:"Ativo-Novo"},
+    {sigla:"003" , descricao:"CC-Antigo"},
+    {sigla:"004" , descricao:"CC-Novo"},
+    {sigla:"005" , descricao:"Grupo"},
+    {sigla:"006" , descricao:"Descrição"},
+    {sigla:"007" , descricao:"Observação"}
+  ];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -98,15 +104,18 @@ export class FiltroImoinventarioComponent implements OnInit {
     private parametrosService:ParametrosService,
     private centrocustoService: CentrocustoService,
     private lancamentoService:LancamentoService,
-    private imoInventarioService:ImobilizadoinventarioService,
     private emailService:EmailService,
-    private fileService:FileService,
     private appSnackBar: AppSnackbar,
     private EmailDialog: MatDialog,
     private DownLoadDialog: MatDialog,
     ) {
 
       this.parametros = formBuilder.group({
+        hoje:[{ value: '' }],
+        cleardate:[{ value: '' }],
+        dtinicial: [{ value: '' }],
+        dtfinal: [{ value: '' }],
+        orderby: [{ value: '' }],
         ccs: [{ value: '' }],
         cc_novo: [{ value: '' }],
         grupos: [{ value: '' }],
@@ -146,6 +155,20 @@ export class FiltroImoinventarioComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.parametros.get("dtinicial")?.valueChanges.pipe(
+      map(value => value.trim()),
+      filter(value => value.length >= 10),
+      debounceTime(350),
+      distinctUntilChanged(),
+     ).subscribe((_) => this.onChangeParametros());
+
+     this.parametros.get("dtfinal")?.valueChanges.pipe(
+      map(value => value.trim()),
+      filter(value => value.length >= 10),
+      debounceTime(350),
+      distinctUntilChanged(),
+     ).subscribe((_) => this.onChangeParametros());
+
      this.parametros.get("codigo")?.valueChanges.pipe(
       map(value => value.trim()),
       filter(value => value.length > 0),
@@ -166,18 +189,15 @@ export class FiltroImoinventarioComponent implements OnInit {
       debounceTime(350),
       distinctUntilChanged(),
      ).subscribe((value:string) => {
-      //this.ChangeValue("descricao",value);
       this.onChangeParametros();
-    });
+     });
 
      this.parametros.get("observacao")?.valueChanges.pipe(
       map(value => value.trim().toUpperCase()),
       filter(value => value.length > 0),
       debounceTime(350),
       distinctUntilChanged(),
-      tap(value => console.log(value)),
      ).subscribe((value) => {
-      //this.ChangeValue("observacao",value);
       this.onChangeParametros()
     });
 
@@ -365,15 +385,19 @@ export class FiltroImoinventarioComponent implements OnInit {
       );
   }
 
-
   setValues() {
     this.parametros.setValue({
+      hoje:false,
+      cleardate:false,
+      dtinicial:GetValueJsonString(this.parametro.getParametro(), 'dtinicial'),
+      dtfinal:GetValueJsonString(this.parametro.getParametro(), 'dtfinal'),
+      orderby:GetValueJsonString(this.parametro.getParametro(), 'orderby'),
       ccs: GetValueJsonString(this.parametro.getParametro(), 'cc'),
       cc_novo: GetValueJsonString(this.parametro.getParametro(), 'cc_novo'),
       grupos: GetValueJsonNumber(this.parametro.getParametro(), 'grupo'),
       situacoes: GetValueJsonString(this.parametro.getParametro(), 'situacao'),
-      codigo: GetValueJsonNumber(this.parametro.getParametro(), 'codigo'),
-      novo: GetValueJsonNumber(this.parametro.getParametro(), 'novo'),
+      codigo: GetValueJsonNumber(this.parametro.getParametro(), 'codigo').toString(),
+      novo: GetValueJsonNumber(this.parametro.getParametro(), 'novo').toString(),
       origem: GetValueJsonString(this.parametro.getParametro(), 'origem'),
       executor: GetValueJsonNumber(this.parametro.getParametro(), 'executor'),
       condicao: GetValueJsonNumber(this.parametro.getParametro(), 'condicao'),
@@ -388,6 +412,11 @@ export class FiltroImoinventarioComponent implements OnInit {
 
   setValuesNoParam() {
     this.parametros.setValue({
+      hoje:false,
+      cleardate:false,
+      dtinicial:'',
+      dtfinal:'',
+      orderby:'001',
       ccs: '',
       cc_novo: '',
       grupos: 0,
@@ -412,10 +441,12 @@ export class FiltroImoinventarioComponent implements OnInit {
     this.parametro = new ParametroModel();
     this.parametro.id_empresa = this.globalService.getIdEmpresa();
     this.parametro.modulo = 'paramimoinv';
-    this.parametro.assinatura = 'V1.00 21/08/2024';
+    this.parametro.assinatura = 'V1.00 19/09/2024';
     this.parametro.id_usuario = this.globalService.usuario.id;
     this.parametro.parametro = `
        {
+         "dtinicial":"",
+         "dtfinal":"",
          "cc": "",
          "cc_novo":"",
          "grupo":0,
@@ -428,6 +459,9 @@ export class FiltroImoinventarioComponent implements OnInit {
          "book":"",
          "descricao": "",
          "observacao": "",
+         "dtinicial":"",
+         "dtfinal":"",
+         "orderby":"001",
          "page": 1,
          "new": false,
          "id_retorno":0
@@ -447,10 +481,9 @@ export class FiltroImoinventarioComponent implements OnInit {
           }
           this.globalService.estadoDelete(par);
           this.setValues();
-          this.onChangeParametros();
         }
       } else {
-        this.getParametro();
+        this.setValues();
       }
   }
 
@@ -480,6 +513,8 @@ export class FiltroImoinventarioComponent implements OnInit {
         },
         (error: any) => {
           this.globalService.setSpin(false);
+          this.setValues();
+          this.onChangeParametros();
         }
       );
   }
@@ -508,17 +543,11 @@ export class FiltroImoinventarioComponent implements OnInit {
 
   refreshParametro(){
     let config = this.parametro.getParametro();
-    let key = parseInt(this.parametros.value.codigo, 10);
-    if (isNaN(key)) {
-      Object(config).codigo = 0;
-    } else {
-      Object(config).codigo = key;
-    }
-    Object(config).cc = this.parametros.value.ccs;
-    Object(config).cc_novo = this.parametros.value.cc_novo;
-    Object(config).grupo = this.parametros.value.grupos;
-    Object(config).situacao = this.parametros.value.situacoes;
-    Object(config).codigo = this.parametros.value.codigo;
+    Object(config).cc         = this.parametros.value.ccs;
+    Object(config).cc_novo    = this.parametros.value.cc_novo;
+    Object(config).grupo      = this.parametros.value.grupos;
+    Object(config).situacao   = this.parametros.value.situacoes;
+    Object(config).codigo     = this.parametros.value.codigo;
     Object(config).novo       = this.parametros.value.novo;
     Object(config).origem     = this.parametros.value.origem;
     Object(config).executor   = this.parametros.value.executor;
@@ -526,9 +555,12 @@ export class FiltroImoinventarioComponent implements OnInit {
     Object(config).book       = this.parametros.value.book;
     Object(config).descricao  = this.parametros.value.descricao.toUpperCase();
     Object(config).observacao = this.parametros.value.observacao.toUpperCase();
-    Object(config).page = 0;
-    Object(config).new = false;
-    this.parametro.parametro = JSON.stringify(config);
+    Object(config).dtinicial  = this.parametros.value.dtinicial;
+    Object(config).dtfinal    = this.parametros.value.dtfinal;
+    Object(config).orderby    = this.parametros.value.orderby;
+    Object(config).page       = 0;
+    Object(config).new        = false;
+    this.parametro.parametro  = JSON.stringify(config);
   }
 
   onChangeParametros(){
@@ -536,10 +568,6 @@ export class FiltroImoinventarioComponent implements OnInit {
     this.change.emit(this.parametro);
   }
 
-  onRefreshConsulta(){
-    this.refreshParametro();
-    this.change.emit(this.parametro);
-  }
 
   onSaveConfig(){
     this.updateParametros();
@@ -635,13 +663,53 @@ openDownLoadDialog(): void {
   dialogConfig.id     = 'consulta-download';
   dialogConfig.width  = '800px';
   dialogConfig.data = data;
-  const modalDialog = this.EmailDialog.open(
+  const modalDialog = this.DownLoadDialog.open(
     DownloadDialogComponent,
     dialogConfig
   )
     .beforeClosed()
     .subscribe((data: EmailDialogData) => {
     });
+}
+
+
+NoValidtouchedOrDirty(campo: string): boolean {
+  if (
+    !this.parametros.get(campo)?.valid &&
+    (this.parametros.get(campo)?.touched || this.parametros.get(campo)?.dirty)
+  ) {
+    return true;
+  }
+  return false;
+}
+
+getMensafield(field: string): string {
+  return this.parametros.get(field)?.errors?.message;
+}
+
+
+onHoje(event:MatCheckboxChange){
+
+  if (event.checked){
+    let hoje:string = new Date(Date.now()).toLocaleString().split(',')[0];
+    this.parametros.patchValue({
+      dtinicial:hoje ,
+      dtfinal:hoje,
+      hoje:false
+    })
+  }
+
+
+}
+
+onLimpar(event:MatCheckboxChange){
+  if (event.checked){
+    this.parametros.patchValue({
+      dtinicial: '',
+      dtfinal:'',
+      cleardate:false
+    })
+  }
 }
 
 }
