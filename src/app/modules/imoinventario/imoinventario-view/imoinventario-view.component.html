@@ -2,6 +2,16 @@
   <div class="div-barra">
     <mat-toolbar>
       <span class="example-spacer">{{labelCadastro}}</span>
+      <div class="button-container-right">
+        <button mat-raised-button color="accent" (click)="onCancelar()">
+          <mat-icon>cancel</mat-icon>
+          <span>{{getLabelCancel()}}</span>
+        </button>
+        <button mat-raised-button color="primary" [disabled]="gravando" *ngIf="idAcao != 3" (click)="onSubmit()">
+          <mat-icon>check</mat-icon>
+          <span>{{acao}}</span>
+        </button>
+      </div>
     </mat-toolbar>
   </div>
   <div class="padrao">
@@ -113,16 +123,6 @@
           <mat-label>Observação</mat-label>
           <input matInput formControlName="obs" oninput="this.value = this.value.toUpperCase()" [readonly]="readOnly">
         </mat-form-field>
-      </div>
-      <div class="button-container-right">
-        <button mat-raised-button color="accent" (click)="onCancelar()">
-          <mat-icon>cancel</mat-icon>
-          <span>{{getLabelCancel()}}</span>
-        </button>
-        <button mat-raised-button color="primary" [disabled]="gravando" *ngIf="idAcao != 3" (click)="onSubmit()">
-          <mat-icon>check</mat-icon>
-          <span>{{acao}}</span>
-        </button>
       </div>
     </form>
   </div>

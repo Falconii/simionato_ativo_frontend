@@ -33,6 +33,8 @@ import { BrowserFotoComponent } from './components/browser-foto/browser-foto.com
 import { EmailDialogComponent } from './components/email-dialog/email-dialog.component';
 import { DownloadDialogComponent } from './components/download-dialog/download-dialog.component';
 import { NgxMaskModule } from 'ngx-mask';
+import { CcPipePipe } from './pipes/cc-pipe.pipe';
+import { CondicaoPipePipe } from './pipes/condicao-pipe.pipe';
 @NgModule({
   declarations: [
     SimNaoPipe,
@@ -65,7 +67,9 @@ import { NgxMaskModule } from 'ngx-mask';
     FiltroImoinventarioComponent,
     BrowserFotoComponent,
     EmailDialogComponent,
-    DownloadDialogComponent
+    DownloadDialogComponent,
+    CcPipePipe,
+    CondicaoPipePipe,
   ],
   imports: [CommonModule, MaterialModule, FormsModule, ReactiveFormsModule,
     NgxMaskModule.forChild(),],
@@ -88,7 +92,9 @@ import { NgxMaskModule } from 'ngx-mask';
     SetfocusDirective,
     DashboardComponent,
     FiltroImoinventarioComponent,
-    BrowserFotoComponent
+    BrowserFotoComponent,
+    CcPipePipe,
+    CondicaoPipePipe
   ],
 })
 export class SharedModule {}

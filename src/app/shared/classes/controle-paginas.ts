@@ -53,4 +53,11 @@ export class ControlePaginas {
   setPaginaAtual(value: number) {
     this.paginaAtual = value;
   }
+
+  start():void{
+    this.paginaInicial = 1;
+    this.paginaFinal   = 1;
+    this.totalPaginas  = 1;
+    this.paginaAtual   = 1;
+  }
 }

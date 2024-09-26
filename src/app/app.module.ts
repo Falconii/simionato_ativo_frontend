@@ -21,6 +21,7 @@ import { SituacaoPipe } from './shared/pipes/situacao.pipe';
 import { OrigemPipe } from './shared/pipes/origem.pipe';
 import { MAT_DIALOG_SCROLL_STRATEGY } from '@angular/material/dialog';
 import { ScrollStrategyOptions } from '@angular/cdk/overlay';
+import { LocalStorageService } from './services/localStorage.service';
 
 registerLocaleData(localePt);
 
@@ -49,6 +50,7 @@ registerLocaleData(localePt);
     { provide: LOCALE_ID, useValue: 'pt' },
     DiganaoGuard,
     GlobalService,
+    LocalStorageService,
     { provide: MatPaginatorIntl, useClass: BrPaginatorIntl },
   ],
   bootstrap: [AppComponent],

@@ -17,7 +17,7 @@ export class ImobilizadoinventarioModel {
   public imo_nfe: string = '';
   public imo_serie: string = '';
   public imo_item: number = 0;
-  public imo_origem: number = 0;
+  public imo_origem: string = "";
   public cc_descricao: string = '';
   public grupo_descricao: string = '';
   public lanc_id_usuario: number = 0;

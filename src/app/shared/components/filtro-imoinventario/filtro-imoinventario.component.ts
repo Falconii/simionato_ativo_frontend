@@ -1,3 +1,4 @@
+import { LocalStorageService } from './../../../services/localStorage.service';
 import { Orderby } from './../../classes/orderby';
 import { ControlePaginas } from 'src/app/shared/classes/controle-paginas';
 import { ParametrosService } from 'src/app/services/parametros.service';
@@ -21,7 +22,6 @@ import { SimNao } from '../../classes/sim-nao';
 import { Condicoes } from '../../classes/condicoes';
 import { ParametroCentrocusto01 } from 'src/app/parametros/parametro-centrocusto01';
 import { ParametroGrupo01 } from 'src/app/parametros/parametro-grupo01';
-import { ParametroModel } from 'old/parametro-model';
 import { GetValueJsonBoolean, GetValueJsonNumber, GetValueJsonString, messageError } from '../../classes/util';
 import { ParametroParametro01 } from 'src/app/parametros/parametro-parametro01';
 import { ParametroLancamentoUsuario } from 'src/app/parametros/parametros-lancamento-usuarios';
@@ -34,6 +34,7 @@ import { EmailDialogComponent } from '../email-dialog/email-dialog.component';
 import { DownloadDialogData } from '../download-dialog/download-dialog-data';
 import { DownloadDialogComponent } from '../download-dialog/download-dialog.component';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { ParametroModel } from 'src/app/models/parametro-model';
 
 @Component({
   selector: 'app-filtro-imoinventario',
@@ -41,14 +42,14 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
   styleUrls: ['./filtro-imoinventario.component.css']
 })
 export class FiltroImoinventarioComponent implements OnInit {
-
-  @Input('PARAMETRO') parametro:  ParametroModel = new ParametroModel;
+  @Input('PARAMNAME') paramName :string = ""
   @Input('RETORNO')   retorno:boolean = false;
   @Input('EMAIL')     email:boolean = false;
   @Input('DOWNLOAD')  download:boolean = false;
   @Input('CONTROLE_PAGINAS') controle_paginas:ControlePaginas = new ControlePaginas(50,0);
   @Input('HIDE') hide: boolean = true;
   @Output('changeParametro') change = new EventEmitter<ParametroModel>();
+  @Output('changeHide') changeHide = new EventEmitter<boolean>();
 
   inscricaoGetGrupo!: Subscription;
   inscricaoGetCc!: Subscription;
@@ -94,12 +95,19 @@ export class FiltroImoinventarioComponent implements OnInit {
     {sigla:"004" , descricao:"CC-Novo"},
     {sigla:"005" , descricao:"Grupo"},
     {sigla:"006" , descricao:"Descrição"},
-    {sigla:"007" , descricao:"Observação"}
+    {sigla:"007" , descricao:"Observação"},
+    {sigla:"008" , descricao:"Data Lançamento"}
   ];
+
+
+  parametro:  ParametroModel = new ParametroModel();
+
+  enable_filter:boolean = true;
 
   constructor(
     private formBuilder: FormBuilder,
     private globalService: GlobalService,
+    private localStorageService: LocalStorageService,
     private grupoService: GrupoService,
     private parametrosService:ParametrosService,
     private centrocustoService: CentrocustoService,
@@ -109,7 +117,6 @@ export class FiltroImoinventarioComponent implements OnInit {
     private EmailDialog: MatDialog,
     private DownLoadDialog: MatDialog,
     ) {
-
       this.parametros = formBuilder.group({
         hoje:[{ value: '' }],
         cleardate:[{ value: '' }],
@@ -154,10 +161,11 @@ export class FiltroImoinventarioComponent implements OnInit {
     }
 
   ngOnInit(): void {
+    var param = this.localStorageService.getParametroModel(this.paramName);
 
     this.parametros.get("dtinicial")?.valueChanges.pipe(
       map(value => value.trim()),
-      filter(value => value.length >= 10),
+      filter(value => value.length >= 10 ),
       debounceTime(350),
       distinctUntilChanged(),
      ).subscribe((_) => this.onChangeParametros());
@@ -191,7 +199,6 @@ export class FiltroImoinventarioComponent implements OnInit {
      ).subscribe((value:string) => {
       this.onChangeParametros();
      });
-
      this.parametros.get("observacao")?.valueChanges.pipe(
       map(value => value.trim().toUpperCase()),
       filter(value => value.length > 0),
@@ -202,6 +209,7 @@ export class FiltroImoinventarioComponent implements OnInit {
     });
 
   }
+
 
   ngOnDestroy(): void {
     this.inscricaoGetGrupo?.unsubscribe();
@@ -386,6 +394,7 @@ export class FiltroImoinventarioComponent implements OnInit {
   }
 
   setValues() {
+    this.enable_filter = false;
     this.parametros.setValue({
       hoje:false,
       cleardate:false,
@@ -396,8 +405,8 @@ export class FiltroImoinventarioComponent implements OnInit {
       cc_novo: GetValueJsonString(this.parametro.getParametro(), 'cc_novo'),
       grupos: GetValueJsonNumber(this.parametro.getParametro(), 'grupo'),
       situacoes: GetValueJsonString(this.parametro.getParametro(), 'situacao'),
-      codigo: GetValueJsonNumber(this.parametro.getParametro(), 'codigo').toString(),
-      novo: GetValueJsonNumber(this.parametro.getParametro(), 'novo').toString(),
+      codigo: GetValueJsonNumber(this.parametro.getParametro(), 'codigo')?.toString(),
+      novo: GetValueJsonNumber(this.parametro.getParametro(), 'novo')?.toString(),
       origem: GetValueJsonString(this.parametro.getParametro(), 'origem'),
       executor: GetValueJsonNumber(this.parametro.getParametro(), 'executor'),
       condicao: GetValueJsonNumber(this.parametro.getParametro(), 'condicao'),
@@ -408,9 +417,11 @@ export class FiltroImoinventarioComponent implements OnInit {
         'observacao'
       ),
     });
+    this.enable_filter = true;
   }
 
   setValuesNoParam() {
+    this.enable_filter = false;
     this.parametros.setValue({
       hoje:false,
       cleardate:false,
@@ -430,6 +441,7 @@ export class FiltroImoinventarioComponent implements OnInit {
       descricao: '',
       observacao: '',
     });
+    this.enable_filter = true;
   }
 
   setHide(){
@@ -440,7 +452,7 @@ export class FiltroImoinventarioComponent implements OnInit {
   loadParametros() {
     this.parametro = new ParametroModel();
     this.parametro.id_empresa = this.globalService.getIdEmpresa();
-    this.parametro.modulo = 'paramimoinv';
+    this.parametro.modulo = this.paramName;
     this.parametro.assinatura = 'V1.00 19/09/2024';
     this.parametro.id_usuario = this.globalService.usuario.id;
     this.parametro.parametro = `
@@ -466,24 +478,14 @@ export class FiltroImoinventarioComponent implements OnInit {
          "new": false,
          "id_retorno":0
        }`;
-       if (this.retorno && this.globalService.estadoFind('paramimoinv') !== null) {
-        const par = this.globalService.estadoFind('imoinv');
-        if (par != null) {
-          if (GetValueJsonBoolean(par.getParametro(), 'new')) {
-            let config = this.parametro.getParametro();
-            Object(config).id_retorno = GetValueJsonNumber(
-              par.getParametro(),
-              'id_retorno'
-            );
-            this.parametro.parametro = JSON.stringify(config);
-          } else {
-            this.parametro.setParametro(par.getParametro());
-          }
-          this.globalService.estadoDelete(par);
-          this.setValues();
-        }
-      } else {
-        this.setValues();
+       const param = this.localStorageService.getParametroModel(this.paramName);
+
+       if (param !== null){
+           this.parametro.load(param);
+           this.setValues();
+           //this.onChangeParametros();
+       } else {
+          this.getParametro();
       }
   }
 
@@ -495,25 +497,26 @@ export class FiltroImoinventarioComponent implements OnInit {
     par.assinatura = this.parametro.assinatura;
     par.id_usuario = this.parametro.id_usuario;
     par.orderby = 'Usuário';
+    console.log("pesquisa",par);
     this.inscricaoParametro = this.parametrosService
       .getParametrosParametro01(par)
       .subscribe(
         (data: ParametroModel[]) => {
           this.globalService.setSpin(false);
           this.parametro = new ParametroModel();
-          this.parametro.id_empresa = data[0].id_empresa;
-          this.parametro.modulo = data[0].modulo;
-          this.parametro.id_usuario = data[0].id_usuario;
-          this.parametro.assinatura = data[0].assinatura;
-          this.parametro.parametro = data[0].parametro;
+          this.parametro.id_empresa  = data[0].id_empresa;
+          this.parametro.modulo      = data[0].modulo;
+          this.parametro.id_usuario  = data[0].id_usuario;
+          this.parametro.assinatura  = data[0].assinatura;
+          this.parametro.parametro   = data[0].parametro;
           this.parametro.user_insert = data[0].user_insert;
           this.parametro.user_update = data[0].user_update;
           this.setValues();
-          this.onChangeParametros();
+          this.onChangeParametros(false);
         },
         (error: any) => {
           this.globalService.setSpin(false);
-          this.setValues();
+          this.setValuesNoParam()
           this.onChangeParametros();
         }
       );
@@ -541,8 +544,8 @@ export class FiltroImoinventarioComponent implements OnInit {
       );
   }
 
-  refreshParametro(){
-    let config = this.parametro.getParametro();
+  refreshParametro(start: boolean = true){
+    let config                = this.parametro.getParametro();
     Object(config).cc         = this.parametros.value.ccs;
     Object(config).cc_novo    = this.parametros.value.cc_novo;
     Object(config).grupo      = this.parametros.value.grupos;
@@ -558,14 +561,15 @@ export class FiltroImoinventarioComponent implements OnInit {
     Object(config).dtinicial  = this.parametros.value.dtinicial;
     Object(config).dtfinal    = this.parametros.value.dtfinal;
     Object(config).orderby    = this.parametros.value.orderby;
-    Object(config).page       = 0;
-    Object(config).new        = false;
+
     this.parametro.parametro  = JSON.stringify(config);
   }
 
-  onChangeParametros(){
-    this.refreshParametro();
-    this.change.emit(this.parametro);
+  onChangeParametros(start: boolean = true){
+    this.refreshParametro(start);
+    if (this.enable_filter){
+       this.change.emit(this.parametro);
+    }
   }
 
 
@@ -575,6 +579,7 @@ export class FiltroImoinventarioComponent implements OnInit {
 
   onHide(){
     this.setHide();
+    this.changeHide.emit(this.hide)
   }
 
   hasValue(campo: string): boolean {
@@ -697,6 +702,7 @@ onHoje(event:MatCheckboxChange){
       dtfinal:hoje,
       hoje:false
     })
+    this.onChangeParametros();
   }
 
 
@@ -710,6 +716,7 @@ onLimpar(event:MatCheckboxChange){
       cleardate:false
     })
   }
+  this.onChangeParametros();
 }
 
 }

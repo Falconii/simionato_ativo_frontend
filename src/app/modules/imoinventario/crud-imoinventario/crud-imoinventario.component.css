@@ -11,8 +11,8 @@ tr:hover {
     background-color: rgb(202, 169, 157);
 }
 
-.rodape {
-    width: 100%;
-    height: 10px;
-    color: blue;
+
+
+.highlight {
+  background-color: rgb(229, 139, 139);
 }

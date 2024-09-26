@@ -45,6 +45,11 @@ export class GlobalService {
   changeLocalEmitter = new EventEmitter();
   changePadraoEmitter = new EventEmitter<boolean>();
 
+
+  public mouseX: number = -1;
+  public mouseY: number = -1;
+
+
   constructor(private usuarioService: UsuariosService, private router: Router) {
     this.usuario = new UsuarioModel();
     this.logado = false;
@@ -138,7 +143,7 @@ export class GlobalService {
 
     sit = new SituacaoInventario();
     sit.id = 1;
-    sit.descricao = 'Inventariado Sem Troca De Código Ou CC';
+    sit.descricao = 'Inventariado Sem Alterações';
     this.situacoesInventarioPar.push(sit);
 
     sit = new SituacaoInventario();
@@ -644,7 +649,7 @@ export class GlobalService {
   }
 
   estadoSave(par: ParametroModel) {
-    const idx = this.lsParametros.findIndex((p) => par.modulo == p.modulo);
+    const idx = this.lsParametros.findIndex((param) => { return param.modulo.trim() == par.modulo.trim()});
     if (idx == -1) {
       this.lsParametros.push(par);
     } else {
@@ -654,7 +659,7 @@ export class GlobalService {
 
   estadoFind(value: string): ParametroModel | null {
     const idx = this.lsParametros.findIndex(
-      (p) => value.trim() == p.modulo.trim()
+      (p) =>{ return value.trim() == p.modulo.trim()}
     );
     if (idx == -1) return null;
     return this.lsParametros[idx];
@@ -662,10 +667,12 @@ export class GlobalService {
 
   estadoDelete(par: ParametroModel) {
     const idx = this.lsParametros.findIndex(
-      (p) => par.modulo.trim() == p.modulo.trim()
+      (p) => { return par.modulo.trim() == p.modulo.trim() }
     );
     if (idx > -1) {
       this.lsParametros.splice(idx, 1);
     }
   }
+
+
 }

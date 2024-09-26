@@ -12,7 +12,7 @@
     </button>
   </mat-toolbar>
 </div>
-<app-filtro-imoinventario [PARAMETRO]="parametro" (changeParametro)="onChangeParametros($event)"></app-filtro-imoinventario>
+<app-filtro-imoinventario  PARAMNAME = "paramimoinv" (changeParametro)="onChangeParametros($event)" [CONTROLE_PAGINAS]="controlePaginas" ></app-filtro-imoinventario>
 <div *ngIf="fotos.length > 0 && listaAtivos.length > 0">
   <ul>
     <i *ngFor="let imo of imoinv">

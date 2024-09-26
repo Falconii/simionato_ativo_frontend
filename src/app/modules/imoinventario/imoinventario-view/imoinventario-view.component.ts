@@ -310,6 +310,9 @@ export class ImoinventarioViewComponent implements OnInit {
     if (idx == -1) {
       idx2 = this.lsCondicoes.length - 1;
     }
+    const idx3 = this.ccs_alterados.findIndex((cc) => {
+      return cc.codigo.trim() == this.lancamento.new_cc;
+    });
     this.formulario.setValue({
       usuario: this.lancamento.usu_razao, //this.data.lancamento.id_usuario,
       nlanc: this.lancamento.id_lanca,
@@ -323,7 +326,7 @@ export class ImoinventarioViewComponent implements OnInit {
       descricao: this.lancamento.imo_descricao,
       cc_original: idx == -1 ? 'C.C. NÃO CADASTRADO!' : this.ccs[idx].descricao,
       cc_novo: this.lancamento.new_cc,
-      cc_novo_: 'Centro Custo Não Alterado!',
+      cc_novo_: idx3 == -1 ? 'C.C. NÃO CADASTRADO!' : this.ccs_alterados[idx3].descricao,
       condicao: this.lancamento.condicao,
       condicao_:
         this.idAcao == CadastroAcoes.Consulta ||

@@ -58,11 +58,11 @@ export class FotoViewComponent implements OnInit {
   ngOnDestroy(){
     this.inscricaoGetAll?.unsubscribe();
     this.inscricaoFoto?.unsubscribe();
+    this.globalService.estadoDelete(this.parametro);
   }
 
 
   filtrarAtivos(){
-
     this.listaAtivos = [];
     this.imoinv.forEach(item => {
     let count = this.listaAtivos.filter(x => x == item.id_imobilizado).length;
