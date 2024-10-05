@@ -36,14 +36,13 @@ export class FotoViewComponent implements OnInit {
 
   parametro: ParametroModel = new ParametroModel()
 
-
   imoinv: ImobilizadoinventarioModel[] = [];
-
 
   listaAtivos: number[] = [];
 
-
   fotos: FotoModel[] = [];
+
+  hide: boolean = false;
 
   constructor(
     private appSnackBar: AppSnackbar,
@@ -229,7 +228,8 @@ export class FotoViewComponent implements OnInit {
     this.getImoIven();
   }
 
-  onChangeParametros(param:ParametroModel) {
+  onChangeParametros(param:ParametroModel)  {
+    console.log("change chamdo",param);
     this.parametro = param;
     this.getImoIvenContador();
   }
@@ -238,8 +238,17 @@ export class FotoViewComponent implements OnInit {
     this.router.navigate(['']);
   }
 
+  onTopoPagina(){
+    this.poscionaWindow(0,0);
+  }
 
 
+  poscionaWindow(x:number,y:number){
+    window.scrollTo(x,y);
+  }
 
+  onChangeHide(hide:boolean){
+    this.hide = hide;
+  }
 
 }

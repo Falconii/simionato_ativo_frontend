@@ -12,7 +12,7 @@
     </button>
   </mat-toolbar>
 </div>
-<app-filtro-imoinventario  PARAMNAME = "paramimoinv" (changeParametro)="onChangeParametros($event)" [CONTROLE_PAGINAS]="controlePaginas" ></app-filtro-imoinventario>
+<app-filtro-imoinventario  PARAMNAME = "paramimoinv" [HIDE]="hide"  [CONTROLE_PAGINAS]="controlePaginas" (changeParametro)="onChangeParametros($event)" (changeHide)="onChangeHide($event)"></app-filtro-imoinventario>
 <div *ngIf="fotos.length > 0 && listaAtivos.length > 0">
   <ul>
     <i *ngFor="let imo of imoinv">
@@ -30,7 +30,14 @@
       </div>
     </i>
   </ul>
-  <div class="button-container-right" *ngIf="controlePaginas.getTotalPaginas() > 1">
+</div>
+<div class="div-barra"  *ngIf="fotos.length > 0 && listaAtivos.length > 0">
+  <mat-toolbar>
+    <span class="example-spacer">Consulta De Fotos</span>
     <app-navegator [controle]="controlePaginas" (changePage)="onChangePage()"></app-navegator>
-  </div>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon"
+      (click)="onTopoPagina()" matTooltip="Topo Da Página" matTooltipPosition="above">
+      <mat-icon>arrow_upward</mat-icon>
+    </button>
+  </mat-toolbar>
 </div>
