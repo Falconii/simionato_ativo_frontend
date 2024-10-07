@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 import { GlobalService } from 'src/app/services/global.service';
 import { GoogleServiceService } from 'src/app/services/google-service.service';
 import { AppSnackbar } from 'src/app/shared/classes/app-snackbar';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-googleoauth2',
@@ -12,6 +13,8 @@ import { AppSnackbar } from 'src/app/shared/classes/app-snackbar';
 export class Googleoauth2Component implements OnInit {
 
   inscricaoOauth!: Subscription;
+
+  apiURLOauth2: string = environment.apiOAuth2;
 
   constructor(
     private appSnackBar: AppSnackbar,
@@ -28,7 +31,7 @@ export class Googleoauth2Component implements OnInit {
 
 
   onSubmit(){
-      window.location.href = 'http://localhost:3000/auth/google'
+      window.location.href = `${this.apiURLOauth2}auth/google`;
   }
 
   onCancel(){

@@ -651,6 +651,9 @@ openEmailDialog(): void {
 
 
 openDownLoadDialog(): void {
+
+  console.log("Pagina: ", this.controle_paginas.getPaginalAtual());
+
   const data: DownloadDialogData = new DownloadDialogData();
   data.titulo       = "DOWNLOAD DE CONSULTA";
   data.escopo       = "T";
@@ -673,7 +676,7 @@ openDownLoadDialog(): void {
     dialogConfig
   )
     .beforeClosed()
-    .subscribe((data: EmailDialogData) => {
+    .subscribe((data: DownloadDialogData) => {
     });
 }
 

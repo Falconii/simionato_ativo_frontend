@@ -10,8 +10,6 @@ import { Injectable } from '@angular/core';
 })
 export class GoogleServiceService {
 
-  apiURL: string = environment.apiURL;
-
   apiURLOauth: string = environment.apiOAuth2;
 
   constructor(private http: HttpClient) {}
