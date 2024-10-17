@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { StoreageDiscoModel } from 'src/app/models/storeage-disco-model';
+import { ParametroStorageFree_Credencials } from 'src/app/parametros/parametro-StorageFree_Credencials';
 import { GlobalService } from 'src/app/services/global.service';
 import { GoogleServiceService } from 'src/app/services/google-service.service';
 import { AppSnackbar } from 'src/app/shared/classes/app-snackbar';
@@ -13,8 +15,12 @@ import { environment } from 'src/environments/environment';
 export class Googleoauth2Component implements OnInit {
 
   inscricaoOauth!: Subscription;
+  inscricaoSpace!: Subscription;
+
 
   apiURLOauth2: string = environment.apiOAuth2;
+
+  discoSpace:StoreageDiscoModel = new StoreageDiscoModel()
 
   constructor(
     private appSnackBar: AppSnackbar,
@@ -22,10 +28,12 @@ export class Googleoauth2Component implements OnInit {
   private googleService : GoogleServiceService) { }
 
   ngOnInit(): void {
+    this.getSpace();
   }
 
   ngOnDestroy(): void {
     this.inscricaoOauth?.unsubscribe();
+    this.inscricaoSpace?.unsubscribe();
   }
 
 
@@ -60,5 +68,35 @@ export class Googleoauth2Component implements OnInit {
         }
       );
   }
+
+
+
+  getSpace() {
+    var param = new ParametroStorageFree_Credencials() ;
+
+    param.id_empresa = this.globalService.getEmpresa().id;
+    param.id_local   = this.globalService.getLocal().id;
+    param.id_inventario = this.globalService.getInventario().codigo;
+    param.key           = "copperstill";
+
+    this.globalService.setSpin(true);
+    this.inscricaoOauth = this.googleService
+      .getDiscoFree(param)
+      .subscribe(
+        (data:any ) => {
+          this.globalService.setSpin(false);
+          this.discoSpace = data.space;
+        },
+        (error: any) => {
+          this.globalService.setSpin(false);
+          this.appSnackBar.openFailureSnackBar(
+            `Deu Erro ${error.error.tabela} - ${error.error.erro} - ${error.error.message}`,
+            'OK'
+          );
+        }
+      );
+  }
+
+
 
 }
