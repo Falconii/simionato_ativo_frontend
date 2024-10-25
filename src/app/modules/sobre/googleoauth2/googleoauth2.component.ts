@@ -20,7 +20,7 @@ export class Googleoauth2Component implements OnInit {
 
   apiURLOauth2: string = environment.apiOAuth2;
 
-  discoSpace:StoreageDiscoModel = new StoreageDiscoModel()
+  discoSpace:StoreageDiscoModel[] = [];
 
   constructor(
     private appSnackBar: AppSnackbar,
@@ -28,7 +28,7 @@ export class Googleoauth2Component implements OnInit {
   private googleService : GoogleServiceService) { }
 
   ngOnInit(): void {
-    this.getSpace();
+    this.getSpacecrendeciails();
   }
 
   ngOnDestroy(): void {
@@ -71,7 +71,7 @@ export class Googleoauth2Component implements OnInit {
 
 
 
-  getSpace() {
+  getSpacecrendeciails() {
     var param = new ParametroStorageFree_Credencials() ;
 
     param.id_empresa = this.globalService.getEmpresa().id;
@@ -81,11 +81,17 @@ export class Googleoauth2Component implements OnInit {
 
     this.globalService.setSpin(true);
     this.inscricaoOauth = this.googleService
-      .getDiscoFree(param)
+      .getDiscoFreeCrendencials(param)
       .subscribe(
         (data:any ) => {
           this.globalService.setSpin(false);
-          this.discoSpace = data.space;
+          let space = new StoreageDiscoModel();
+          space.Origem = "Crendencials"
+          space.Armazenamento_total = data.space.Armazenamento_total;
+          space.Armazenamento_usado = data.space.Armazenamento_usado;
+          space.Armazenamento_restante = data.space.Armazenamento_restante;
+          this.discoSpace.push(space);
+          this.getSpaceOAuth20();
         },
         (error: any) => {
           this.globalService.setSpin(false);
@@ -97,6 +103,28 @@ export class Googleoauth2Component implements OnInit {
       );
   }
 
-
+  getSpaceOAuth20() {
+    this.globalService.setSpin(true);
+    this.inscricaoOauth = this.googleService
+      .getDiscoFreeOauth20()
+      .subscribe(
+        (data:any ) => {
+          this.globalService.setSpin(false);
+          let space = new StoreageDiscoModel();
+          space.Origem              = data.origem
+          space.Armazenamento_total = data.total;
+          space.Armazenamento_usado = data.usado;
+          space.Armazenamento_restante = data.free;
+          this.discoSpace.push(space)
+        },
+        (error: any) => {
+          this.globalService.setSpin(false);
+          this.appSnackBar.openFailureSnackBar(
+            `Deu Erro ${error.error.tabela} - ${error.error.erro} - ${error.error.message}`,
+            'OK'
+          );
+        }
+      );
+  }
 
 }

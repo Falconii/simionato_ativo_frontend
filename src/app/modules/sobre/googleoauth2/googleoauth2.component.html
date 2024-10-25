@@ -14,7 +14,36 @@
         </button>
       </div>
     </mat-toolbar>
-  </div>
-  <div>
-    <div>Espaço: {{discoSpace | json}} </div>
-  </div>
+</div>
+<div>
+    <table class="Browse_Lanc" >
+      <tr class="coluna-cabec">
+        <th>ORIGEM</th>
+        <th>TOTAL</th>
+        <th>USADO</th>
+        <th>FREE</th>
+      </tr>
+      <tr *ngFor="let space of discoSpace " >
+        <td>
+          <div>
+            <mat-label class="Browse_Lanc_td">{{space.Origem}}</mat-label>
+          </div>
+        </td>
+        <td>
+          <div class="alinha_centro">
+            <mat-label class="Browse_Lanc_td">{{space.Armazenamento_total}}</mat-label>
+          </div>
+        </td>
+        <td>
+          <div class="alinha_centro">
+            <mat-label class="Browse_Lanc_td">{{space.Armazenamento_usado}}</mat-label>
+          </div>
+        </td>
+        <td>
+          <div class="alinha_centro">
+            <mat-label class="Browse_Lanc_td">{{space.Armazenamento_restante}}</mat-label>
+          </div>
+        </td>
+      </tr>
+    </table>
+</div>

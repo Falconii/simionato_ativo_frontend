@@ -21,10 +21,12 @@ export class GoogleServiceService {
 		return this.http.get<any>(`${this.apiURLOauth}auth/google`);
 	}
 
-  getDiscoFree(params: ParametroStorageFree_Credencials): Observable<StoreageDiscoModel> {
+  getDiscoFreeCrendencials(params: ParametroStorageFree_Credencials): Observable<StoreageDiscoModel> {
 		return this.http.post<any>(`${this.apiURL}discofreev1`,params);
 	}
 
-
+  getDiscoFreeOauth20(): Observable<StoreageDiscoModel> {
+		return this.http.get<any>(`${this.apiURL}freedisco`);
+	}
 
 }
