@@ -35,6 +35,7 @@ import { DownloadDialogComponent } from './components/download-dialog/download-d
 import { NgxMaskModule } from 'ngx-mask';
 import { CcPipePipe } from './pipes/cc-pipe.pipe';
 import { CondicaoPipePipe } from './pipes/condicao-pipe.pipe';
+import { FiltroCadastroPadraoComponent } from './components/filtro-cadastro-padrao/filtro-cadastro-padrao.component';
 @NgModule({
   declarations: [
     SimNaoPipe,
@@ -70,6 +71,7 @@ import { CondicaoPipePipe } from './pipes/condicao-pipe.pipe';
     DownloadDialogComponent,
     CcPipePipe,
     CondicaoPipePipe,
+    FiltroCadastroPadraoComponent,
   ],
   imports: [CommonModule, MaterialModule, FormsModule, ReactiveFormsModule,
     NgxMaskModule.forChild(),],
@@ -94,7 +96,8 @@ import { CondicaoPipePipe } from './pipes/condicao-pipe.pipe';
     FiltroImoinventarioComponent,
     BrowserFotoComponent,
     CcPipePipe,
-    CondicaoPipePipe
+    CondicaoPipePipe,
+    FiltroCadastroPadraoComponent
   ],
 })
 export class SharedModule {}
