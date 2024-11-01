@@ -36,7 +36,6 @@ import { NgxMaskModule } from 'ngx-mask';
 import { CcPipePipe } from './pipes/cc-pipe.pipe';
 import { CondicaoPipePipe } from './pipes/condicao-pipe.pipe';
 import { FiltroCadastroPadraoComponent } from './components/filtro-cadastro-padrao/filtro-cadastro-padrao.component';
-import { ChangeMod01Component } from './components/change-mod01/change-mod01.component';
 import { ChangeMod01DialogComponent } from './components/change-mod01-dialog/change-mod01-dialog.component';
 @NgModule({
   declarations: [
@@ -74,7 +73,6 @@ import { ChangeMod01DialogComponent } from './components/change-mod01-dialog/cha
     CcPipePipe,
     CondicaoPipePipe,
     FiltroCadastroPadraoComponent,
-    ChangeMod01Component,
     ChangeMod01DialogComponent,
   ],
   imports: [CommonModule, MaterialModule, FormsModule, ReactiveFormsModule,
