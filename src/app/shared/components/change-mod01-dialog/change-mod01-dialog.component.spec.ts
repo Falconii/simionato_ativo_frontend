@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CrudPadraoCadastroComponent } from './crud-padrao-cadastro.component';
+import { ChangeMod01DialogComponent } from './change-mod01-dialog.component';
 
-describe('CrudPadraoCadastroComponent', () => {
-  let component: CrudPadraoCadastroComponent;
-  let fixture: ComponentFixture<CrudPadraoCadastroComponent>;
+describe('ChangeMod01DialogComponent', () => {
+  let component: ChangeMod01DialogComponent;
+  let fixture: ComponentFixture<ChangeMod01DialogComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CrudPadraoCadastroComponent ]
+      declarations: [ ChangeMod01DialogComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CrudPadraoCadastroComponent);
+    fixture = TestBed.createComponent(ChangeMod01DialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

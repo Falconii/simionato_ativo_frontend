@@ -1,2 +1,2 @@
 <p>crud-padrao-cadastro works!</p>
-<app-filtro-cadastro-padrao></app-filtro-cadastro-padrao>
+<app-filtro-cadastro-padrao PARAMNAME = "paramapelido" [HIDE]="hide" [EMAIL]="true" [DOWNLOAD]="true" [CONTROLE_PAGINAS]="controlePaginas" (changeParametro)="onChangeParametros($event)" (changeHide)="onChangeHide($event)" *ngIf="browse"></app-filtro-cadastro-padrao>
