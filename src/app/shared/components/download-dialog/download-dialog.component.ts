@@ -156,6 +156,15 @@ export class DownloadDialogComponent implements OnInit {
       par.orderby = Object(config).orderby;
     }
 
+
+    if (Object(config).cc.trim() !== '') {
+      par.id_cc = Object(config).cc;
+    }
+
+    if (Object(config).cc_novo.trim() !== '') {
+      par.new_cc = Object(config).cc_novo;
+    }
+
     key = parseInt(Object(config).id_grupo, 10);
 
     if (isNaN(key)) {
