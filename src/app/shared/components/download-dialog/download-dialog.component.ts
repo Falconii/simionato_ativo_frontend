@@ -144,11 +144,16 @@ export class DownloadDialogComponent implements OnInit {
 
     let key:number = 0;
 
-    if (Object(config).cc !== '') {
-      par.id_cc = Object(config).cc;
+    if (Object(config).dtinicial !== '') {
+      par.dtinicial = Object(config).dtinicial;
     }
-    if (Object(config).cc_novo !== '') {
-      par.new_cc = Object(config).cc_novo;
+
+    if (Object(config).dtfinal !== '') {
+      par.dtfinal = Object(config).dtfinal;
+    }
+
+    if (Object(config).orderby !== '') {
+      par.orderby = Object(config).orderby;
     }
 
     key = parseInt(Object(config).id_grupo, 10);

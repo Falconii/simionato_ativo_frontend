@@ -37,6 +37,7 @@ import { CcPipePipe } from './pipes/cc-pipe.pipe';
 import { CondicaoPipePipe } from './pipes/condicao-pipe.pipe';
 import { FiltroCadastroPadraoComponent } from './components/filtro-cadastro-padrao/filtro-cadastro-padrao.component';
 import { ChangeMod01DialogComponent } from './components/change-mod01-dialog/change-mod01-dialog.component';
+import { LabelValueDirective } from './diretivas/label-value.directive';
 @NgModule({
   declarations: [
     SimNaoPipe,
@@ -74,6 +75,7 @@ import { ChangeMod01DialogComponent } from './components/change-mod01-dialog/cha
     CondicaoPipePipe,
     FiltroCadastroPadraoComponent,
     ChangeMod01DialogComponent,
+    LabelValueDirective
   ],
   imports: [CommonModule, MaterialModule, FormsModule, ReactiveFormsModule,
     NgxMaskModule.forChild(),],
@@ -99,7 +101,8 @@ import { ChangeMod01DialogComponent } from './components/change-mod01-dialog/cha
     BrowserFotoComponent,
     CcPipePipe,
     CondicaoPipePipe,
-    FiltroCadastroPadraoComponent
+    FiltroCadastroPadraoComponent,
+    LabelValueDirective
   ],
 })
 export class SharedModule {}

@@ -35,6 +35,10 @@ export class ChangeMod01DialogComponent implements OnInit {
     this.formulario = formBuilder.group({
       de: [{ value: '' }],
       deDescricao: [{ value: '' }],
+      para: [{ value: '' }],
+      paraDescricao: [{ value: '' }],
+      paraGrupo:[{ value: '' }],
+      paraCC:[{ value: '' }]
     });
      }
      ngOnInit(): void {
@@ -85,7 +89,11 @@ export class ChangeMod01DialogComponent implements OnInit {
     setValue() {
       this.formulario.setValue({
         de: this.data.ativo.id_imobilizado,
-        deDescricao:this.data.ativo.imo_descricao
+        deDescricao:this.data.ativo.imo_descricao,
+        para: "",
+        paraDescricao:"",
+        paraGrupo:"",
+        paraCC:""
       });
     }
 
