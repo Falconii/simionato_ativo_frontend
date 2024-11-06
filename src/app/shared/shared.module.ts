@@ -38,6 +38,7 @@ import { CondicaoPipePipe } from './pipes/condicao-pipe.pipe';
 import { FiltroCadastroPadraoComponent } from './components/filtro-cadastro-padrao/filtro-cadastro-padrao.component';
 import { ChangeMod01DialogComponent } from './components/change-mod01-dialog/change-mod01-dialog.component';
 import { LabelValueDirective } from './diretivas/label-value.directive';
+import { LabelVerdeVermelhoDirective } from './diretivas/label-verde-vermelho.directive';
 @NgModule({
   declarations: [
     SimNaoPipe,
@@ -62,6 +63,7 @@ import { LabelValueDirective } from './diretivas/label-value.directive';
     OrigemPipe,
     LancaDialogComponent,
     SetfocusDirective,
+    LabelVerdeVermelhoDirective,
     ImobilizadoDialogComponent,
     NfeDialogComponent,
     ValoresDialogComponent,
@@ -96,13 +98,14 @@ import { LabelValueDirective } from './diretivas/label-value.directive';
     FirstNamePipe,
     OrigemPipe,
     SetfocusDirective,
+    LabelVerdeVermelhoDirective,
     DashboardComponent,
     FiltroImoinventarioComponent,
     BrowserFotoComponent,
     CcPipePipe,
     CondicaoPipePipe,
     FiltroCadastroPadraoComponent,
-    LabelValueDirective
+    LabelValueDirective,
   ],
 })
 export class SharedModule {}

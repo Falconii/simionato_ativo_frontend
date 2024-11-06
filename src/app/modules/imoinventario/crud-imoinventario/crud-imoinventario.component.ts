@@ -538,7 +538,7 @@ export class CrudImoinventarioComponent implements OnInit {
     const modalDialog = this.NfeDialog.open(ChangeMod01DialogComponent, dialogConfig)
       .beforeClosed()
       .subscribe((data: ChangeMod01Data) => {
-        //faço nada
+        this.getImoIven();
       });
   }
 

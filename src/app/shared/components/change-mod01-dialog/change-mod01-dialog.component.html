@@ -1,7 +1,7 @@
 <div class="padrao">
   <div class="div-barra">
     <mat-toolbar>
-      <span class="example-spacer">MANMANMANMANMANMANMAN</span>
+      <span class="example-spacer">Rotina Para Transferir Lançamento e Fotos. ORIGEM->DESTINO</span>
     </mat-toolbar>
   </div>
   <div mat-dialog-content class="dialog-content">
@@ -13,7 +13,7 @@
         </mat-form-field>
         <mat-form-field appearance="outline" class="column-span-3">
           <mat-label>Descrição</mat-label>
-          <input matInput formControlName="deDescricao" >
+          <input matInput formControlName="deDescricao" readonly="true">
         </mat-form-field>
       </div>
       <div class="lancamento">
@@ -54,43 +54,55 @@
           </mat-expansion-panel>
         </mat-accordion>
       </div>
-      <div class="col-med-4">
+      <div class="col-med-3">
         <mat-form-field appearance="outline" class="col-50">
           <mat-label>Ativo Destino</mat-label>
           <input matInput formControlName="para" >
-        </mat-form-field>
-        <mat-form-field appearance="outline" class="column-span-3">
-          <mat-label>Descrição</mat-label>
-          <input matInput formControlName="paraDescricao" >
-        </mat-form-field>
-      </div>
-      <div class="col-med-4">
-        <mat-form-field appearance="outline" class="col-max">
-          <mat-label>Ativo Destino</mat-label>
-          <input matInput formControlName="para" >
-        </mat-form-field>
-        <mat-form-field appearance="outline" class="col-max">
-          <mat-label>Origem</mat-label>
-          <input matInput formControlName="paraOrigem" >
+          <button *ngIf="hasValue('para')" matSuffix mat-icon-button aria-label="Clear" (click)="pesquisar()">
+             <mat-icon>search</mat-icon>
+          </button>
         </mat-form-field>
         <mat-form-field appearance="outline" class="column-span-2">
           <mat-label>Descrição</mat-label>
-          <input matInput formControlName="paraDescricao" >
+          <input matInput formControlName="paraDescricao" readonly="true">
+        </mat-form-field>
+      </div>
+      <div class="col-med-3">
+        <mat-form-field appearance="outline" class="col-max">
+          <mat-label>Origem</mat-label>
+          <input matInput formControlName="paraOrigem" readonly="true">
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="col-max">
+          <mat-label>Condição</mat-label>
+          <input matInput formControlName="paraCondicao" readonly="true">
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="col-max">
+          <mat-label>Book</mat-label>
+          <input matInput formControlName="paraBook" readonly="true">
+        </mat-form-field>
+      </div>
+      <div class="col-med-1">
+        <mat-form-field appearance="outline" class="column-max">
+          <mat-label>Observação</mat-label>
+          <input matInput formControlName="paraObs" >
         </mat-form-field>
       </div>
       <div class="col-med-1">
         <mat-form-field appearance="outline" class="col-max">
           <mat-label>Grupo</mat-label>
-          <input matInput formControlName="paraGrupo" >
+          <input matInput formControlName="paraGrupo" readonly="true">
         </mat-form-field>
       </div>
       <div class="col-med-1">
         <mat-form-field appearance="outline" class="col-max">
           <mat-label>C.Custo</mat-label>
-          <input matInput formControlName="paraCC" >
+          <input matInput formControlName="paraCC" readonly="true">
         </mat-form-field>
       </div>
 
+      <div class="col-med-1">
+          <p appLabelVerdeVermelho [ITSOK]="itsOK">{{mensagem}}</p>
+      </div>
     </form>
   </div>
   <div mat-dialog-actions>
@@ -99,7 +111,7 @@
         <mat-icon>cancel</mat-icon>
         <span>{{getLabelCancel()}}</span>
       </button>
-      <button mat-raised-button color="primary" (click)="actionFunction()" [disabled]="gravando" >
+      <button mat-raised-button color="primary" (click)="actionFunction()" [disabled]="!itsOK" >
         <mat-icon>check</mat-icon>
         <span>SUBSTITUIR</span>
       </button>
