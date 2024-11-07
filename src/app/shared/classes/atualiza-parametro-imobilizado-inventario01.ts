@@ -99,8 +99,9 @@ export function AtualizaParametroImobilizadoInventario01(par : ParametroImobiliz
       par.origem = Object(config).origem;
     }
 
-  } catch(error){
-    alert(error);
-  }
     return par;
+
+  } catch(error){
+     throw error
+  }
 }

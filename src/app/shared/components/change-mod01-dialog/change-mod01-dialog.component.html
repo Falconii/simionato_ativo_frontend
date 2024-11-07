@@ -33,7 +33,7 @@
               <label class="Browse_Lanc_td" appLabelValue LABEL="Situação:" VALUE="{{data.ativo.lanc_estado | situacao}}"></label>
             </div>
             <div  class = "container">
-              <label class="Browse_Lanc_td" appLabelValue LABEL="Grupo:" VALUE="{{data.ativo.imo_descricao}}"></label>
+              <label class="Browse_Lanc_td" appLabelValue LABEL="Grupo:" VALUE="{{data.ativo.grupo_descricao}}"></label>
             </div>
             <div class = "container">
               <label class="Browse_Lanc_td" appLabelValue LABEL="C.C. Original:" VALUE="{{data.ativo.cc_descricao}}"></label>
@@ -99,7 +99,6 @@
           <input matInput formControlName="paraCC" readonly="true">
         </mat-form-field>
       </div>
-
       <div class="col-med-1">
           <p appLabelVerdeVermelho [ITSOK]="itsOK">{{mensagem}}</p>
       </div>
