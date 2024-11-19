@@ -26,7 +26,8 @@ export class CrudPadraoCadastroComponent implements OnInit {
 
   parametro: ParametroModel = new ParametroModel();
 
-  inscricaoGetAll!: Subscription;
+  inscricaoGetDados!: Subscription;
+  inscricaoGetContador!: Subscription;
 
   tamPagina = 50;
 
@@ -58,10 +59,12 @@ export class CrudPadraoCadastroComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.getApelidosContador();
   }
 
   ngOnDestroy(): void {
-    this.inscricaoGetAll?.unsubscribe();
+    this.inscricaoGetDados?.unsubscribe();
+    this.inscricaoGetContador?.unsubscribe();
   }
 
 
@@ -75,10 +78,10 @@ export class CrudPadraoCadastroComponent implements OnInit {
     par.pagina = this.controlePaginas.getPaginalAtual();
 
     this.globalService.setSpin(true);
-    this.inscricaoGetAll = this.cabService
+    this.inscricaoGetDados = this.cabService
       .getPadroes_CabParametro_01(par)
       .subscribe(
-        (data: any) => {
+        (data: Padrao_CabModel[]) => {
           this.globalService.setSpin(false);
           this.apelidos = data;
         },
@@ -104,7 +107,7 @@ export class CrudPadraoCadastroComponent implements OnInit {
     par.tamPagina = this.tamPagina;
 
     this.globalService.setSpin(true);
-    this.inscricaoGetAll = this.cabService
+    this.inscricaoGetContador = this.cabService
       .getPadroes_CabParametro_01(par)
       .subscribe(
         (data: any) => {
@@ -121,6 +124,7 @@ export class CrudPadraoCadastroComponent implements OnInit {
             this.apelidos = [];
             this.controlePaginas = new ControlePaginas(this.tamPagina, 1);
           }
+          this.getApelidos();
         },
         (error: any) => {
           console.log(error);
@@ -143,8 +147,7 @@ export class CrudPadraoCadastroComponent implements OnInit {
        page =  pag;
     }
     this.controlePaginas.setPaginaAtual(page);
-    this.localStorageService.removeItem("page");
-    //this.getImoIvenContador();
+    this.getApelidosContador();
   }
 
 
@@ -158,13 +161,13 @@ export class CrudPadraoCadastroComponent implements OnInit {
   novaConsulta(){
     this.localStorageService.removeItem("page");
     this.controlePaginas = new ControlePaginas(this.tamPagina,1);
-    //this.getImoIvenContador();
+    this.getApelidosContador();
   }
 
 
   onChangePage() {
     this.localStorageService.removeItem("page");
-    //this.getImoIven();
+    this.getApelidosContador();
   }
 
 

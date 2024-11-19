@@ -41,16 +41,19 @@
     </td>
     <td [class.highlight]="imo.id_imobilizado == targetRowId">
       <div>
-        <mat-label class="Browse_Lanc_td">{{imo.imo_descricao}}</mat-label>
+        <mat-label class="Browse_Lanc_td">Desc.: {{imo.imo_descricao}}</mat-label>
       </div>
       <div>
-        <mat-label class="Browse_Lanc_td">{{imo.imo_cod_cc | ccpipe}}-{{imo.cc_descricao | embrancopipe}}</mat-label>
+        <mat-label class="Browse_Lanc_td">C.C.: {{imo.imo_cod_cc | ccpipe}}-{{imo.cc_descricao | embrancopipe}}</mat-label>
       </div>
       <div>
-        <mat-label class="Browse_Lanc_td">{{imo.grupo_descricao}}</mat-label>
+        <mat-label class="Browse_Lanc_td">Grupo: {{imo.grupo_descricao}}</mat-label>
       </div>
       <div *ngIf="imo.lanc_obs.trim().length > 0">
         <mat-label class="Browse_Lanc_td">OBS:{{imo.lanc_obs}}</mat-label>
+      </div>
+      <div *ngIf="imo.imo_principal > 0">
+        <mat-label class="Browse_Lanc_td_red">Princ.: {{imo.imo_principal}}-{{imo.princ_descricao}}</mat-label>
       </div>
     </td>
     <td [class.highlight]="imo.id_imobilizado == targetRowId">

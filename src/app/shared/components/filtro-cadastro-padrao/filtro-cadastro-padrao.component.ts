@@ -327,29 +327,29 @@ export class FiltroCadastroPadraoComponent implements OnInit {
     }
 
     clearValue(campo: string){
+
+      if (campo == 'apelido')
+        this.parametros.patchValue({
+          apelido: ''
+      })
+
       if (campo == 'descricao')
       this.parametros.patchValue({
         descricao: ''
-      })
-      if (campo == 'apelido')
-        this.parametros.patchValue({
-          descricao: ''
-      })
-      if (campo == 'codigo')
-        this.parametros.patchValue({
-          codigo: ''
       })
       this.onChangeParametros();
   }
 
   ChangeValue(campo: string, value:string){
-    if (campo == 'descricao')
-    this.parametros.patchValue({
-      descricao: value
-    })
+
     if (campo == 'apelido')
       this.parametros.patchValue({
         descricao: value
+    })
+
+    if (campo == 'descricao')
+    this.parametros.patchValue({
+      descricao: value
     })
   }
 

@@ -86,6 +86,14 @@ export function AtualizaParametroImobilizadoInventario01(par : ParametroImobiliz
       par.id_usuario = key;
     }
 
+    key = parseInt(Object(config).id_principal, 10);
+
+    if (isNaN(key)) {
+      par.id_principal = 0;
+    } else {
+      par.id_principal = key;
+    }
+
     /*
     key = parseInt(Object(config).page, 10);
 
