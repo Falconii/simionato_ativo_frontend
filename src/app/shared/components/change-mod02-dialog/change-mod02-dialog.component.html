@@ -1,14 +1,15 @@
 <div class="padrao">
   <div class="div-barra">
     <mat-toolbar>
-      <span class="example-spacer">Rotina Para Trocar Ativos De Código</span>
+      <span class="example-spacer">Realoca E Transfere Ativos</span>
+      <mat-label class="label-objetivo">Ativo Realocado Vai Para O Final Da Lista.<br/>Ativo Transferido Fica Com O Código Do Realocado.</mat-label>
     </mat-toolbar>
   </div>
   <div mat-dialog-content class="dialog-content">
     <form [formGroup]="formulario" autocomplete="off">
       <div class="col-med-4">
         <mat-form-field appearance="outline" class="col-50">
-          <mat-label>Ativo De Origem</mat-label>
+          <mat-label>Ativo Realocado</mat-label>
           <input matInput formControlName="de" >
         </mat-form-field>
         <mat-form-field appearance="outline" class="column-span-3">
@@ -22,41 +23,77 @@
                                (closed)="panelOpenState = false">
             <mat-expansion-panel-header>
               <mat-panel-title>
-                Lançamento De Inventário
+                Lançamento De Inventário "Ativo Realocado"
               </mat-panel-title>
               <mat-panel-description>
               </mat-panel-description>
             </mat-expansion-panel-header>
             <div  class = "container">
-              <label class="Browse_Lanc_td" appLabelValue LABEL="Código Novo:" VALUE="{{data.ativo.new_codigo | zerotospacepipe}}"></label>
-              <label class="Browse_Lanc_td" appLabelValue LABEL="Origem:" VALUE="{{data.ativo.imo_origem | origem}}"></label>
-              <label class="Browse_Lanc_td" appLabelValue LABEL="Situação:" VALUE="{{data.ativo.lanc_estado | situacao}}"></label>
+              <div>
+                <mat-label class="Browse_Lanc_td_red">Código Novo: </mat-label>
+                <mat-label class="Browse_Lanc_td">{{data.ativo.new_codigo | zerotospacepipe}}</mat-label>
+              </div>
+              <div>
+                <mat-label class="Browse_Lanc_td_red">Origem: </mat-label>
+                <mat-label class="Browse_Lanc_td">{{data.ativo.imo_origem | origem}}</mat-label>
+              </div>
+              <div>
+                <mat-label class="Browse_Lanc_td_red">Situação: </mat-label>
+                <mat-label class="Browse_Lanc_td">{{data.ativo.lanc_estado | situacao}}</mat-label>
+              </div>
             </div>
             <div  class = "container">
-              <label class="Browse_Lanc_td" appLabelValue LABEL="Grupo:" VALUE="{{data.ativo.grupo_descricao}}"></label>
+              <div>
+                <mat-label class="Browse_Lanc_td_red">Grupo: </mat-label>
+                <mat-label class="Browse_Lanc_td">{{data.ativo.grupo_descricao}}</mat-label>
+              </div>
+            </div>
+            <div  class = "container">
+              <div>
+                <mat-label class="Browse_Lanc_td_red">C.C. Original: </mat-label>
+                <mat-label class="Browse_Lanc_td">{{data.ativo.cc_descricao}}</mat-label>
+              </div>
+              <div>
+                <mat-label class="Browse_Lanc_td_red">C.C. Novo: </mat-label>
+                <mat-label class="Browse_Lanc_td">{{data.ativo.new_cc_descricao}}</mat-label>
+              </div>
             </div>
             <div class = "container">
-              <label class="Browse_Lanc_td" appLabelValue LABEL="C.C. Original:" VALUE="{{data.ativo.cc_descricao}}"></label>
-              <label class="Browse_Lanc_td" appLabelValue LABEL="C.C. Novo:" VALUE="{{data.ativo.new_cc_descricao}}"></label>
+              <div>
+                <mat-label class="Browse_Lanc_td_red">Data: </mat-label>
+                <mat-label class="Browse_Lanc_td">{{data.ativo.lanc_dt_lanca}}</mat-label>
+              </div>
+              <div>
+                <mat-label class="Browse_Lanc_td_red">Nº Lanc.: </mat-label>
+                <mat-label class="Browse_Lanc_td">{{data.ativo.id_lanca}}</mat-label>
+              </div>
             </div>
             <div class = "container">
-              <label class="Browse_Lanc_td" appLabelValue LABEL="Data:" VALUE="{{data.ativo.lanc_dt_lanca}}"></label>
-              <label class="Browse_Lanc_td" appLabelValue LABEL="Nº Lanc.:" VALUE="{{data.ativo.id_lanca}}"></label>
+              <div>
+                <mat-label class="Browse_Lanc_td_red">Resp: </mat-label>
+                <mat-label class="Browse_Lanc_td">{{data.ativo.usu_razao}}</mat-label>
+              </div>
+              <div>
+                <mat-label class="Browse_Lanc_td_red">Condição: </mat-label>
+                <mat-label class="Browse_Lanc_td">{{data.ativo.lanc_condicao | condicaopipe}}</mat-label>
+              </div>
+              <div>
+                <mat-label class="Browse_Lanc_td_red">Book: </mat-label>
+                <mat-label class="Browse_Lanc_td">{{data.ativo.lanc_book | simNao}}</mat-label>
+              </div>
             </div>
             <div class = "container">
-              <label class="Browse_Lanc_td" appLabelValue LABEL="Resp:" VALUE="{{data.ativo.usu_razao}}"></label>
-              <label class="Browse_Lanc_td" appLabelValue LABEL="Condição:" VALUE="{{data.ativo.lanc_condicao | condicaopipe}}"></label>
-              <label class="Browse_Lanc_td" appLabelValue LABEL="Book:" VALUE="{{data.ativo.lanc_book | simNao}}"></label>
-            </div>
-            <div class = "container">
-              <label class="Browse_Lanc_td" appLabelValue LABEL="Obs:" VALUE="{{data.ativo.lanc_obs}}"></label>
+              <div>
+                <mat-label class="Browse_Lanc_td_red">Obs: </mat-label>
+                <mat-label class="Browse_Lanc_td">{{data.ativo.lanc_obs}}</mat-label>
+              </div>
             </div>
           </mat-expansion-panel>
         </mat-accordion>
       </div>
       <div class="col-med-3">
         <mat-form-field appearance="outline" class="col-50">
-          <mat-label>Ativo Destino</mat-label>
+          <mat-label>Ativo Transferido</mat-label>
           <input matInput formControlName="para" >
           <button *ngIf="hasValue('para')" matSuffix mat-icon-button aria-label="Clear" (click)="pesquisar()">
              <mat-icon>search</mat-icon>
@@ -73,72 +110,73 @@
                                (closed)="panelOpenState = false">
             <mat-expansion-panel-header>
               <mat-panel-title>
-                Lançamento De Inventário Destino
+                Lançamento De Inventário "Ativo Transferido"
               </mat-panel-title>
               <mat-panel-description>
               </mat-panel-description>
             </mat-expansion-panel-header>
             <div  class = "container">
-              <label class="Browse_Lanc_td" appLabelValue LABEL="Código Novo:" VALUE="{{data.ativo.new_codigo | zerotospacepipe}}"></label>
-              <label class="Browse_Lanc_td" appLabelValue LABEL="Origem:" VALUE="{{data.ativo.imo_origem | origem}}"></label>
-              <label class="Browse_Lanc_td" appLabelValue LABEL="Situação:" VALUE="{{data.ativo.lanc_estado | situacao}}"></label>
+              <div>
+                <mat-label class="Browse_Lanc_td_red">Código Novo: </mat-label>
+                <mat-label class="Browse_Lanc_td">{{destino.new_codigo | zerotospacepipe}}</mat-label>
+              </div>
+              <div>
+                <mat-label class="Browse_Lanc_td_red">Origem: </mat-label>
+                <mat-label class="Browse_Lanc_td">{{destino.imo_origem | origem}}</mat-label>
+              </div>
+              <div>
+                <mat-label class="Browse_Lanc_td_red">Situação: </mat-label>
+                <mat-label class="Browse_Lanc_td">{{destino.lanc_estado | situacao}}</mat-label>
+              </div>
             </div>
             <div  class = "container">
-              <label class="Browse_Lanc_td" appLabelValue LABEL="Grupo:" VALUE="{{data.ativo.grupo_descricao}}"></label>
+              <div>
+                <mat-label class="Browse_Lanc_td_red">Grupo: </mat-label>
+                <mat-label class="Browse_Lanc_td">{{destino.grupo_descricao}}</mat-label>
+              </div>
+            </div>
+            <div  class = "container">
+              <div>
+                <mat-label class="Browse_Lanc_td_red">C.C. Original: </mat-label>
+                <mat-label class="Browse_Lanc_td">{{destino.cc_descricao}}</mat-label>
+              </div>
+              <div>
+                <mat-label class="Browse_Lanc_td_red">C.C. Novo: </mat-label>
+                <mat-label class="Browse_Lanc_td">{{destino.new_cc_descricao}}</mat-label>
+              </div>
             </div>
             <div class = "container">
-              <label class="Browse_Lanc_td" appLabelValue LABEL="C.C. Original:" VALUE="{{data.ativo.cc_descricao}}"></label>
-              <label class="Browse_Lanc_td" appLabelValue LABEL="C.C. Novo:" VALUE="{{data.ativo.new_cc_descricao}}"></label>
+              <div>
+                <mat-label class="Browse_Lanc_td_red">Data: </mat-label>
+                <mat-label class="Browse_Lanc_td">{{destino.lanc_dt_lanca}}</mat-label>
+              </div>
+              <div>
+                <mat-label class="Browse_Lanc_td_red">Nº Lanc.: </mat-label>
+                <mat-label class="Browse_Lanc_td">{{destino.id_lanca}}</mat-label>
+              </div>
             </div>
             <div class = "container">
-              <label class="Browse_Lanc_td" appLabelValue LABEL="Data:" VALUE="{{data.ativo.lanc_dt_lanca}}"></label>
-              <label class="Browse_Lanc_td" appLabelValue LABEL="Nº Lanc.:" VALUE="{{data.ativo.id_lanca}}"></label>
+              <div>
+                <mat-label class="Browse_Lanc_td_red">Resp: </mat-label>
+                <mat-label class="Browse_Lanc_td">{{destino.usu_razao}}</mat-label>
+              </div>
+              <div>
+                <mat-label class="Browse_Lanc_td_red">Condição: </mat-label>
+                <mat-label class="Browse_Lanc_td">{{destino.lanc_condicao | condicaopipe}}</mat-label>
+              </div>
+              <div>
+                <mat-label class="Browse_Lanc_td_red">Book: </mat-label>
+                <mat-label class="Browse_Lanc_td">{{destino.lanc_book | simNao}}</mat-label>
+              </div>
             </div>
             <div class = "container">
-              <label class="Browse_Lanc_td" appLabelValue LABEL="Resp:" VALUE="{{data.ativo.usu_razao}}"></label>
-              <label class="Browse_Lanc_td" appLabelValue LABEL="Condição:" VALUE="{{data.ativo.lanc_condicao | condicaopipe}}"></label>
-              <label class="Browse_Lanc_td" appLabelValue LABEL="Book:" VALUE="{{data.ativo.lanc_book | simNao}}"></label>
-            </div>
-            <div class = "container">
-              <label class="Browse_Lanc_td" appLabelValue LABEL="Obs:" VALUE="{{data.ativo.lanc_obs}}"></label>
+              <div>
+                <mat-label class="Browse_Lanc_td_red">Obs: </mat-label>
+                <mat-label class="Browse_Lanc_td">{{destino.lanc_obs}}</mat-label>
+              </div>
             </div>
           </mat-expansion-panel>
         </mat-accordion>
-      </div>
-      <div class="col-med-3">
-        <mat-form-field appearance="outline" class="col-max">
-          <mat-label>Origem</mat-label>
-          <input matInput formControlName="paraOrigem" readonly="true">
-        </mat-form-field>
-        <mat-form-field appearance="outline" class="col-max">
-          <mat-label>Condição</mat-label>
-          <input matInput formControlName="paraCondicao" readonly="true">
-        </mat-form-field>
-        <mat-form-field appearance="outline" class="col-max">
-          <mat-label>Book</mat-label>
-          <input matInput formControlName="paraBook" readonly="true">
-        </mat-form-field>
-      </div>
-      <div class="col-med-1">
-        <mat-form-field appearance="outline" class="column-max">
-          <mat-label>Observação</mat-label>
-          <input matInput formControlName="paraObs" >
-        </mat-form-field>
-      </div>
-      <div class="col-med-1">
-        <mat-form-field appearance="outline" class="col-max">
-          <mat-label>Grupo</mat-label>
-          <input matInput formControlName="paraGrupo" readonly="true">
-        </mat-form-field>
-      </div>
-      <div class="col-med-1">
-        <mat-form-field appearance="outline" class="col-max">
-          <mat-label>C.Custo</mat-label>
-          <input matInput formControlName="paraCC" readonly="true">
-        </mat-form-field>
-      </div>
-      <div class="col-med-1">
-          <p appLabelVerdeVermelho [ITSOK]="itsOK">{{mensagem}}</p>
       </div>
     </form>
   </div>
@@ -150,7 +188,7 @@
       </button>
       <button mat-raised-button color="primary" (click)="actionFunction()" [disabled]="!itsOK" >
         <mat-icon>check</mat-icon>
-        <span>TROCAR</span>
+        <span>PROCESSAR</span>
       </button>
     </div>
   </div>

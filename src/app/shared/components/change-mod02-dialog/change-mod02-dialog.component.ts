@@ -1,3 +1,4 @@
+import { RealocadoService } from './../../../services/realocado.service';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -10,12 +11,11 @@ import { ImobilizadoinventarioService } from 'src/app/services/imobilizadoinvent
 import { OrigemPipe } from '../../pipes/origem.pipe';
 import { SimNaoPipe } from '../../pipes/sim-nao.pipe';
 import { CondicaoPipePipe } from '../../pipes/condicao-pipe.pipe';
-import { DeparaService } from 'src/app/services/depara.service';
 import { CadastroAcoes } from '../../classes/cadastro-acoes';
 import { ParametroImobilizadoinventario01 } from 'src/app/parametros/parametro-imobilizadoinventario01';
 import { messageError } from '../../classes/util';
-import { DeParaModel } from 'src/app/models/de-para-model';
 import { ParametroSubstituirAtivo } from 'src/app/parametros/parametro-substituir-ativo';
+import { RealocadoModel } from 'src/app/models/realocado-model';
 
 @Component({
   selector: 'app-change-mod02-dialog',
@@ -27,7 +27,7 @@ export class ChangeMod02DialogComponent implements OnInit {
 
   inscricaoAcao!: Subscription;
   inscricaoGetImobilizado!:Subscription;
-  inscricaoInsereDepara!:Subscription;
+  inscricaoRealocado!:Subscription;
   inscricaoProcessarDePara!:Subscription;
 
   formulario: FormGroup;
@@ -52,19 +52,13 @@ export class ChangeMod02DialogComponent implements OnInit {
     private simNaoPipe: SimNaoPipe,
     private origemPipe:OrigemPipe,
     private condicaoPipePipe:CondicaoPipePipe,
-    private deparaSrv:DeparaService
+    private realocadoService:RealocadoService,
   ) {
     this.formulario = formBuilder.group({
       de: [{ value: '' }],
       deDescricao: [{ value: '' }],
       para: [{ value: '' }],
       paraDescricao: [{ value: '' }],
-      paraOrigem: [{ value: '' }],
-      paraCondicao: [{ value: '' }],
-      paraBook: [{ value: '' }],
-      paraObs: [{ value: '' }],
-      paraGrupo:[{ value: '' }],
-      paraCC:[{ value: '' }]
       }); }
 
 
@@ -76,7 +70,7 @@ export class ChangeMod02DialogComponent implements OnInit {
  ngOnDestroy(): void {
    this.inscricaoAcao?.unsubscribe();
    this.inscricaoGetImobilizado?.unsubscribe();
-   this.inscricaoInsereDepara?.unsubscribe();
+   this.inscricaoRealocado?.unsubscribe();
    this.inscricaoProcessarDePara?.unsubscribe();
  }
 
@@ -110,7 +104,7 @@ export class ChangeMod02DialogComponent implements OnInit {
 
  executaAcao() {
    this.itsOK = false;
-   this.insereDePara();
+   this.insereRealocado();
 
  }
 
@@ -123,13 +117,7 @@ export class ChangeMod02DialogComponent implements OnInit {
      de: this.data.ativo.id_imobilizado,
      deDescricao:this.data.ativo.imo_descricao,
      para: "",
-     paraDescricao:"",
-     paraOrigem: "",
-     paraCondicao:"",
-     paraObs:"",
-     paraBook: "",
-     paraGrupo:"",
-     paraCC:""
+     paraDescricao:""
    });
  }
 
@@ -180,10 +168,15 @@ if (isNaN(key)) {
      (data: ImobilizadoinventarioModel[]) => {
        this.globalService.setSpin(false);
        this.destino = data[0];
+       console.log(this.destino);
        this.atualizar();
        this.mensagem = "Tudo OK Para Fazer A Substituição"
        this.itsOK = true;
-       if (this.destino.imo_origem != "P"){
+       this.appSnackBar.openSuccessSnackBar(
+        `Atenção! ${this.mensagem}`,
+        'OK'
+        );
+     /*  if (this.destino.imo_origem != "P"){
          this.mensagem = "Este Ativo Não É De Origem 'PLANILHA'";
          this.itsOK = false;
          this.appSnackBar.openFailureSnackBar(
@@ -192,8 +185,8 @@ if (isNaN(key)) {
          );
          this.itsOK = false;
          return
-       }
-       if (this.destino.id_lanca != 0){
+       } */
+      /*  if (this.destino.id_lanca != 0){
          this.mensagem = "Este Ativo Já Foi Inventariado!";
          this.itsOK = false;
          this.appSnackBar.openFailureSnackBar(
@@ -202,7 +195,7 @@ if (isNaN(key)) {
          );
          this.itsOK = false;
          return
-       }
+       } */
      },
      (error: any) => {
        this.globalService.setSpin(false);
@@ -218,32 +211,32 @@ if (isNaN(key)) {
 }
 
 
-insereDePara() {
+insereRealocado() {
 
- const depara:DeParaModel = new DeParaModel();
+ const realocado:RealocadoModel = new RealocadoModel();
 
- depara.id_empresa    = this.data.ativo.id_empresa;
- depara.id_local      = this.data.ativo.id_filial;
- depara.id_inventario = this.data.ativo.id_inventario;
- depara.de            = this.data.ativo.id_imobilizado;
- depara.para          = this.destino.id_imobilizado;
- depara.status        = 0;
- depara.user_insert   = this.globalService.getUsuario().id;
+ realocado.id_empresa      = this.data.ativo.id_empresa;
+ realocado.id_local        = this.data.ativo.id_filial;
+ realocado.id_inventario   = this.data.ativo.id_inventario;
+ realocado.id_realocado    = this.data.ativo.id_imobilizado;
+ realocado.id_transferido  = this.destino.id_imobilizado;
+ realocado.status        = 0;
+ realocado.user_insert   = this.globalService.getUsuario().id;
 
  this.globalService.setSpin(true);
- this.inscricaoInsereDepara = this.deparaSrv
-   .deparaInsert(depara)
+ this.inscricaoRealocado = this.realocadoService
+   .realocadoInsert(realocado)
    .subscribe(
-     (data: DeParaModel) => {
+     (data: RealocadoModel) => {
         this.globalService.setSpin(false);
-        this.mensagem = "Solcitação De Substituição Incluída Na Fila.";
-        this.TrocarAtivo();
+        this.mensagem = "Solcitação De Realocação Incluída Na Fila.";
+        this.TrocarAtivo()
      },
      (error: any) => {
        this.globalService.setSpin(false);
        this.mensagem = "Não Foi Possivel Incluir A Solcitação De Substituição.";
        this.appSnackBar.openFailureSnackBar(
-         `Falha Na Inclusão do De Para ${messageError(error)}`,
+         `Falha Na Inclusão do Realocados ${messageError(error)}`,
          'OK'
        );
      }
@@ -251,9 +244,16 @@ insereDePara() {
 }
 
 TrocarAtivo() {
-
  const param:ParametroSubstituirAtivo = new ParametroSubstituirAtivo();
-
+ this.mensagem = "Realocação Processada Com Sucesso!"
+        this.appSnackBar.openSuccessSnackBar(
+         `${this.mensagem}`,
+         'OK'
+       );
+       this.data.processar = true;
+       this.closeModal();
+return;
+/*
  param.id_empresa    = this.data.ativo.id_empresa;
  param.id_local      = this.data.ativo.id_filial;
  param.id_inventario = this.data.ativo.id_inventario;
@@ -281,6 +281,7 @@ TrocarAtivo() {
        );
      }
    );
+   */
 }
 
 pesquisar(){
@@ -290,12 +291,6 @@ pesquisar(){
 atualizar(){
  this.formulario.patchValue({
      paraDescricao:this.destino.imo_descricao,
-     paraOrigem: this.origemPipe.transform(this.destino.imo_origem),
-     paraCondicao:this.condicaoPipePipe.transform(this.destino.condicao),
-     paraBook: this.simNaoPipe.transform(this.destino.lanc_book),
-     paraObs:this.destino.lanc_obs,
-     paraGrupo:this.destino.grupo_descricao,
-     paraCC:this.destino.cc_descricao
      })
 }
 

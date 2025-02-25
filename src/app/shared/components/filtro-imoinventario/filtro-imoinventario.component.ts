@@ -594,7 +594,6 @@ export class FiltroImoinventarioComponent implements OnInit {
     }
   }
 
-
   onSaveConfig(){
     this.updateParametros();
   }
