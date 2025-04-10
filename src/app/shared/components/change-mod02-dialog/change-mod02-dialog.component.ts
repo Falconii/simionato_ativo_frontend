@@ -230,7 +230,9 @@ insereRealocado() {
      (data: RealocadoModel) => {
         this.globalService.setSpin(false);
         this.mensagem = "Solcitação De Realocação Incluída Na Fila.";
-        this.TrocarAtivo()
+        this.data.processar = true;
+        this.closeModal();
+        this.RealocarAtivo()
      },
      (error: any) => {
        this.globalService.setSpin(false);
@@ -243,24 +245,12 @@ insereRealocado() {
    );
 }
 
-TrocarAtivo() {
+RealocarAtivo() {
  const param:ParametroSubstituirAtivo = new ParametroSubstituirAtivo();
- this.mensagem = "Realocação Processada Com Sucesso!"
-        this.appSnackBar.openSuccessSnackBar(
-         `${this.mensagem}`,
-         'OK'
-       );
-       this.data.processar = true;
-       this.closeModal();
-return;
-/*
- param.id_empresa    = this.data.ativo.id_empresa;
- param.id_local      = this.data.ativo.id_filial;
- param.id_inventario = this.data.ativo.id_inventario;
 
  this.globalService.setSpin(true);
- this.inscricaoProcessarDePara = this.deparaSrv
-   .substituirAtivo(param)
+ this.inscricaoProcessarDePara = this.realocadoService
+   .realocarAtivo(this.data.ativo.id_empresa, this.data.ativo.id_filial,this.data.ativo.id_inventario)
    .subscribe(
      (data: any) => {
         this.globalService.setSpin(false);
@@ -281,7 +271,10 @@ return;
        );
      }
    );
-   */
+
+return;
+/*
+    */
 }
 
 pesquisar(){

@@ -4,11 +4,12 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { RealocadoModel } from '../models/realocado-model';
 import { ParametroRealocado01 } from '../parametros/parametro-realocado01';
+import { ParametroSubstituirAtivo } from '../parametros/parametro-substituir-ativo';
 
 @Injectable({
 providedIn: 'root',
 })
-export class RealocadoService 
+export class RealocadoService
 {
 apiURL: string = environment.apiURL;
 constructor(private http: HttpClient) {}
@@ -18,16 +19,20 @@ constructor(private http: HttpClient) {}
 	getRealocadosParametro_01(params: ParametroRealocado01): Observable<RealocadoModel[]> {
 		return this.http.post<RealocadoModel[]>(`${this.apiURL}realocados`,params);
 	}
-	getRealocado(id_empresa:number,id_local:number,id_inventario:number,id_realocado:number,id_transferido:number): Observable<RealocadoModel> { 
+	getRealocado(id_empresa:number,id_local:number,id_inventario:number,id_realocado:number,id_transferido:number): Observable<RealocadoModel> {
  		return this.http.get<RealocadoModel >(`${ this.apiURL}realocado/${id_empresa}/${id_local}/${id_inventario}/${id_realocado}/${id_transferido}`);
 	}
-	realocadoInsert(realocado:RealocadoModel):Observable<RealocadoModel> { 
+	realocadoInsert(realocado:RealocadoModel):Observable<RealocadoModel> {
 		return this.http.post<RealocadoModel>(`${this.apiURL}realocado`, realocado);
 	}
-	realocadoUpdate(realocado:RealocadoModel):Observable<RealocadoModel> { 
+	realocadoUpdate(realocado:RealocadoModel):Observable<RealocadoModel> {
 		return this.http.put<RealocadoModel>(`${this.apiURL}realocado`,realocado);
 	}
-	realocadoDelete(id_empresa:number,id_local:number,id_inventario:number,id_realocado:number,id_transferido:number):Observable<any>  { 
+	realocadoDelete(id_empresa:number,id_local:number,id_inventario:number,id_realocado:number,id_transferido:number):Observable<any>  {
  		return this.http.delete<any>(`${this.apiURL}realocado/${id_empresa}/${id_local}/${id_inventario}/${id_realocado}/${id_transferido}`);
 	}
+
+	realocarAtivo(id_empresa:number,id_local:number,id_inventario:number): Observable<any> {
+    return this.http.get<any>(`${ this.apiURL}trocarativo/${id_empresa}/${id_local}/${id_inventario}`);
+ }
 }
