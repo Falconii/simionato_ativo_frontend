@@ -231,7 +231,6 @@ insereRealocado() {
         this.globalService.setSpin(false);
         this.mensagem = "Solcitação De Realocação Incluída Na Fila.";
         this.data.processar = true;
-        this.closeModal();
         this.RealocarAtivo()
      },
      (error: any) => {
