@@ -18,6 +18,7 @@ import { SituacaoInventario } from 'src/app/shared/classes/situacao-inventario';
 import { messageError } from 'src/app/shared/classes/util';
 import { ValidatorCondicao } from 'src/app/shared/Validators/validador-condicao';
 import { ValidatorCC } from 'src/app/shared/Validators/validator-cc';
+import { ValidatorStringLen } from 'src/app/shared/Validators/validator-string-len';
 
 @Component({
   selector: 'app-imoinventario-view',
@@ -73,7 +74,8 @@ export class ImoinventarioViewComponent implements OnInit {
       condicao_: [{ value: '' }],
       book: [{ value: '' }],
       book_: [{ value: '' }],
-      obs: [{ value: '' }],
+      obs: [{ value: '' },[ValidatorStringLen(1, 255, false)]],
+      apelido: [{ value: '' }],
     });
     const sim: SimNao = new SimNao();
     sim.sigla = 'S';
@@ -195,8 +197,8 @@ export class ImoinventarioViewComponent implements OnInit {
     this.lancamento.condicao = this.formulario.value.condicao;
     this.lancamento.book = this.formulario.value.book;
     this.lancamento.obs = this.formulario.value.obs;
-
-    if (this.formulario.value.situacao !== 5) {
+    console.log('Lancamento', this.formulario.value.situacao);
+    if (this.formulario.value.situacao < 5) {
       if (
         this.lancamento.new_codigo != 0 &&
         this.lancamento.id_imobilizado != this.lancamento.new_codigo &&
@@ -220,9 +222,10 @@ export class ImoinventarioViewComponent implements OnInit {
         }
       }
     } else {
-      this.lancamento.estado = 5;
+      console.log('trocando o valor');
+      this.lancamento.estado = this.formulario.value.situacao;
     }
-
+    console.log('Lancamento', this.lancamento,'this.formulario.value.situacao',this.formulario.value.situacao);
     switch (+this.idAcao) {
       case CadastroAcoes.Inclusao:
         this.globalService.setSpin(true);
@@ -340,6 +343,7 @@ export class ImoinventarioViewComponent implements OnInit {
           ? this.respostas[this.lancamento.book == 'S' ? 0 : 1].descricao
           : '',
       obs: this.lancamento.obs,
+      apelido: this.lancamento.imo_apelido
     });
   }
 

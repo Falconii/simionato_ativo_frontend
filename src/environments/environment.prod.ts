@@ -13,6 +13,7 @@ export const environment = {
   data: '09/11/2023',
   production: false,
   ambiente: 'Desenvolvimento',
-  apiURL:    'https://simionatoativobackend-production.up.railway.app/api/',
-  apiOAuth2: 'https://simionatoativobackend-production.up.railway.app/'
+  apiURL:    'https://simionatobackendativo-production.up.railway.app/api/',
+  apiOAuth2: 'https://simionatobackendativo-production.up.railway.app/',
+  wsURL: 'ws://localhost:8080'
 };

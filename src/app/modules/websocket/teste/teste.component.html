@@ -1,0 +1,30 @@
+<div class="div-barra">
+  <mat-toolbar>
+    <span class="example-spacer">Teste Mensagens WebSocket</span>
+    <button mat-icon-button aria-label="Example icon-button with share icon " matTooltipPosition="above"
+      (click)="onHome()" matTooltip="Retorno" matTooltipPosition="above">
+      <mat-icon>home</mat-icon>
+    </button>
+  </mat-toolbar>
+</div>
+<form [formGroup]="formulario" autocomplete="off">
+ <div class="col-med-1">
+    <mat-form-field appearance="outline" class="col-max">
+      <mat-label>Mensagem Para Ser Enviada</mat-label>
+      <textarea matInput placeholder="Digite A Mensagem Para Ser Enviada Para O Servidor " formControlName="mensagem_enviada">1600 Amphitheatre Pkwy</textarea>
+    </mat-form-field>
+  </div>
+  <div class="button-container-right">
+      <button mat-raised-button color="primary" (click)="sendMessage()">
+        <mat-icon>check</mat-icon>
+        Enviar Mensagem
+      </button>
+  </div>
+  <div class="col-med-1">
+    <mat-form-field appearance="outline" class="col-max">
+      <mat-label>Mensagem Para Recebida</mat-label>
+      <textarea matInput formControlName="mensagem_recebida"></textarea>
+    </mat-form-field>
+  </div>
+
+</form>

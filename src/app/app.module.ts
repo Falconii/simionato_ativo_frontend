@@ -25,6 +25,7 @@ import { LocalStorageService } from './services/localStorage.service';
 import { CondicaoPipePipe } from './shared/pipes/condicao-pipe.pipe';
 import { SeachDialogService } from './services/seach-dialog.service';
 import { SeachDialogComponent } from './shared/components/seach-dialog/seach-dialog.component';
+import { WsServiceService } from './services/ws-service.service';
 
 registerLocaleData(localePt);
 
@@ -56,7 +57,7 @@ registerLocaleData(localePt);
     GlobalService,
     LocalStorageService,
     { provide: MatPaginatorIntl, useClass: BrPaginatorIntl },
-    SeachDialogService
+    SeachDialogService,
   ],
   entryComponents:[SeachDialogComponent],
   bootstrap: [AppComponent],

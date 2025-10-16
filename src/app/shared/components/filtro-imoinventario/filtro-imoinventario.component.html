@@ -162,4 +162,13 @@
       </button>
     </mat-form-field>
   </div>
+  <div class="col-med-1">
+    <mat-form-field appearance="outline" class="col-max">
+      <mat-label>Apelido</mat-label>
+      <input class="uppercase" matInput  formControlName="apelido">
+      <button *ngIf="hasValue('apelido')" matSuffix mat-icon-button aria-label="Clear" (click)="clearValue('apelido')">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
 </form>

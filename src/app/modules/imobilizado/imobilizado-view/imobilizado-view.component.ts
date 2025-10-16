@@ -62,7 +62,7 @@ export class ImobilizadoViewComponent implements OnInit {
   ) {
     this.formulario = formBuilder.group({
       codigo: [{ value: '' }, [Validators.required, Validators.min(1)]],
-      descricao: [{ value: '' }, [ValidatorStringLen(1, 80, true)]],
+      descricao: [{ value: '' }, [ValidatorStringLen(1, 150, true)]],
       grupo: [{ value: '' }],
       grupo_: [{ value: '' }],
       cc: [{ value: '' }],

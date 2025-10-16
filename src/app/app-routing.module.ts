@@ -149,12 +149,24 @@ const routes: Routes = [
     path: 'oauth2',
     loadChildren: () =>
       import('./modules/sobre/sobre.module').then((m) => m.SobreModule),
-    canActivate: [],
+    canActivate: [DiganaoGuard],
   },
   {
     path: 'keys',
     loadChildren: () =>
       import('./modules/sobre/sobre.module').then((m) => m.SobreModule),
+    canActivate: [DiganaoGuard],
+  },
+  {
+    path: 'websocket',
+    loadChildren: () =>
+      import('./modules/websocket/websocket.module').then((m) => m.WebsocketModule),
+    canActivate: [],
+  },
+  {
+    path: 'consulta_fotos_google',
+    loadChildren: () =>
+      import('./modules/googlefotos/googlefotos.module').then((m) => m.GooglefotosModule),
     canActivate: [],
   },
   {

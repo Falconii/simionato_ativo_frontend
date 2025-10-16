@@ -7,3 +7,16 @@
   width: 400px;
   height: 400px;
 }
+
+.imagem-estilizada {
+  width: 400px;
+  height: auto;
+  display: block;
+  margin: 20px auto;
+}
+
+p{
+  font-size: 16px;
+  color: blue;
+  text-align: center;
+}

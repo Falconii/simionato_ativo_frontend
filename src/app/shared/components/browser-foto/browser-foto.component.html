@@ -1,18 +1,30 @@
 <table class="Browse_Lanc">
   <tr *ngFor="let foto of fotos">
     <td *ngIf="itsOK(0,foto)">
-      <div class="alinha_esquerda">
+      <div class="alinha_esquerda" *ngIf="foto.fotos[0].localizacao !== 'D'">
         <img src="https://drive.google.com/thumbnail?id={{foto.fotos[0].id_file}}&sz=w400">
+      </div>
+      <div class="alinha_esquerda" *ngIf="foto.fotos[0].localizacao == 'D'">
+         <img src="assets/img/foto_no_celular.png" alt="Foto No Celular" class="imagem-estilizada">
+         <p>Foto Disponível Apenas No Celular.</p>
       </div>
     </td>
     <td *ngIf="itsOK(1,foto)">
-      <div class="alinha_esquerda">
+      <div class="alinha_esquerda" *ngIf="foto.fotos[1].localizacao !== 'D'">
         <img src="https://drive.google.com/thumbnail?id={{foto.fotos[1].id_file}}&sz=w400">
+      </div>
+       <div class="alinha_esquerda" *ngIf="foto.fotos[1].localizacao == 'D'">
+         <img src="assets/img/foto_no_celular.png" alt="Foto No Celular" class="imagem-estilizada">
+          <p>Foto Disponível Apenas No Celular.</p>
       </div>
     </td>
     <td *ngIf="itsOK(2,foto)">
-      <div class="alinha_esquerda">
+      <div class="alinha_esquerda" *ngIf="foto.fotos[2].localizacao !== 'D'">
         <img src="https://drive.google.com/thumbnail?id={{foto.fotos[2].id_file}}&sz=w400">
+      </div>
+       <div class="alinha_esquerda" *ngIf="foto.fotos[2].localizacao == 'D'">
+         <img src="assets/img/foto_no_celular.png" alt="Foto No Celular" class="imagem-estilizada">
+         <p>Foto Disponível Apenas No Celular.</p>
       </div>
  </td>
   </tr>

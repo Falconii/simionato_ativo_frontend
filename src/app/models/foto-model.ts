@@ -11,6 +11,7 @@ export class FotoModel {
   public data: string = '';
   public destaque: string = '';
   public obs: string = '';
+  public localizacao: string = '';
   public user_insert: number = 0;
   public user_update: number = 0;
   public imo_descricao: string = '';

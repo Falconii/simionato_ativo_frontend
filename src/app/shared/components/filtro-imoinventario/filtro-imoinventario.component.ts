@@ -103,7 +103,8 @@ export class FiltroImoinventarioComponent implements OnInit {
     {sigla:"005" , descricao:"Grupo"},
     {sigla:"006" , descricao:"Descrição"},
     {sigla:"007" , descricao:"Observação"},
-    {sigla:"008" , descricao:"Data Lançamento"}
+    {sigla:"008" , descricao:"Data Lançamento"},
+    {sigla:"009" , descricao:"Apelido"}
   ];
 
 
@@ -145,6 +146,7 @@ export class FiltroImoinventarioComponent implements OnInit {
         book: [{ value: '' }],
         descricao: [{ value: '' }],
         observacao: [{ value: '' }],
+        apelido: [{ value: '' }],
         chaves: formBuilder.group({
           cc:[{ value: '' }],
           cc_novo: [{ value: '' }],
@@ -229,6 +231,14 @@ export class FiltroImoinventarioComponent implements OnInit {
       this.onChangeParametros();
      });
      this.parametros.get("observacao")?.valueChanges.pipe(
+      map(value => value.trim().toUpperCase()),
+      filter(value => value.length > 0),
+      debounceTime(350),
+      distinctUntilChanged(),
+     ).subscribe((value) => {
+      this.onChangeParametros()
+    });
+     this.parametros.get("apelido")?.valueChanges.pipe(
       map(value => value.trim().toUpperCase()),
       filter(value => value.length > 0),
       debounceTime(350),
@@ -425,6 +435,7 @@ export class FiltroImoinventarioComponent implements OnInit {
         this.parametro.getParametro(),
         'observacao'
       ),
+      apelido: GetValueJsonString(this.parametro.getParametro(), 'apelido'),
       chaves:{
         "cc": GetValueJsonString(this.parametro.getParametro(), 'cc'),
         "cc_novo": GetValueJsonString(this.parametro.getParametro(), 'cc_novo'),
@@ -452,6 +463,7 @@ export class FiltroImoinventarioComponent implements OnInit {
       book: '',
       descricao: '',
       observacao: '',
+      apelido: '',
       cc_descricao: 'Todos',
       ccnovo_descricao: 'Todos Não Alterados',
       chaves:{
@@ -471,7 +483,7 @@ export class FiltroImoinventarioComponent implements OnInit {
     this.parametro = new ParametroModel();
     this.parametro.id_empresa = this.globalService.getIdEmpresa();
     this.parametro.modulo = this.paramName;
-    this.parametro.assinatura = 'V1.00 22/11/2024';
+    this.parametro.assinatura = 'V1.00 27/05/2025';
     this.parametro.id_usuario = this.globalService.usuario.id;
     this.parametro.parametro = `
        {
@@ -492,6 +504,7 @@ export class FiltroImoinventarioComponent implements OnInit {
          "dtinicial":"",
          "dtfinal":"",
          "id_principal":0,
+         "apelido":"",
          "cc_descricao":"Todos",
          "ccnovo_descricao":"Todos Não Alterados",
          "orderby":"001",
@@ -582,6 +595,7 @@ export class FiltroImoinventarioComponent implements OnInit {
     Object(config).dtinicial  = this.parametros.value.dtinicial;
     Object(config).dtfinal    = this.parametros.value.dtfinal;
     Object(config).id_principal  = this.parametros.value.id_principal;
+    Object(config).apelido       = this.parametros.value.apelido.toUpperCase();
     Object(config).orderby       = this.parametros.value.orderby;
 
     this.parametro.parametro  = JSON.stringify(config);
@@ -705,6 +719,10 @@ export class FiltroImoinventarioComponent implements OnInit {
       this.parametros.patchValue({
         id_principal: ''
     })
+     if (campo == 'apelido')
+      this.parametros.patchValue({
+        apelido: ''
+    })
     this.onChangeParametros();
 }
 
@@ -716,6 +734,10 @@ ChangeValue(campo: string, value:string){
   if (campo == 'observacao')
     this.parametros.patchValue({
       observacao: value
+  })
+    if (campo == 'apelido')
+    this.parametros.patchValue({
+      apelido: value
   })
 }
 

@@ -21,5 +21,6 @@ export class LancamentoModel {
   public imo_cod_cc: string = '';
   public imo_cod_grupo: number = 0;
   public imo_descricao: string = '';
+  public imo_apelido: string = '';
   public usu_razao: string = '';
 }

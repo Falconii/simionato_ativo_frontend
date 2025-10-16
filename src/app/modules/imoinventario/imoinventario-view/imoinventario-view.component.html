@@ -47,16 +47,22 @@
           </mat-form-field>
         </div>
       </div>
-      <div class="col-med-4">
+      <div class="col-med-3">
         <mat-form-field appearance="outline" class="col-max">
           <mat-label>Código</mat-label>
           <input matInput formControlName="codigo" [readonly]="true">
         </mat-form-field>
         <mat-form-field appearance="outline" class="col-max">
+          <mat-label>Apelido</mat-label>
+          <input matInput formControlName="apelido" [readonly]="true">
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="col-max">
           <mat-label>Novo Código</mat-label>
           <input matInput formControlName="novo_codigo" [readonly]="readOnly">
         </mat-form-field>
-        <mat-form-field appearance="outline" class="col-max column-span-2">
+      </div>
+      <div class="col-med-1">
+        <mat-form-field appearance="outline" class="col-max">
           <mat-label>Descrição</mat-label>
           <input matInput formControlName="descricao" readonly="true">
         </mat-form-field>
@@ -122,6 +128,7 @@
         <mat-form-field appearance="outline" class="col-max">
           <mat-label>Observação</mat-label>
           <input matInput formControlName="obs" oninput="this.value = this.value.toUpperCase()" [readonly]="readOnly">
+          <mat-error *ngIf="NoValidtouchedOrDirty('obs')">{{getMensafield('obs')}}</mat-error>
         </mat-form-field>
       </div>
     </form>

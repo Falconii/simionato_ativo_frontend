@@ -90,6 +90,7 @@ export class FotoViewComponent implements OnInit {
       (data: FotoModel[]) => {
         this.globalService.setSpin(false);
         this.fotos = data;
+        console.log("this.fotos", this.fotos);
       },
       (error: any) => {
         this.globalService.setSpin(false);
@@ -120,7 +121,7 @@ export class FotoViewComponent implements OnInit {
 
     if(allFotos.length > 0) {
       allFotos.forEach(item => {
-
+        console.log("item", item);
         if (ct ==3){
            result.push(tempo);
            ct = 0;

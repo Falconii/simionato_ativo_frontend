@@ -58,8 +58,15 @@ export class ParametrosService {
     assinatura: string,
     id_usuario: number
   ) {
-    return this.http.delete<ParametroModel>(
-      `${this.apiURL}parametro/${id_empresa}/${modulo}/${assinatura}/${id_usuario}`
+    const params = {
+            id_empresa: id_empresa,
+            modulo: modulo,
+            assinatura: assinatura,
+            id_usuario: id_usuario
+    };
+    return this.http.post<any>(
+      `${this.apiURL}deleteparametro/`,
+      params
     );
   }
 

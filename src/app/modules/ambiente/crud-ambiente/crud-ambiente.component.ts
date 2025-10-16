@@ -41,6 +41,9 @@ export class CrudAmbienteComponent implements OnInit {
 
   inscricaoPadrao!: Subscription;
 
+
+  inscricaoParametro!: Subscription;
+
   empresas: EmpresaQuery01Model[] = [];
   empresa: EmpresaQuery01Model = new EmpresaQuery01Model();
   locais: LocalModel[] = [];
@@ -97,6 +100,7 @@ export class CrudAmbienteComponent implements OnInit {
     this.inscricaoInventarios?.unsubscribe();
     this.inscricaoUsuarios?.unsubscribe();
     this.inscricaoPadrao?.unsubscribe();
+    this.inscricaoParametro?.unsubscribe();
   }
 
   onGetEmpresas() {
@@ -260,6 +264,25 @@ export class CrudAmbienteComponent implements OnInit {
           usuario.empresa = '';
           usuario.local = '';
           usuario.inventario = '';
+          this.excluirParamMobile(usuario) ;
+        },
+        (error: any) => {
+          this.globalService.setSpin(false);
+          this.appSnackBar.openSuccessSnackBar(
+            `Falha Na Exclusão ${messageError(error)}`,
+            'OK'
+          );
+        }
+      );
+  }
+
+  excluirParamMobile(usuario: UsuarioQuery_05Model){
+     this.globalService.setSpin(true);
+     this.inscricaoParametro = this.parametrosService
+      .ParametroDelete(this.globalService.getIdEmpresa(), "inventariomobile","V1.00 29/02/24",usuario.id)
+      .subscribe(
+        (data: any) => {
+          this.globalService.setSpin(false);
         },
         (error: any) => {
           this.globalService.setSpin(false);

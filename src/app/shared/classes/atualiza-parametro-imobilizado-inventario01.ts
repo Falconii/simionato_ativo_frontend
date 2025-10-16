@@ -78,6 +78,9 @@ export function AtualizaParametroImobilizadoInventario01(par : ParametroImobiliz
       par.observacao = Object(config).observacao;
     }
 
+    if (Object(config).apelido?.trim() !== '') {
+      par.apelido = Object(config).apelido;
+    }
     key = parseInt(Object(config).executor, 10);
 
     if (isNaN(key)) {

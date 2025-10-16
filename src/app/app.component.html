@@ -42,6 +42,7 @@
           Inventário</button>
         <button mat-menu-item routerLink="book" *ngIf="getInventarioId() !== 0">Book</button>
         <button mat-menu-item routerLink="consulta_fotos" *ngIf="getInventarioId() !== 0">Consultar Fotos</button>
+        <button mat-menu-item routerLink="consulta_fotos_google" *ngIf="getUsuarioId() == 16">Consultar Fotos Google Teste</button>
       </mat-menu>
       <mat-menu #gerencial="matMenu">
         <button mat-menu-item routerLink="ativar">Ativação Inventário</button>
@@ -52,6 +53,7 @@
         <button mat-menu-item routerLink="param">Parâmentos Do Sistema</button>
         <button mat-menu-item routerLink="keys">Chaves Do Google</button>
         <button mat-menu-item routerLink="oauth2">Google OAuth2</button>
+        <button mat-menu-item routerLink="websocket">Teste WS</button>
       </mat-menu>
     </span>
     <span class="example-spacer"></span>

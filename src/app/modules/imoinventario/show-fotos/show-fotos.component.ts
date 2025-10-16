@@ -112,6 +112,7 @@ export class ShowFotosComponent implements OnInit {
       (data: FotoModel[]) => {
         this.globalService.setSpin(false);
         this.fotos = data;
+        console.log(this.fotos);
         this.loadImages();
       },
       (error: any) => {
@@ -128,12 +129,14 @@ export class ShowFotosComponent implements OnInit {
   loadImages() {
     this.images = [];
     this.fotos.forEach((foto) => {
+      if (foto.localizacao !== 'D') {
       let image = {
         image: `https://drive.google.com/uc?export=view&id=${foto.id_file}`,
         thumbImage: `https://drive.google.com/thumbnail?id=${foto.id_file}&sz=w200`,
         title: foto.imo_descricao,
       };
       this.images.push(image);
+    }
     });
   }
 }

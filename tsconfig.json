@@ -16,6 +16,7 @@
     "importHelpers": true,
     "target": "es2017",
     "module": "es2020",
+    "types": ["gapi", "gapi.auth2", "gapi.client", "gapi.client.drive"],
     "lib": [
       "es2018",
       "dom"

@@ -7,7 +7,7 @@ export class ParametroFoto01{
 		public id_file:string = '' ;
 		public file_name:string = '' ;
     public imobilizados:number[] = [];
-		public destaque:string = 'N' ;
+		public destaque:string = '' ;
 		public pagina:number = 0 ;
 		public tamPagina:number = 50 ;
 		public contador:string = 'N' ;

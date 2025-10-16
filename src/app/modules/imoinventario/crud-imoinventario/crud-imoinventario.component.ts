@@ -325,8 +325,6 @@ export class CrudImoinventarioComponent implements OnInit {
 
     par.pagina = this.controlePaginas.getPaginalAtual();
 
-    console.log("pagina atual: ",this.controlePaginas.getPaginalAtual());
-
     this.globalService.setSpin(true);
     this.inscricaoGetAll = this.imoInventarioService
       .getImobilizadosinventariosParametro_01(par)
@@ -335,6 +333,7 @@ export class CrudImoinventarioComponent implements OnInit {
           this.globalService.setSpin(false);
           this.atualizaTargetId();
           this.imoinv = data;
+          console.log("imoinv:",this.imoinv);
 
           /*
           if (this.atual.id_imobilizado !== 0) {
@@ -500,6 +499,7 @@ export class CrudImoinventarioComponent implements OnInit {
       this.lancamento.usu_razao = this.globalService.getUsuario().razao;
       this.lancamento.imo_descricao = imobilizado.imo_descricao;
       this.lancamento.estado = imobilizado.status;
+      this.lancamento.imo_apelido = imobilizado.imo_apelido;
       this.idAcao = CadastroAcoes.Inclusao;
       this.browse = false;
     } else {

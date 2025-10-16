@@ -16,7 +16,8 @@ export class ParametroImobilizadoinventario01 {
   public book: string = '';
   public dtinicial:string = '';
   public dtfinal:string = '';
-  public id_principal = 0 ;
+  public id_principal:number = 0 ;
+  public apelido:string = '';
   public pagina: number = 0;
   public tamPagina: number = 50;
   public contador: string = 'N';
