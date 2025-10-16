@@ -65,7 +65,6 @@ export class AppComponent {
   }
 
 
-
   getInventarioId(): number {
     return this.globalService.getInventario().codigo;
   }
