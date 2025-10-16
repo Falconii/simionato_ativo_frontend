@@ -64,6 +64,8 @@ export class AppComponent {
     return this.globalService.getLocal().id;
   }
 
+
+
   getInventarioId(): number {
     return this.globalService.getInventario().codigo;
   }
