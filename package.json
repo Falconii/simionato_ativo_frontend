@@ -5,7 +5,7 @@
         "ng": "ng",
         "start": "npx -p @angular/cli@12 ng serve",
         "build_falconi": "npx -p @angular/cli@12 ng build --base-href https://falconii.github.io/simionato_ativo_frontend/ && copy docs\\index.html docs\\404.html ",
-        "build_simionato": "npx -p @angular/cli@12 ng build --base-href https://simionatodev.github.io/frontend_ativo/ && copy docs\\index.html docs\\404.html ",
+        "build_simionato": "powershell -Command \"npx -p @angular/cli@12 ng build --base-href https://simionatodev.github.io/aplicativo_inventario_ativo/; Copy-Item 'docs\\index.html' -Destination 'docs\\404.html'; node backup_doc.js; Copy-Item 'docs' -Destination 'C:\\Repositorios\\Simionato_Dev\\ativo\\aplicativo_inventario_ativo' -Recurse -Force\"",
         "watch": "ng build --watch --configuration development",
         "test": "ng test"
     },
@@ -25,6 +25,7 @@
         "@types/gapi": "0.0.47",
         "@types/gapi.auth2": "0.0.61",
         "@types/gapi.client.drive": "^3.0.15",
+        "fs-extra": "^11.3.2",
         "gapi-script": "^1.2.0",
         "ng-image-slider": "^4.0.0",
         "ngx-mask": "^13.1.13",
