@@ -11,6 +11,7 @@ import { AppSnackbar } from 'src/app/shared/classes/app-snackbar';
 import { messageError } from 'src/app/shared/classes/util';
 import { ValorService } from 'src/app/services/valor.service';
 import { ValorModel } from 'src/app/models/valor-model';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-view-valor',
@@ -41,7 +42,8 @@ export class ViewValorComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private appSnackBar: AppSnackbar,
-    private globalService: GlobalService
+    private globalService: GlobalService,
+    private decimalPipe: DecimalPipe
   ) {
     this.formulario = formBuilder.group({
       id_imobilizado: [{ value: '' }],
@@ -146,12 +148,32 @@ export class ViewValorComponent implements OnInit {
       id_imobilizado: this.valor.id_imobilizado,
       imo_descricao: this.valor.imo_descricao,
       dtaquisicao: this.valor.dtaquisicao,
-      vlraquisicao: this.valor.vlraquisicao,
-      totaldepreciado: this.valor.totaldepreciado,
-      vlrresidual: this.valor.vlrresidual,
-      reavalicao: this.valor.reavalicao,
-      deemed: this.valor.deemed,
-      vlrconsolidado: this.valor.vlrconsolidado,
+      vlraquisicao: this.decimalPipe.transform(
+        this.valor.vlraquisicao,
+        '1.2-2',
+        'pt'
+      ),
+      totaldepreciado: this.decimalPipe.transform(
+        this.valor.totaldepreciado,
+        '1.2-2',
+        'pt'
+      ),
+      vlrresidual: this.decimalPipe.transform(
+        this.valor.vlrresidual,
+        '1.2-2',
+        'pt'
+      ),
+      reavalicao: this.decimalPipe.transform(
+        this.valor.reavalicao,
+        '1.2-2',
+        'pt'
+      ),
+      deemed: this.decimalPipe.transform(this.valor.reavalicao, '1.2-2', 'pt'),
+      vlrconsolidado: this.decimalPipe.transform(
+        this.valor.vlrconsolidado,
+        '1.2-2',
+        'pt'
+      ),
     });
   }
 

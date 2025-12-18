@@ -8,11 +8,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AppSnackbar } from '../classes/app-snackbar';
 import { ValorData } from './valor-data';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-valores-dialog',
   templateUrl: './valores-dialog.component.html',
   styleUrls: ['./valores-dialog.component.css'],
+  providers: [DecimalPipe],
 })
 export class ValoresDialogComponent implements OnInit {
   formulario: FormGroup;
@@ -36,6 +38,7 @@ export class ValoresDialogComponent implements OnInit {
     private router: Router,
     private appSnackBar: AppSnackbar,
     private globalService: GlobalService,
+    private decimalPipe: DecimalPipe,
     public dialogRef: MatDialogRef<ValoresDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ValorData
   ) {
@@ -75,12 +78,32 @@ export class ValoresDialogComponent implements OnInit {
       id_imobilizado: this.valor.id_imobilizado,
       imo_descricao: this.valor.imo_descricao,
       dtaquisicao: this.valor.dtaquisicao,
-      vlraquisicao: this.valor.vlraquisicao,
-      totaldepreciado: this.valor.totaldepreciado,
-      vlrresidual: this.valor.vlrresidual,
-      reavalicao: this.valor.reavalicao,
-      deemed: this.valor.deemed,
-      vlrconsolidado: this.valor.vlrconsolidado,
+      vlraquisicao: this.decimalPipe.transform(
+        this.valor.vlraquisicao,
+        '1.2-2',
+        'pt'
+      ),
+      totaldepreciado: this.decimalPipe.transform(
+        this.valor.totaldepreciado,
+        '1.2-2',
+        'pt'
+      ),
+      vlrresidual: this.decimalPipe.transform(
+        this.valor.vlrresidual,
+        '1.2-2',
+        'pt'
+      ),
+      reavalicao: this.decimalPipe.transform(
+        this.valor.reavalicao,
+        '1.2-2',
+        'pt'
+      ),
+      deemed: this.decimalPipe.transform(this.valor.reavalicao, '1.2-2', 'pt'),
+      vlrconsolidado: this.decimalPipe.transform(
+        this.valor.vlrconsolidado,
+        '1.2-2',
+        'pt'
+      ),
     });
   }
 

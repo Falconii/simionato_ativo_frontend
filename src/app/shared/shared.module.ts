@@ -41,6 +41,7 @@ import { LabelValueDirective } from './diretivas/label-value.directive';
 import { LabelVerdeVermelhoDirective } from './diretivas/label-verde-vermelho.directive';
 import { SeachDialogComponent } from './components/seach-dialog/seach-dialog.component';
 import { ChangeMod02DialogComponent } from './components/change-mod02-dialog/change-mod02-dialog.component';
+import { menosumToSpacePipe } from './pipes/menos-um-to-space.pipe';
 @NgModule({
   declarations: [
     SimNaoPipe,
@@ -81,7 +82,8 @@ import { ChangeMod02DialogComponent } from './components/change-mod02-dialog/cha
     ChangeMod01DialogComponent,
     LabelValueDirective,
     SeachDialogComponent,
-    ChangeMod02DialogComponent
+    ChangeMod02DialogComponent,
+    menosumToSpacePipe
   ],
   imports: [CommonModule, MaterialModule, FormsModule, ReactiveFormsModule,
     NgxMaskModule.forChild(),],
@@ -101,6 +103,7 @@ import { ChangeMod02DialogComponent } from './components/change-mod02-dialog/cha
     ZeroToSpacePipe,
     FirstNamePipe,
     OrigemPipe,
+    menosumToSpacePipe,
     SetfocusDirective,
     LabelVerdeVermelhoDirective,
     DashboardComponent,

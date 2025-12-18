@@ -12,6 +12,7 @@ import { messageError } from 'src/app/shared/classes/util';
 import { NfeModel } from 'src/app/models/nfe-model';
 import { NfeService } from 'src/app/services/nfe.service';
 import { ParametroNfe02 } from 'src/app/parametros/parametro-nfe02';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-nfe-view',
@@ -42,7 +43,8 @@ export class NfeViewComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private appSnackBar: AppSnackbar,
-    private globalService: GlobalService
+    private globalService: GlobalService,
+    private decimalPipe: DecimalPipe
   ) {
     this.formulario = formBuilder.group({
       cnpj_fornecedor: [{ value: '' }],
@@ -171,13 +173,17 @@ export class NfeViewComponent implements OnInit {
       dtemissao: this.nfe.dtemissao,
       dtlancamento: this.nfe.dtlancamento,
       chavee: this.nfe.chavee,
-      qtd: this.nfe.qtd,
-      punit: this.nfe.punit,
-      totalitem: this.nfe.totalitem,
-      vlrcontabil: this.nfe.vlrcontabil,
-      baseicms: this.nfe.baseicms,
-      percicms: this.nfe.percicms,
-      vlrcicms: this.nfe.vlrcicms,
+      qtd: this.decimalPipe.transform(this.nfe.qtd, '1.2-2', 'pt'),
+      punit: this.decimalPipe.transform(this.nfe.punit, '1.2-2', 'pt'),
+      totalitem: this.decimalPipe.transform(this.nfe.totalitem, '1.2-2', 'pt'),
+      vlrcontabil: this.decimalPipe.transform(
+        this.nfe.vlrcontabil,
+        '1.2-2',
+        'pt'
+      ),
+      baseicms: this.decimalPipe.transform(this.nfe.vlrcontabil, '1.2-2', 'pt'),
+      percicms: this.decimalPipe.transform(this.nfe.percicms, '1.2-2', 'pt'),
+      vlrcicms: this.decimalPipe.transform(this.nfe.vlrcicms, '1.2-2', 'pt'),
     });
   }
 

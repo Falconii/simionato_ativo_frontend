@@ -15,6 +15,7 @@ import { AmbienteModel } from 'src/app/models/ambiente-model';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ListaMeses } from '../../classes/lista-meses';
 import { EvolucaoModel } from 'src/app/models/evolucao-Model';
+import { SituacaoAtivoModel } from 'src/app/models/situacao-ativo-model';
 
 declare var google: any;
 
@@ -44,6 +45,8 @@ export class DashboardComponent implements OnInit {
   meses: ListaMeses = new ListaMeses();
 
   evolucoes: EvolucaoModel[] = [];
+
+  situacoes: SituacaoAtivoModel[] = [];
 
   constructor(
     private globalService: GlobalService,
@@ -153,6 +156,7 @@ export class DashboardComponent implements OnInit {
           this.resumo.situacao_3 = data.situacao_3;
           this.resumo.situacao_4 = data.situacao_4;
           this.resumo.situacao_5 = data.situacao_5;
+          this.resumo.situacao_6 = data.situacao_6;
           this.resumo.fotos = data.fotos;
           if (this.resumo.total_inventariados > 0) {
             let total_fotos: ResumoLancamentosUsuariosModel =
@@ -162,6 +166,7 @@ export class DashboardComponent implements OnInit {
             this.executores.push(total_fotos);
             this.getEvolucoes();
           }
+          this.loadSituacoes();
         },
         (error: any) => {
           this.globalService.setSpin(false);
@@ -216,19 +221,20 @@ export class DashboardComponent implements OnInit {
         this.resumo.situacao_2 +
         this.resumo.situacao_3 +
         this.resumo.situacao_4 +
-        this.resumo.situacao_5;
+        this.resumo.situacao_5 +
+        this.resumo.situacao_6;
       data.addRows([['Inventariado', qtd_inventario]]);
       data.addRows([['Não Inventariado', this.resumo.situacao_0]]);
       var options = {
         title: `SITUAÇÃO DO INVENTÁRIO `,
         width: 450,
         height: 350,
-        colors:["green","red"],
-        chartArea:{
+        colors: ['green', 'red'],
+        chartArea: {
           width: '90%',
-          height: '90%'
+          height: '90%',
         },
-        is3D : true
+        is3D: true,
       };
       chart().draw(data, options);
     };
@@ -285,4 +291,69 @@ export class DashboardComponent implements OnInit {
   }
 
   onParametrosChange() {}
+
+  loadSituacoes() {
+    this.situacoes = [];
+
+    const total =
+      this.resumo.situacao_0 +
+      this.resumo.situacao_1 +
+      this.resumo.situacao_2 +
+      this.resumo.situacao_3 +
+      this.resumo.situacao_4 +
+      this.resumo.situacao_5 +
+      this.resumo.situacao_6;
+
+    this.situacoes.push(
+      new SituacaoAtivoModel(
+        0,
+        this.globalService.getSituacaoDescricao(0),
+        this.resumo.situacao_0
+      )
+    );
+    this.situacoes.push(
+      new SituacaoAtivoModel(
+        1,
+        this.globalService.getSituacaoDescricao(1),
+        this.resumo.situacao_1
+      )
+    );
+    this.situacoes.push(
+      new SituacaoAtivoModel(
+        2,
+        this.globalService.getSituacaoDescricao(2),
+        this.resumo.situacao_2
+      )
+    );
+    this.situacoes.push(
+      new SituacaoAtivoModel(
+        3,
+        this.globalService.getSituacaoDescricao(3),
+        this.resumo.situacao_3
+      )
+    );
+    this.situacoes.push(
+      new SituacaoAtivoModel(
+        4,
+        this.globalService.getSituacaoDescricao(4),
+        this.resumo.situacao_4
+      )
+    );
+    this.situacoes.push(
+      new SituacaoAtivoModel(
+        5,
+        this.globalService.getSituacaoDescricao(5),
+        this.resumo.situacao_5
+      )
+    );
+    this.situacoes.push(
+      new SituacaoAtivoModel(
+        6,
+        this.globalService.getSituacaoDescricao(6),
+        this.resumo.situacao_6
+      )
+    );
+
+    this.situacoes.push(new SituacaoAtivoModel(-1, 'TOTAL', total));
+  }
 }

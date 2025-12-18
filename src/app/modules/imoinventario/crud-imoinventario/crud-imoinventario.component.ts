@@ -85,7 +85,7 @@ export class CrudImoinventarioComponent implements OnInit {
 
   erro: string = '';
 
-  tamPagina = 50;
+    tamPagina = 50;
 
   controlePaginas: ControlePaginas = new ControlePaginas(
     this.tamPagina,

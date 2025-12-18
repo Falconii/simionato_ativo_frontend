@@ -1,11 +1,11 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'zerotospacepipe',
+  name: 'menosumtospacepipe',
 })
-export class ZeroToSpacePipe implements PipeTransform {
+export class menosumToSpacePipe implements PipeTransform {
   transform(value: number): string {
-    if (value == 0)  return '';
+    if (value == -1)  return '';
     return value.toString();
   }
 }

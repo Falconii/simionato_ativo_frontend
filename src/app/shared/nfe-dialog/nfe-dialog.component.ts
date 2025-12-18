@@ -10,6 +10,7 @@ import { GlobalService } from 'src/app/services/global.service';
 import { messageError } from '../classes/util';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { NfeData } from './nfe-data';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-nfe-dialog',
@@ -38,6 +39,7 @@ export class NfeDialogComponent implements OnInit {
     private router: Router,
     private appSnackBar: AppSnackbar,
     private globalService: GlobalService,
+    private decimalPipe: DecimalPipe,
     public dialogRef: MatDialogRef<NfeDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: NfeData
   ) {
@@ -91,13 +93,17 @@ export class NfeDialogComponent implements OnInit {
       dtemissao: this.nfe.dtemissao,
       dtlancamento: this.nfe.dtlancamento,
       chavee: this.nfe.chavee,
-      qtd: this.nfe.qtd,
-      punit: this.nfe.punit,
-      totalitem: this.nfe.totalitem,
-      vlrcontabil: this.nfe.vlrcontabil,
-      baseicms: this.nfe.baseicms,
-      percicms: this.nfe.percicms,
-      vlrcicms: this.nfe.vlrcicms,
+      qtd: this.decimalPipe.transform(this.nfe.qtd, '1.2-2', 'pt'),
+      punit: this.decimalPipe.transform(this.nfe.punit, '1.2-2', 'pt'),
+      totalitem: this.decimalPipe.transform(this.nfe.totalitem, '1.2-2', 'pt'),
+      vlrcontabil: this.decimalPipe.transform(
+        this.nfe.vlrcontabil,
+        '1.2-2',
+        'pt'
+      ),
+      baseicms: this.decimalPipe.transform(this.nfe.vlrcontabil, '1.2-2', 'pt'),
+      percicms: this.decimalPipe.transform(this.nfe.percicms, '1.2-2', 'pt'),
+      vlrcicms: this.decimalPipe.transform(this.nfe.vlrcicms, '1.2-2', 'pt'),
     });
   }
 

@@ -196,6 +196,17 @@ export class GlobalService {
     return this.lsCondicoes;
   }
 
+  getSituacaoDescricao(idx: number): string {
+    let retorno: string = '';
+    const cond = this.situacoesInventario.find((x) => x.id == idx);
+    if (cond !== null) {
+      if (typeof cond !== 'undefined') retorno = cond?.descricao;
+         return retorno;
+    }
+    return "";
+  }
+
+
   getEstados(): EstadoProduto[] {
     return this.estadoProduto;
   }
@@ -593,7 +604,7 @@ export class GlobalService {
     guard.grupo = 901;
     guard.acoes = [CadastroAcoes.Consulta];
     this.guardiaoOpcoes.push(guard);
-*/
+   */
     guard = new GuardiaoOpcoes();
     guard.path = 'projeto';
     guard.usuario = 0;

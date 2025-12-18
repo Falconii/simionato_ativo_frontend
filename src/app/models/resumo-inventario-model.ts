@@ -10,5 +10,6 @@ export class ResumoInventarioModel {
   public situacao_3: number = 0;
   public situacao_4: number = 0;
   public situacao_5: number = 0;
+  public situacao_6: number = 0;
   public fotos: number = 0;
 }
