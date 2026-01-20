@@ -28,6 +28,7 @@ export class BarraAcoesComponent implements OnInit {
   @Input('BARRA_NFE') barra_nfe: boolean = false;
   @Input('BARRA_SUBSTITUIR') barra_substituir: boolean = false;
   @Input('BARRA_TROCAR') barra_trocar: boolean = false;
+  @Input('MANUAL_LINK') link_manual: boolean = false;
   @Output('changeOpcao') changeOpcao = new EventEmitter<number>();
 
   constructor() {}

@@ -1,67 +1,151 @@
 <div class="div-barra">
-    <span class="example-spacer">Filtro Da Pesquisa</span>
-    <button mat-icon-button aria-label="Example icon-button with share icon " matTooltipPosition="above"
-      (click)="onSaveConfig()" matTooltip="Salvar Parâmetros" matTooltipPosition="above">
-      <mat-icon>brightness_high</mat-icon>
-    </button>
-    <button mat-icon-button aria-label="Example icon-button with share icon " matTooltipPosition="above"
-      (click)="onGetExcelToEmailOrDownLoad('e-mail')" matTooltip="Enviar Consulta Por E-Mail" matTooltipPosition="above" *ngIf="email">
-      <mat-icon>email</mat-icon>
-    </button>
-    <button mat-icon-button aria-label="Example icon-button with share icon " matTooltipPosition="above"
-      (click)="onGetExcelToEmailOrDownLoad('download')" matTooltip="Baixar A Consulta" matTooltipPosition="above" *ngIf="download">
-      <mat-icon>cloud_download</mat-icon>
-    </button>
-    <button mat-icon-button aria-label="Example icon-button with share icon " matTooltipPosition="above"
-    (click)="onHide()" matTooltip="Mostrar/Esconder" matTooltipPosition="above">
+  <span class="example-spacer">Filtro Da Pesquisa</span>
+  <button
+    mat-icon-button
+    aria-label="Example icon-button with share icon "
+    matTooltipPosition="above"
+    (click)="onSaveConfig()"
+    matTooltip="Salvar Parâmetros"
+    matTooltipPosition="above"
+  >
+    <mat-icon>brightness_high</mat-icon>
+  </button>
+  <button
+    mat-icon-button
+    aria-label="Example icon-button with share icon "
+    matTooltipPosition="above"
+    (click)="onGetExcelToEmailOrDownLoad('e-mail')"
+    matTooltip="Enviar Consulta Por E-Mail"
+    matTooltipPosition="above"
+    *ngIf="email"
+  >
+    <mat-icon>email</mat-icon>
+  </button>
+  <button
+    mat-icon-button
+    aria-label="Example icon-button with share icon "
+    matTooltipPosition="above"
+    (click)="onGetExcelToEmailOrDownLoad('download')"
+    matTooltip="Baixar A Consulta"
+    matTooltipPosition="above"
+    *ngIf="download"
+  >
+    <mat-icon>cloud_download</mat-icon>
+  </button>
+  <button
+    mat-icon-button
+    aria-label="Example icon-button with share icon "
+    matTooltipPosition="above"
+    (click)="onHide()"
+    matTooltip="Mostrar/Esconder"
+    matTooltipPosition="above"
+  >
     <mat-icon>remove_red_eye</mat-icon>
-   </button>
-
+  </button>
 </div>
 <form [formGroup]="parametros" autocomplete="off" *ngIf="!hide">
   <div class="check">
-    <mat-checkbox class="check-margem" formControlName="hoje"    (change)="onHoje($event)"  >Hoje</mat-checkbox>
-    <mat-checkbox class="check-margem" formControlName="cleardate" (change)="onLimpar($event)">Limpar As Datas</mat-checkbox>
+    <mat-checkbox
+      class="check-margem"
+      formControlName="hoje"
+      (change)="onHoje($event)"
+      >Hoje</mat-checkbox
+    >
+    <mat-checkbox
+      class="check-margem"
+      formControlName="cleardate"
+      (change)="onLimpar($event)"
+      >Limpar As Datas</mat-checkbox
+    >
   </div>
   <div class="col-med-4">
     <mat-form-field appearance="outline" class="col-max">
       <mat-label>Data Inicial</mat-label>
-      <input matInput formControlName="dtinicial" mask="00/00/0000" placeholder="dd/mm/aaaa">
-      <mat-error *ngIf="NoValidtouchedOrDirty('dtinicial')">{{getMensafield('dtinicial')}}</mat-error>
-  </mat-form-field>
-  <mat-form-field appearance="outline" class="col-max">
-    <mat-label>Data Final</mat-label>
-    <input matInput formControlName="dtfinal" mask="00/00/0000" placeholder="dd/mm/aaaa">
-    <mat-error *ngIf="NoValidtouchedOrDirty('dtfinal')">{{getMensafield('dtfinal')}}</mat-error>
-  </mat-form-field>
+      <input
+        matInput
+        formControlName="dtinicial"
+        mask="00/00/0000"
+        placeholder="dd/mm/aaaa"
+      />
+      <mat-error *ngIf="NoValidtouchedOrDirty('dtinicial')">{{
+        getMensafield("dtinicial")
+      }}</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="col-max">
+      <mat-label>Data Final</mat-label>
+      <input
+        matInput
+        formControlName="dtfinal"
+        mask="00/00/0000"
+        placeholder="dd/mm/aaaa"
+      />
+      <mat-error *ngIf="NoValidtouchedOrDirty('dtfinal')">{{
+        getMensafield("dtfinal")
+      }}</mat-error>
+    </mat-form-field>
 
-  <mat-form-field field appearance="outline" class="column-span-2">
-    <mat-label>Ordernado Por</mat-label>
-    <mat-select formControlName="orderby" (selectionChange)="onChangeParametros()">
-      <mat-option *ngFor="let ordem of orderby" [value]="ordem.sigla">
-        {{ordem.descricao}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+    <mat-form-field field appearance="outline" class="column-span-2">
+      <mat-label>Ordernado Por</mat-label>
+      <mat-select
+        formControlName="orderby"
+        (selectionChange)="onChangeParametros()"
+      >
+        <mat-option *ngFor="let ordem of orderby" [value]="ordem.sigla">
+          {{ ordem.descricao }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
   </div>
   <div class="col-med-2">
     <mat-form-field field appearance="outline" class="col-max">
       <mat-label>Centro Custo</mat-label>
-      <input class="uppercase" matInput  formControlName="cc_descricao" [readonly]="true">
-      <button *ngIf="hasValue('cc_descricao')" matSuffix mat-icon-button aria-label="Clear" (click)="clearValue('cc_descricao')">
+      <input
+        class="uppercase"
+        matInput
+        formControlName="cc_descricao"
+        [readonly]="true"
+      />
+      <button
+        *ngIf="hasValue('cc_descricao')"
+        matSuffix
+        mat-icon-button
+        aria-label="Clear"
+        (click)="clearValue('cc_descricao')"
+      >
         <mat-icon>close</mat-icon>
       </button>
-      <button matSuffix mat-icon-button aria-label="Clear" (click)="onPesquisaCC()">
+      <button
+        matSuffix
+        mat-icon-button
+        aria-label="Clear"
+        (click)="onPesquisaCC()"
+      >
         <mat-icon>search</mat-icon>
       </button>
     </mat-form-field>
     <mat-form-field field appearance="outline" class="col-max">
       <mat-label>Novo Centro Custo</mat-label>
-      <input class="uppercase" matInput  formControlName="ccnovo_descricao" [readonly]="true">
-      <button *ngIf="hasValue('ccnovo_descricao')" matSuffix mat-icon-button aria-label="Clear" (click)="clearValue('ccnovo_descricao')">
+      <input
+        class="uppercase"
+        matInput
+        formControlName="ccnovo_descricao"
+        [readonly]="true"
+      />
+      <button
+        *ngIf="hasValue('ccnovo_descricao')"
+        matSuffix
+        mat-icon-button
+        aria-label="Clear"
+        (click)="clearValue('ccnovo_descricao')"
+      >
         <mat-icon>close</mat-icon>
       </button>
-      <button matSuffix mat-icon-button aria-label="Clear" (click)="onPesquisaCCNovo()">
+      <button
+        matSuffix
+        mat-icon-button
+        aria-label="Clear"
+        (click)="onPesquisaCCNovo()"
+      >
         <mat-icon>search</mat-icon>
       </button>
     </mat-form-field>
@@ -69,17 +153,26 @@
   <div class="col-med-2">
     <mat-form-field field appearance="outline" class="col-max">
       <mat-label>Grupos</mat-label>
-      <mat-select formControlName="grupos" (selectionChange)="onChangeParametros()">
+      <mat-select
+        formControlName="grupos"
+        (selectionChange)="onChangeParametros()"
+      >
         <mat-option *ngFor="let grupo of grupos" [value]="grupo.codigo">
-          {{grupo.descricao}}
+          {{ grupo.descricao }}
         </mat-option>
       </mat-select>
     </mat-form-field>
     <mat-form-field field appearance="outline" class="col-max">
       <mat-label>Situações</mat-label>
-      <mat-select formControlName="situacoes" (selectionChange)="onChangeParametros()">
-        <mat-option *ngFor="let situacao of situacoesInventarioPar" [value]="situacao.id">
-          {{situacao.descricao}}
+      <mat-select
+        formControlName="situacoes"
+        (selectionChange)="onChangeParametros()"
+      >
+        <mat-option
+          *ngFor="let situacao of situacoesInventarioPar"
+          [value]="situacao.id"
+        >
+          {{ situacao.descricao }}
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -87,17 +180,26 @@
   <div class="col-med-2">
     <mat-form-field field appearance="outline" class="col-max">
       <mat-label>Origem</mat-label>
-      <mat-select formControlName="origem" (selectionChange)="onChangeParametros()">
+      <mat-select
+        formControlName="origem"
+        (selectionChange)="onChangeParametros()"
+      >
         <mat-option *ngFor="let origem of Origens" [value]="origem.sigla">
-          {{origem.descricao}}
+          {{ origem.descricao }}
         </mat-option>
       </mat-select>
     </mat-form-field>
     <mat-form-field field appearance="outline" class="col-max">
       <mat-label>Executores</mat-label>
-      <mat-select formControlName="executor" (selectionChange)="onChangeParametros()">
-        <mat-option *ngFor="let executor of executores" [value]="executor.id_usuario">
-          {{executor.razao}}
+      <mat-select
+        formControlName="executor"
+        (selectionChange)="onChangeParametros()"
+      >
+        <mat-option
+          *ngFor="let executor of executores"
+          [value]="executor.id_usuario"
+        >
+          {{ executor.razao }}
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -105,31 +207,49 @@
   <div class="col-med-4">
     <mat-form-field appearance="outline" class="col-max">
       <mat-label>Código</mat-label>
-      <input matInput formControlName="codigo">
-      <button *ngIf="hasValue('codigo')" matSuffix mat-icon-button aria-label="Clear" (click)="clearValue('codigo')">
+      <input matInput formControlName="codigo" />
+      <button
+        *ngIf="hasValue('codigo')"
+        matSuffix
+        mat-icon-button
+        aria-label="Clear"
+        (click)="clearValue('codigo')"
+      >
         <mat-icon>close</mat-icon>
       </button>
     </mat-form-field>
     <mat-form-field appearance="outline" class="col-max">
       <mat-label>Novo</mat-label>
-      <input matInput formControlName="novo">
-      <button *ngIf="hasValue('novo')" matSuffix mat-icon-button aria-label="Clear" (click)="clearValue('novo')">
+      <input matInput formControlName="novo" />
+      <button
+        *ngIf="hasValue('novo')"
+        matSuffix
+        mat-icon-button
+        aria-label="Clear"
+        (click)="clearValue('novo')"
+      >
         <mat-icon>close</mat-icon>
       </button>
     </mat-form-field>
     <mat-form-field field appearance="outline" class="col-max">
       <mat-label>Condição</mat-label>
-      <mat-select formControlName="condicao" (selectionChange)="onChangeParametros()">
+      <mat-select
+        formControlName="condicao"
+        (selectionChange)="onChangeParametros()"
+      >
         <mat-option *ngFor="let condicao of condicoes" [value]="condicao.idx">
-          {{condicao.descricao}}
+          {{ condicao.descricao }}
         </mat-option>
       </mat-select>
     </mat-form-field>
     <mat-form-field field appearance="outline" class="col-max">
       <mat-label>Book</mat-label>
-      <mat-select formControlName="book" (selectionChange)="onChangeParametros()">
+      <mat-select
+        formControlName="book"
+        (selectionChange)="onChangeParametros()"
+      >
         <mat-option *ngFor="let resposta of respostas" [value]="resposta.sigla">
-          {{resposta.descricao}}
+          {{ resposta.descricao }}
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -137,9 +257,15 @@
   <div class="col-med-1">
     <mat-form-field field appearance="outline" class="col-max">
       <mat-label>Principal</mat-label>
-      <mat-select formControlName="id_principal" (selectionChange)="onChangeParametros()">
-        <mat-option *ngFor="let principal of principais" [value]="principal.codigo">
-          {{principal.descricao}}
+      <mat-select
+        formControlName="id_principal"
+        (selectionChange)="onChangeParametros()"
+      >
+        <mat-option
+          *ngFor="let principal of principais"
+          [value]="principal.codigo"
+        >
+          {{ principal.descricao }}
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -147,8 +273,14 @@
   <div class="col-med-1">
     <mat-form-field appearance="outline" class="col-max">
       <mat-label>Descrição</mat-label>
-      <input class="uppercase" matInput  formControlName="descricao">
-      <button *ngIf="hasValue('descricao')" matSuffix mat-icon-button aria-label="Clear" (click)="clearValue('descricao')">
+      <input class="uppercase" matInput formControlName="descricao" />
+      <button
+        *ngIf="hasValue('descricao')"
+        matSuffix
+        mat-icon-button
+        aria-label="Clear"
+        (click)="clearValue('descricao')"
+      >
         <mat-icon>close</mat-icon>
       </button>
     </mat-form-field>
@@ -156,17 +288,42 @@
   <div class="col-med-1">
     <mat-form-field appearance="outline" class="col-max">
       <mat-label>Observação</mat-label>
-      <input class="uppercase" matInput  formControlName="observacao">
-      <button *ngIf="hasValue('observacao')" matSuffix mat-icon-button aria-label="Clear" (click)="clearValue('observacao')">
+      <input class="uppercase" matInput formControlName="observacao" />
+      <button
+        *ngIf="hasValue('observacao')"
+        matSuffix
+        mat-icon-button
+        aria-label="Clear"
+        (click)="clearValue('observacao')"
+      >
         <mat-icon>close</mat-icon>
       </button>
     </mat-form-field>
   </div>
-  <div class="col-med-1">
+  <div class="col-med-2">
     <mat-form-field appearance="outline" class="col-max">
       <mat-label>Apelido</mat-label>
-      <input class="uppercase" matInput  formControlName="apelido">
-      <button *ngIf="hasValue('apelido')" matSuffix mat-icon-button aria-label="Clear" (click)="clearValue('apelido')">
+      <input class="uppercase" matInput formControlName="apelido" />
+      <button
+        *ngIf="hasValue('apelido')"
+        matSuffix
+        mat-icon-button
+        aria-label="Clear"
+        (click)="clearValue('apelido')"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="col-max">
+      <mat-label>NFe</mat-label>
+      <input class="uppercase" matInput formControlName="nfe" />
+      <button
+        *ngIf="hasValue('nfe')"
+        matSuffix
+        mat-icon-button
+        aria-label="Clear"
+        (click)="clearValue('nfe')"
+      >
         <mat-icon>close</mat-icon>
       </button>
     </mat-form-field>

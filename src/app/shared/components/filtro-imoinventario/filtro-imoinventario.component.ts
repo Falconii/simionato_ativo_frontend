@@ -2,7 +2,14 @@ import { LocalStorageService } from './../../../services/localStorage.service';
 import { Orderby } from './../../classes/orderby';
 import { ControlePaginas } from 'src/app/shared/classes/controle-paginas';
 import { ParametrosService } from 'src/app/services/parametros.service';
-import { Component, EventEmitter, Input, OnInit, Output, Inject } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  Inject,
+} from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CentrocustoService } from 'src/app/services/centrocusto.service';
@@ -10,7 +17,14 @@ import { GlobalService } from 'src/app/services/global.service';
 import { GrupoService } from 'src/app/services/grupo.service';
 import { AppSnackbar } from '../../classes/app-snackbar';
 import { Observable, Subscription } from 'rxjs';
-import { map,filter,tap,take, distinctUntilChanged, debounceTime} from   'rxjs/operators';
+import {
+  map,
+  filter,
+  tap,
+  take,
+  distinctUntilChanged,
+  debounceTime,
+} from 'rxjs/operators';
 import { SituacaoInventario } from '../../classes/situacao-inventario';
 import { Origem } from '../../classes/Origem';
 import { UsuarioModel } from 'src/app/models/usuario-model';
@@ -22,7 +36,13 @@ import { SimNao } from '../../classes/sim-nao';
 import { Condicoes } from '../../classes/condicoes';
 import { ParametroCentrocusto01 } from 'src/app/parametros/parametro-centrocusto01';
 import { ParametroGrupo01 } from 'src/app/parametros/parametro-grupo01';
-import { GetValueJsonBoolean, GetValueJsonNumber, GetValueJsonString, messageError } from '../../classes/util';
+import {
+  arraytostring,
+  GetValueJsonBoolean,
+  GetValueJsonNumber,
+  GetValueJsonString,
+  messageError,
+} from '../../classes/util';
 import { ParametroParametro01 } from 'src/app/parametros/parametro-parametro01';
 import { ParametroLancamentoUsuario } from 'src/app/parametros/parametros-lancamento-usuarios';
 import { LancamentoService } from 'src/app/services/lancamento.service';
@@ -45,14 +65,15 @@ import { CadastroEnum } from '../../enum/cadastro-enum.enum';
 @Component({
   selector: 'app-filtro-imoinventario',
   templateUrl: './filtro-imoinventario.component.html',
-  styleUrls: ['./filtro-imoinventario.component.css']
+  styleUrls: ['./filtro-imoinventario.component.css'],
 })
 export class FiltroImoinventarioComponent implements OnInit {
-  @Input('PARAMNAME') paramName :string = ""
-  @Input('RETORNO')   retorno:boolean = false;
-  @Input('EMAIL')     email:boolean = false;
-  @Input('DOWNLOAD')  download:boolean = false;
-  @Input('CONTROLE_PAGINAS') controle_paginas:ControlePaginas = new ControlePaginas(50,0);
+  @Input('PARAMNAME') paramName: string = '';
+  @Input('RETORNO') retorno: boolean = false;
+  @Input('EMAIL') email: boolean = false;
+  @Input('DOWNLOAD') download: boolean = false;
+  @Input('CONTROLE_PAGINAS') controle_paginas: ControlePaginas =
+    new ControlePaginas(50, 0);
   @Input('HIDE') hide: boolean = true;
   @Output('changeParametro') change = new EventEmitter<ParametroModel>();
   @Output('changeHide') changeHide = new EventEmitter<boolean>();
@@ -85,77 +106,74 @@ export class FiltroImoinventarioComponent implements OnInit {
 
   lancamento: LancamentoModel = new LancamentoModel();
 
-  principais:PrincipalModel[] = [];
+  principais: PrincipalModel[] = [];
 
   showFiltro: boolean = true;
 
   executores: ResumoLancamentosUsuariosModel[] = [];
 
-  hideAcao:string = "Ocultar";
+  hideAcao: string = 'Ocultar';
 
-
-
-  orderby:Orderby[] =  [
-    {sigla:"001" , descricao:"Ativo-Antigo"},
-    {sigla:"002" , descricao:"Ativo-Novo"},
-    {sigla:"003" , descricao:"CC-Antigo"},
-    {sigla:"004" , descricao:"CC-Novo"},
-    {sigla:"005" , descricao:"Grupo"},
-    {sigla:"006" , descricao:"Descrição"},
-    {sigla:"007" , descricao:"Observação"},
-    {sigla:"008" , descricao:"Data Lançamento"},
-    {sigla:"009" , descricao:"Apelido"}
+  orderby: Orderby[] = [
+    { sigla: '001', descricao: 'Ativo-Antigo' },
+    { sigla: '002', descricao: 'Ativo-Novo' },
+    { sigla: '003', descricao: 'CC-Antigo' },
+    { sigla: '004', descricao: 'CC-Novo' },
+    { sigla: '005', descricao: 'Grupo' },
+    { sigla: '006', descricao: 'Descrição' },
+    { sigla: '007', descricao: 'Observação' },
+    { sigla: '008', descricao: 'Data Lançamento' },
+    { sigla: '009', descricao: 'Apelido' },
   ];
 
+  parametro: ParametroModel = new ParametroModel();
 
-  parametro:  ParametroModel = new ParametroModel();
-
-  enable_filter:boolean = true;
+  enable_filter: boolean = true;
 
   constructor(
     private formBuilder: FormBuilder,
     private globalService: GlobalService,
     private localStorageService: LocalStorageService,
     private grupoService: GrupoService,
-    private parametrosService:ParametrosService,
+    private parametrosService: ParametrosService,
     private centrocustoService: CentrocustoService,
-    private lancamentoService:LancamentoService,
-    private principalService:PrincipalService,
-    private emailService:EmailService,
+    private lancamentoService: LancamentoService,
+    private principalService: PrincipalService,
+    private emailService: EmailService,
     private appSnackBar: AppSnackbar,
     private EmailDialog: MatDialog,
     private DownLoadDialog: MatDialog,
-    private searchDialogService:SeachDialogService
-    ) {
-      this.parametros = formBuilder.group({
-        hoje:[{ value: '' }],
-        cleardate:[{ value: '' }],
-        dtinicial: [{ value: '' }],
-        dtfinal: [{ value: '' }],
-        orderby: [{ value: '' }],
-        cc_descricao: [{ value: '' }],
-        ccnovo_descricao: [{ value: '' }],
-        grupos: [{ value: '' }],
-        situacoes: [{ value: '' }],
-        origem: [{ value: '' }],
-        executor: [{ value: '' }],
-        codigo: [{ value: '' }],
-        novo: [{ value: '' }],
-        id_principal: [{ value: '' }],
-        condicao: [{ value: '' }],
-        book: [{ value: '' }],
-        descricao: [{ value: '' }],
-        observacao: [{ value: '' }],
-        apelido: [{ value: '' }],
-        chaves: formBuilder.group({
-          cc:[{ value: '' }],
-          cc_novo: [{ value: '' }],
-        })
-
-      });
+    private searchDialogService: SeachDialogService,
+  ) {
+    this.parametros = formBuilder.group({
+      hoje: [{ value: '' }],
+      cleardate: [{ value: '' }],
+      dtinicial: [{ value: '' }],
+      dtfinal: [{ value: '' }],
+      orderby: [{ value: '' }],
+      cc_descricao: [{ value: '' }],
+      ccnovo_descricao: [{ value: '' }],
+      grupos: [{ value: '' }],
+      situacoes: [{ value: '' }],
+      origem: [{ value: '' }],
+      executor: [{ value: '' }],
+      codigo: [{ value: '' }],
+      novo: [{ value: '' }],
+      id_principal: [{ value: '' }],
+      condicao: [{ value: '' }],
+      book: [{ value: '' }],
+      descricao: [{ value: '' }],
+      observacao: [{ value: '' }],
+      apelido: [{ value: '' }],
+      nfe: [{ value: '' }],
+      chaves: formBuilder.group({
+        cc: [{ value: '' }],
+        cc_novo: [{ value: '' }],
+      }),
+    });
     this.situacoesInventario = this.globalService.getSituacoesInventario();
     this.situacoesInventarioPar =
-    this.globalService.getSituacoesInventarioPar();
+      this.globalService.getSituacoesInventarioPar();
     this.condicoes = this.globalService.getCondicoes();
     const todos: SimNao = new SimNao();
     todos.sigla = '';
@@ -175,80 +193,116 @@ export class FiltroImoinventarioComponent implements OnInit {
     this.setValuesNoParam();
     this.getExecutores();
     this.getGrupos();
-    }
+  }
 
   ngOnInit(): void {
     var param = this.localStorageService.getParametroModel(this.paramName);
 
-    this.parametros.get("dtinicial")?.valueChanges.pipe(
-      map(value => value.trim()),
-      filter(value => value.length >= 10 ),
-      debounceTime(350),
-      distinctUntilChanged(),
-     ).subscribe((_) => this.onChangeParametros());
+    this.parametros
+      .get('dtinicial')
+      ?.valueChanges.pipe(
+        map((value) => value.trim()),
+        filter((value) => value.length >= 10),
+        debounceTime(350),
+        distinctUntilChanged(),
+      )
+      .subscribe((_) => this.onChangeParametros());
 
-     this.parametros.get("dtfinal")?.valueChanges.pipe(
-      map(value => value.trim()),
-      filter(value => value.length >= 10),
-      debounceTime(350),
-      distinctUntilChanged(),
-     ).subscribe((_) => this.onChangeParametros());
+    this.parametros
+      .get('dtfinal')
+      ?.valueChanges.pipe(
+        map((value) => value.trim()),
+        filter((value) => value.length >= 10),
+        debounceTime(350),
+        distinctUntilChanged(),
+      )
+      .subscribe((_) => this.onChangeParametros());
 
-     this.parametros.get("codigo")?.valueChanges.pipe(
-      map(value => value.trim()),
-      filter(value => value.length > 0),
-      debounceTime(350),
-      distinctUntilChanged(),
-     ).subscribe((_) => this.onChangeParametros());
+    this.parametros
+      .get('codigo')
+      ?.valueChanges.pipe(
+        map((value) => value.trim()),
+        filter((value) => value.length > 0),
+        debounceTime(350),
+        distinctUntilChanged(),
+      )
+      .subscribe((_) => this.onChangeParametros());
 
-     this.parametros.get("cc_descricao")?.valueChanges.pipe(
-      map(value => value.trim()),
-      filter(value => value.length > 0),
-      debounceTime(350),
-      distinctUntilChanged(),
-     ).subscribe((_) => this.onChangeParametros());
+    this.parametros
+      .get('cc_descricao')
+      ?.valueChanges.pipe(
+        map((value) => value.trim()),
+        filter((value) => value.length > 0),
+        debounceTime(350),
+        distinctUntilChanged(),
+      )
+      .subscribe((_) => this.onChangeParametros());
 
-     this.parametros.get("ccnovo_descricao")?.valueChanges.pipe(
-      map(value => value.trim()),
-      filter(value => value.length > 0),
-      debounceTime(350),
-      distinctUntilChanged(),
-     ).subscribe((_) => this.onChangeParametros());
+    this.parametros
+      .get('ccnovo_descricao')
+      ?.valueChanges.pipe(
+        map((value) => value.trim()),
+        filter((value) => value.length > 0),
+        debounceTime(350),
+        distinctUntilChanged(),
+      )
+      .subscribe((_) => this.onChangeParametros());
 
-     this.parametros.get("novo")?.valueChanges.pipe(
-      map(value => value.trim()),
-      filter(value => value.length > 0),
-      debounceTime(350),
-      distinctUntilChanged(),
-     ).subscribe((_) => this.onChangeParametros());
+    this.parametros
+      .get('novo')
+      ?.valueChanges.pipe(
+        map((value) => value.trim()),
+        filter((value) => value.length > 0),
+        debounceTime(350),
+        distinctUntilChanged(),
+      )
+      .subscribe((_) => this.onChangeParametros());
 
-     this.parametros.get("descricao")?.valueChanges.pipe(
-      map(value => value.trim().toUpperCase()),
-      filter(value => value.length > 0),
-      debounceTime(350),
-      distinctUntilChanged(),
-     ).subscribe((value:string) => {
-      this.onChangeParametros();
-     });
-     this.parametros.get("observacao")?.valueChanges.pipe(
-      map(value => value.trim().toUpperCase()),
-      filter(value => value.length > 0),
-      debounceTime(350),
-      distinctUntilChanged(),
-     ).subscribe((value) => {
-      this.onChangeParametros()
-    });
-     this.parametros.get("apelido")?.valueChanges.pipe(
-      map(value => value.trim().toUpperCase()),
-      filter(value => value.length > 0),
-      debounceTime(350),
-      distinctUntilChanged(),
-     ).subscribe((value) => {
-      this.onChangeParametros()
-    });
-
+    this.parametros
+      .get('descricao')
+      ?.valueChanges.pipe(
+        map((value) => value.trim().toUpperCase()),
+        filter((value) => value.length > 0),
+        debounceTime(350),
+        distinctUntilChanged(),
+      )
+      .subscribe((value: string) => {
+        this.onChangeParametros();
+      });
+    this.parametros
+      .get('observacao')
+      ?.valueChanges.pipe(
+        map((value) => value.trim().toUpperCase()),
+        filter((value) => value.length > 0),
+        debounceTime(350),
+        distinctUntilChanged(),
+      )
+      .subscribe((value) => {
+        this.onChangeParametros();
+      });
+    this.parametros
+      .get('apelido')
+      ?.valueChanges.pipe(
+        map((value) => value.trim().toUpperCase()),
+        filter((value) => value.length > 0),
+        debounceTime(350),
+        distinctUntilChanged(),
+      )
+      .subscribe((value) => {
+        this.onChangeParametros();
+      });
+    this.parametros
+      .get('nfe')
+      ?.valueChanges.pipe(
+        map((value) => value.trim().toUpperCase()),
+        filter((value) => value.length > 0),
+        debounceTime(350),
+        distinctUntilChanged(),
+      )
+      .subscribe((value) => {
+        this.onChangeParametros();
+      });
   }
-
 
   ngOnDestroy(): void {
     this.inscricaoGetGrupo?.unsubscribe();
@@ -258,7 +312,6 @@ export class FiltroImoinventarioComponent implements OnInit {
     this.inscricaoEmail?.unsubscribe();
     this.inscricaoPrincipais?.unsubscribe();
   }
-
 
   getExecutores() {
     let par = new ParametroLancamentoUsuario();
@@ -285,10 +338,9 @@ export class FiltroImoinventarioComponent implements OnInit {
           semFiltro.id_usuario = 0;
           semFiltro.razao = 'Todos';
           this.executores.push(semFiltro);
-        }
+        },
       );
   }
-
 
   getGrupos() {
     let par = new ParametroGrupo01();
@@ -319,15 +371,14 @@ export class FiltroImoinventarioComponent implements OnInit {
           this.setValues();
           this.appSnackBar.openFailureSnackBar(
             `Pesquisa Nos Grupos ${messageError(error)}`,
-            'OK'
+            'OK',
           );
-        }
+        },
       );
   }
 
-  getPrincipais(){
-
-    let par = new ParametroPrincipal01()
+  getPrincipais() {
+    let par = new ParametroPrincipal01();
 
     par.id_empresa = this.globalService.getIdEmpresa();
 
@@ -357,22 +408,19 @@ export class FiltroImoinventarioComponent implements OnInit {
           this.principais = [];
           this.principais.push(semFiltro);
           this.loadParametros();
-        }
+        },
       );
   }
 
-
-  onGetExcelToEmailOrDownLoad(destino:string) {
-
-    if (destino.toUpperCase() == "E-MAIL"){
+  onGetExcelToEmailOrDownLoad(destino: string) {
+    if (destino.toUpperCase() == 'E-MAIL') {
       this.openEmailDialog();
     } else {
       this.openDownLoadDialog();
     }
   }
 
-  sendMail(fileName:string) {
-
+  sendMail(fileName: string) {
     let par = new ParametroSendemailv2();
 
     par.id_empresa = this.globalService.getIdEmpresa();
@@ -381,51 +429,65 @@ export class FiltroImoinventarioComponent implements OnInit {
 
     par.id_inventario = this.globalService.getInventario().codigo;
 
-    par.assunto = "Relatório Dos Ativos Do Inventário";
+    par.assunto = 'Relatório Dos Ativos Do Inventário';
 
-    par.destinatario =  this.globalService.usuario.email;
+    par.destinatario = this.globalService.usuario.email;
 
-    par.mensagem     = "Mensagem enviada automaticamento por solicitação do usuário. Favor Verificar Anexo."
+    par.mensagem =
+      'Mensagem enviada automaticamento por solicitação do usuário. Favor Verificar Anexo.';
 
     par.fileName = fileName;
 
     this.globalService.setSpin(true);
 
-    this.inscricaoEmail = this.emailService
-      .sendEmailV2(par)
-      .subscribe(
-        (data: any) => {
-          this.globalService.setSpin(false);
-          this.appSnackBar.openSuccessSnackBar(
-            `E-Mail Enviado Com Sucesso!`,
-            'OK'
-          );
-        },
-        (error: any) => {
-          this.globalService.setSpin(false);
-          this.appSnackBar.openFailureSnackBar(
-            `Pesquisa Nos Produtos De Inventário ${messageError(error)}`,
-            'OK'
-          );
-        }
-      );
+    this.inscricaoEmail = this.emailService.sendEmailV2(par).subscribe(
+      (data: any) => {
+        this.globalService.setSpin(false);
+        this.appSnackBar.openSuccessSnackBar(
+          `E-Mail Enviado Com Sucesso!`,
+          'OK',
+        );
+      },
+      (error: any) => {
+        this.globalService.setSpin(false);
+        this.appSnackBar.openFailureSnackBar(
+          `Pesquisa Nos Produtos De Inventário ${messageError(error)}`,
+          'OK',
+        );
+      },
+    );
   }
 
   setValues() {
     this.enable_filter = false;
     this.parametros.setValue({
-      hoje:false,
-      cleardate:false,
-      dtinicial:GetValueJsonString(this.parametro.getParametro(), 'dtinicial'),
-      dtfinal:GetValueJsonString(this.parametro.getParametro(), 'dtfinal'),
-      orderby:GetValueJsonString(this.parametro.getParametro(), 'orderby'),
-      cc_descricao: GetValueJsonString(this.parametro.getParametro(), 'cc_descricao'),
-      ccnovo_descricao: GetValueJsonString(this.parametro.getParametro(), 'ccnovo_descricao'),
+      hoje: false,
+      cleardate: false,
+      dtinicial: GetValueJsonString(this.parametro.getParametro(), 'dtinicial'),
+      dtfinal: GetValueJsonString(this.parametro.getParametro(), 'dtfinal'),
+      orderby: GetValueJsonString(this.parametro.getParametro(), 'orderby'),
+      cc_descricao: GetValueJsonString(
+        this.parametro.getParametro(),
+        'cc_descricao',
+      ),
+      ccnovo_descricao: GetValueJsonString(
+        this.parametro.getParametro(),
+        'ccnovo_descricao',
+      ),
       grupos: GetValueJsonNumber(this.parametro.getParametro(), 'grupo'),
       situacoes: GetValueJsonString(this.parametro.getParametro(), 'situacao'),
-      codigo: GetValueJsonNumber(this.parametro.getParametro(), 'codigo')?.toString(),
-      id_principal: GetValueJsonNumber(this.parametro.getParametro(), 'id_principal')?.toString(),
-      novo: GetValueJsonNumber(this.parametro.getParametro(), 'novo')?.toString(),
+      codigo: GetValueJsonNumber(
+        this.parametro.getParametro(),
+        'codigo',
+      )?.toString(),
+      id_principal: GetValueJsonNumber(
+        this.parametro.getParametro(),
+        'id_principal',
+      )?.toString(),
+      novo: GetValueJsonNumber(
+        this.parametro.getParametro(),
+        'novo',
+      )?.toString(),
       origem: GetValueJsonString(this.parametro.getParametro(), 'origem'),
       executor: GetValueJsonNumber(this.parametro.getParametro(), 'executor'),
       condicao: GetValueJsonNumber(this.parametro.getParametro(), 'condicao'),
@@ -433,13 +495,14 @@ export class FiltroImoinventarioComponent implements OnInit {
       descricao: GetValueJsonString(this.parametro.getParametro(), 'descricao'),
       observacao: GetValueJsonString(
         this.parametro.getParametro(),
-        'observacao'
+        'observacao',
       ),
       apelido: GetValueJsonString(this.parametro.getParametro(), 'apelido'),
-      chaves:{
-        "cc": GetValueJsonString(this.parametro.getParametro(), 'cc'),
-        "cc_novo": GetValueJsonString(this.parametro.getParametro(), 'cc_novo'),
-      }
+      nfe: GetValueJsonString(this.parametro.getParametro(), 'nfe'),
+      chaves: {
+        cc: GetValueJsonString(this.parametro.getParametro(), 'cc'),
+        cc_novo: GetValueJsonString(this.parametro.getParametro(), 'cc_novo'),
+      },
     });
     this.enable_filter = true;
   }
@@ -447,11 +510,11 @@ export class FiltroImoinventarioComponent implements OnInit {
   setValuesNoParam() {
     this.enable_filter = false;
     this.parametros.setValue({
-      hoje:false,
-      cleardate:false,
-      dtinicial:'',
-      dtfinal:'',
-      orderby:'001',
+      hoje: false,
+      cleardate: false,
+      dtinicial: '',
+      dtfinal: '',
+      orderby: '001',
       grupos: 0,
       situacoes: -1,
       codigo: '',
@@ -464,26 +527,27 @@ export class FiltroImoinventarioComponent implements OnInit {
       descricao: '',
       observacao: '',
       apelido: '',
+      nfe: '',
       cc_descricao: 'Todos',
       ccnovo_descricao: 'Todos Não Alterados',
-      chaves:{
-        "cc": "" ,
-        "cc_novo": ""
-      }
+      chaves: {
+        cc: '',
+        cc_novo: '',
+      },
     });
     this.enable_filter = true;
   }
 
-  setHide(){
+  setHide() {
     this.hide = !this.hide;
-    this.hideAcao = this.hide ? "Mostrar" : "Ocultar";
+    this.hideAcao = this.hide ? 'Mostrar' : 'Ocultar';
   }
 
   loadParametros() {
     this.parametro = new ParametroModel();
     this.parametro.id_empresa = this.globalService.getIdEmpresa();
     this.parametro.modulo = this.paramName;
-    this.parametro.assinatura = 'V1.00 27/05/2025';
+    this.parametro.assinatura = 'V1.00 24/01/2026';
     this.parametro.id_usuario = this.globalService.usuario.id;
     this.parametro.parametro = `
        {
@@ -505,6 +569,7 @@ export class FiltroImoinventarioComponent implements OnInit {
          "dtfinal":"",
          "id_principal":0,
          "apelido":"",
+         "nfe":"",
          "cc_descricao":"Todos",
          "ccnovo_descricao":"Todos Não Alterados",
          "orderby":"001",
@@ -512,14 +577,14 @@ export class FiltroImoinventarioComponent implements OnInit {
          "new": false,
          "id_retorno":0
        }`;
-       const param = this.localStorageService.getParametroModel(this.paramName);
+    const param = this.localStorageService.getParametroModel(this.paramName);
 
-       if (param !== null){
-           this.parametro.load(param);
-           this.setValues();
-       } else {
-          this.getParametro();
-      }
+    if (param !== null) {
+      this.parametro.load(param);
+      this.setValues();
+    } else {
+      this.getParametro();
+    }
   }
 
   getParametro() {
@@ -536,11 +601,11 @@ export class FiltroImoinventarioComponent implements OnInit {
         (data: ParametroModel[]) => {
           this.globalService.setSpin(false);
           this.parametro = new ParametroModel();
-          this.parametro.id_empresa  = data[0].id_empresa;
-          this.parametro.modulo      = data[0].modulo;
-          this.parametro.id_usuario  = data[0].id_usuario;
-          this.parametro.assinatura  = data[0].assinatura;
-          this.parametro.parametro   = data[0].parametro;
+          this.parametro.id_empresa = data[0].id_empresa;
+          this.parametro.modulo = data[0].modulo;
+          this.parametro.id_usuario = data[0].id_usuario;
+          this.parametro.assinatura = data[0].assinatura;
+          this.parametro.parametro = data[0].parametro;
           this.parametro.user_insert = data[0].user_insert;
           this.parametro.user_update = data[0].user_update;
           this.setValues();
@@ -548,9 +613,9 @@ export class FiltroImoinventarioComponent implements OnInit {
         },
         (error: any) => {
           this.globalService.setSpin(false);
-          this.setValuesNoParam()
+          this.setValuesNoParam();
           this.onChangeParametros();
-        }
+        },
       );
   }
 
@@ -570,278 +635,282 @@ export class FiltroImoinventarioComponent implements OnInit {
           this.globalService.setSpin(false);
           this.appSnackBar.openFailureSnackBar(
             `Gravação Dos Parametros ${messageError(error)}`,
-            'OK'
+            'OK',
           );
-        }
+        },
       );
   }
 
-  refreshParametro(start: boolean = true){
-    let config                         = this.parametro.getParametro();
-    Object(config).cc                  = this.parametros.get("chaves.cc")?.value;
-    Object(config).cc_descricao        = this.parametros.value.cc_descricao;
-    Object(config).cc_novo             = this.parametros.get("chaves.cc_novo")?.value;
-    Object(config).ccnovo_descricao    = this.parametros.value.ccnovo_descricao;
-    Object(config).grupo      = this.parametros.value.grupos;
-    Object(config).situacao   = this.parametros.value.situacoes;
-    Object(config).codigo     = this.parametros.value.codigo;
-    Object(config).novo       = this.parametros.value.novo;
-    Object(config).origem     = this.parametros.value.origem;
-    Object(config).executor   = this.parametros.value.executor;
-    Object(config).condicao   = this.parametros.value.condicao;
-    Object(config).book       = this.parametros.value.book;
-    Object(config).descricao  = this.parametros.value.descricao.toUpperCase();
+  refreshParametro(start: boolean = true) {
+    let config = this.parametro.getParametro();
+    //Object(config).cc = this.parametros.get('chaves.cc')?.value;
+    Object(config).cc_descricao = this.parametros.value.cc_descricao;
+    //Object(config).cc_novo = this.parametros.get('chaves.cc_novo')?.value;
+    Object(config).ccnovo_descricao = this.parametros.value.ccnovo_descricao;
+    Object(config).grupo = this.parametros.value.grupos;
+    Object(config).situacao = this.parametros.value.situacoes;
+    Object(config).codigo = this.parametros.value.codigo;
+    Object(config).novo = this.parametros.value.novo;
+    Object(config).origem = this.parametros.value.origem;
+    Object(config).executor = this.parametros.value.executor;
+    Object(config).condicao = this.parametros.value.condicao;
+    Object(config).book = this.parametros.value.book;
+    Object(config).descricao = this.parametros.value.descricao.toUpperCase();
     Object(config).observacao = this.parametros.value.observacao.toUpperCase();
-    Object(config).dtinicial  = this.parametros.value.dtinicial;
-    Object(config).dtfinal    = this.parametros.value.dtfinal;
-    Object(config).id_principal  = this.parametros.value.id_principal;
-    Object(config).apelido       = this.parametros.value.apelido.toUpperCase();
-    Object(config).orderby       = this.parametros.value.orderby;
+    Object(config).dtinicial = this.parametros.value.dtinicial;
+    Object(config).dtfinal = this.parametros.value.dtfinal;
+    Object(config).id_principal = this.parametros.value.id_principal;
+    Object(config).apelido = this.parametros.value.apelido.toUpperCase();
+    Object(config).nfe = this.parametros.value.nfe.toUpperCase();
+    Object(config).orderby = this.parametros.value.orderby;
 
-    this.parametro.parametro  = JSON.stringify(config);
+    this.parametro.parametro = JSON.stringify(config);
   }
 
-  onChangeParametros(start: boolean = true){
+  onChangeParametros(start: boolean = true) {
     this.refreshParametro(start);
-    if (this.enable_filter){
-       this.change.emit(this.parametro);
+    if (this.enable_filter) {
+      this.change.emit(this.parametro);
     }
   }
 
-  onSaveConfig(){
+  onSaveConfig() {
     this.updateParametros();
   }
 
-  onHide(){
+  onHide() {
     this.setHide();
-    this.changeHide.emit(this.hide)
+    this.changeHide.emit(this.hide);
   }
 
-  onPesquisaCC(){
-    this.searchDialogService.openSearchDialog(CadastroEnum.CC)
-    .beforeClosed()
-    .subscribe((data: SeachDialogData) => {
-
-      if (data){
-        if (data.retornoTodos){
-            this.parametros.patchValue({
-              cc_descricao: "Todos",
-              chaves:{
-                cc : ""
-              }
-            })
-            return;
+  onPesquisaCC() {
+    this.searchDialogService
+      .openSearchDialog(CadastroEnum.CC)
+      .beforeClosed()
+      .subscribe((data: SeachDialogData) => {
+        if (data) {
+          if (!data.cancelar) {
+            if (data.retorno.length !== 0) {
+              let config = this.parametro.getParametro();
+              Object(config).cc = arraytostring(data.retorno);
+              this.parametro.parametro = JSON.stringify(config);
+              this.parametros.patchValue({
+                cc: data.retorno[0],
+                cc_descricao:
+                  data.retorno.length === 1
+                    ? `${data.retorno[0].descricao}`
+                    : 'Multiplos Selecionados',
+              });
+            } else {
+              let config = this.parametro.getParametro();
+              Object(config).cc = '';
+              this.parametro.parametro = JSON.stringify(config);
+              this.parametros.patchValue({
+                cc_descricao: 'Todos',
+              });
+              return;
+            }
+          }
         }
-        if (!data.cancelar){
-            this.parametros.patchValue({
-              cc_descricao: `${data.retorno.codigo.replace("#","-")}-${data.retorno.descricao}`,
-              chaves:{
-                cc: data.retorno.codigo
-              }
-            })
-        }
-
-      }
-    });
-
+      });
   }
 
-  onPesquisaCCNovo(){
-    this.searchDialogService.openSearchDialog(CadastroEnum.CC)
-    .beforeClosed()
-    .subscribe((data: SeachDialogData) => {
-
-      if (data){
-        if (data.retornoTodos){
-            this.parametros.patchValue({
-              ccnovo_descricao: "Todos",
-              chaves:{
-                cc_novo : ""
-              }
-            })
-            return;
+  onPesquisaCCNovo() {
+    this.searchDialogService
+      .openSearchDialog(CadastroEnum.CC)
+      .beforeClosed()
+      .subscribe((data: SeachDialogData) => {
+        if (data) {
+          if (!data.cancelar) {
+            if (data.retorno.length !== 0) {
+              let config = this.parametro.getParametro();
+              Object(config).cc_novo = arraytostring(data.retorno);
+              this.parametro.parametro = JSON.stringify(config);
+              this.parametros.patchValue({
+                cc_novo: data.retorno[0],
+                ccnovo_descricao:
+                  data.retorno.length === 1
+                    ? `${data.retorno[0].descricao}`
+                    : 'Multiplos Selecionados',
+              });
+            } else {
+              let config = this.parametro.getParametro();
+              Object(config).cc_novo = '';
+              this.parametro.parametro = JSON.stringify(config);
+              this.parametros.patchValue({
+                ccnovo_descricao: 'Todos',
+              });
+              return;
+            }
+          }
         }
-        if (!data.cancelar){
-            this.parametros.patchValue({
-              ccnovo_descricao: `${data.retorno.codigo.replace("#","-")}-${data.retorno.descricao}`,
-              chaves:{
-                cc_novo: data.retorno.codigo
-              }
-            })
-        }
-      }
-    });
-
+      });
   }
 
   hasValue(campo: string): boolean {
-      if (this.parametros.get(campo)?.value == "") {
-        return false;
-      }
-      return true;
+    if (this.parametros.get(campo)?.value == '') {
+      return false;
+    }
+    return true;
   }
 
-  clearValue(campo: string){
-    if (campo == 'cc_descricao'){
-        this.parametros.patchValue({
-          cc_descricao: "Todos",
-          chaves:{
-            cc : ""
-          }
-        })
-    }
-    if (campo == 'ccnovo_descricao'){
+  clearValue(campo: string) {
+    if (campo == 'cc_descricao') {
+      let config = this.parametro.getParametro();
+      Object(config).cc = '';
+      this.parametro.parametro = JSON.stringify(config);
       this.parametros.patchValue({
-          ccnovo_descricao: "Todos",
-          chaves:{
-          cc_novo : ""
-          }
-      })
+        cc_descricao: 'Todos',
+      });
+    }
+    if (campo == 'ccnovo_descricao') {
+      let config = this.parametro.getParametro();
+      Object(config).cc_novo = '';
+      this.parametro.parametro = JSON.stringify(config);
+      this.parametros.patchValue({
+        ccnovo_descricao: 'Todos',
+      });
     }
     if (campo == 'descricao')
-    this.parametros.patchValue({
-      descricao: ''
-    })
+      this.parametros.patchValue({
+        descricao: '',
+      });
     if (campo == 'observacao')
       this.parametros.patchValue({
-        observacao: ''
-    })
+        observacao: '',
+      });
     if (campo == 'codigo')
       this.parametros.patchValue({
-        codigo: ''
-    })
+        codigo: '',
+      });
     if (campo == 'novo')
       this.parametros.patchValue({
-        novo: ''
-    })
+        novo: '',
+      });
 
     if (campo == 'id_principal')
       this.parametros.patchValue({
-        id_principal: ''
-    })
-     if (campo == 'apelido')
-      this.parametros.patchValue({
-        apelido: ''
-    })
-    this.onChangeParametros();
-}
-
-ChangeValue(campo: string, value:string){
-  if (campo == 'descricao')
-  this.parametros.patchValue({
-    descricao: value
-  })
-  if (campo == 'observacao')
-    this.parametros.patchValue({
-      observacao: value
-  })
+        id_principal: '',
+      });
     if (campo == 'apelido')
-    this.parametros.patchValue({
-      apelido: value
-  })
-}
-
-
-openEmailDialog(): void {
-  const data: EmailDialogData = new EmailDialogData();
-  data.titulo       = "ENVIAR CONSULTA VIA E-MAIL";
-  data.destinatario = this.globalService.usuario.email;
-  data.escopo       = "T";
-  data.labelBottomNao = "Cancelar";
-  data.labelBottonSim = "Processar";
-  data.id_empresa     = this.globalService.empresa.id;
-  data.id_filial      = this.globalService.local.id;
-  data.id_inventario  = this.globalService.inventario.codigo;
-  data.pagina          = this.controle_paginas.getPaginalAtual();
-  data.parametro       = this.parametro;
-
-  const dialogConfig = new MatDialogConfig();
-
-  dialogConfig.disableClose = true;
-  dialogConfig.id     = 'consulta-email';
-  dialogConfig.width  = '800px';
-  dialogConfig.data = data;
-  const modalDialog = this.EmailDialog.open(
-    EmailDialogComponent,
-    dialogConfig
-  )
-    .beforeClosed()
-    .subscribe((data: EmailDialogData) => {
-    });
-}
-
-
-openDownLoadDialog(): void {
-
-  console.log("Pagina: ", this.controle_paginas.getPaginalAtual());
-
-  const data: DownloadDialogData = new DownloadDialogData();
-  data.titulo       = "DOWNLOAD DE CONSULTA";
-  data.escopo       = "T";
-  data.labelBottomNao = "Cancelar";
-  data.labelBottonSim = "Processar";
-  data.id_empresa     = this.globalService.empresa.id;
-  data.id_filial      = this.globalService.local.id;
-  data.id_inventario  = this.globalService.inventario.codigo;
-  data.pagina          = this.controle_paginas.getPaginalAtual();
-  data.parametro       = this.parametro;
-
-  const dialogConfig = new MatDialogConfig();
-
-  dialogConfig.disableClose = true;
-  dialogConfig.id     = 'consulta-download';
-  dialogConfig.width  = '800px';
-  dialogConfig.data = data;
-  const modalDialog = this.DownLoadDialog.open(
-    DownloadDialogComponent,
-    dialogConfig
-  )
-    .beforeClosed()
-    .subscribe((data: DownloadDialogData) => {
-    });
-}
-
-
-NoValidtouchedOrDirty(campo: string): boolean {
-  if (
-    !this.parametros.get(campo)?.valid &&
-    (this.parametros.get(campo)?.touched || this.parametros.get(campo)?.dirty)
-  ) {
-    return true;
-  }
-  return false;
-}
-
-getMensafield(field: string): string {
-  return this.parametros.get(field)?.errors?.message;
-}
-
-
-onHoje(event:MatCheckboxChange){
-
-  if (event.checked){
-    let hoje:string = new Date(Date.now()).toLocaleString().split(',')[0];
-    this.parametros.patchValue({
-      dtinicial:hoje ,
-      dtfinal:hoje,
-      hoje:false
-    })
+      this.parametros.patchValue({
+        apelido: '',
+      });
+    if (campo == 'nfe')
+      this.parametros.patchValue({
+        nfe: '',
+      });
     this.onChangeParametros();
   }
 
-
-}
-
-onLimpar(event:MatCheckboxChange){
-  if (event.checked){
-    this.parametros.patchValue({
-      dtinicial: '',
-      dtfinal:'',
-      cleardate:false
-    })
+  ChangeValue(campo: string, value: string) {
+    if (campo == 'descricao')
+      this.parametros.patchValue({
+        descricao: value,
+      });
+    if (campo == 'observacao')
+      this.parametros.patchValue({
+        observacao: value,
+      });
+    if (campo == 'apelido')
+      this.parametros.patchValue({
+        apelido: value,
+      });
+    if (campo == 'nfe')
+      this.parametros.patchValue({
+        nfe: value,
+      });
   }
-  this.onChangeParametros();
-}
 
-}
+  openEmailDialog(): void {
+    const data: EmailDialogData = new EmailDialogData();
+    data.titulo = 'ENVIAR CONSULTA VIA E-MAIL';
+    data.destinatario = this.globalService.usuario.email;
+    data.escopo = 'T';
+    data.labelBottomNao = 'Cancelar';
+    data.labelBottonSim = 'Processar';
+    data.id_empresa = this.globalService.empresa.id;
+    data.id_filial = this.globalService.local.id;
+    data.id_inventario = this.globalService.inventario.codigo;
+    data.pagina = this.controle_paginas.getPaginalAtual();
+    data.parametro = this.parametro;
 
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.id = 'consulta-email';
+    dialogConfig.width = '800px';
+    dialogConfig.data = data;
+    const modalDialog = this.EmailDialog.open(
+      EmailDialogComponent,
+      dialogConfig,
+    )
+      .beforeClosed()
+      .subscribe((data: EmailDialogData) => {});
+  }
+
+  openDownLoadDialog(): void {
+    console.log('Pagina: ', this.controle_paginas.getPaginalAtual());
+
+    const data: DownloadDialogData = new DownloadDialogData();
+    data.titulo = 'DOWNLOAD DE CONSULTA';
+    data.escopo = 'T';
+    data.labelBottomNao = 'Cancelar';
+    data.labelBottonSim = 'Processar';
+    data.id_empresa = this.globalService.empresa.id;
+    data.id_filial = this.globalService.local.id;
+    data.id_inventario = this.globalService.inventario.codigo;
+    data.pagina = this.controle_paginas.getPaginalAtual();
+    data.parametro = this.parametro;
+
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.id = 'consulta-download';
+    dialogConfig.width = '800px';
+    dialogConfig.data = data;
+    const modalDialog = this.DownLoadDialog.open(
+      DownloadDialogComponent,
+      dialogConfig,
+    )
+      .beforeClosed()
+      .subscribe((data: DownloadDialogData) => {});
+  }
+
+  NoValidtouchedOrDirty(campo: string): boolean {
+    if (
+      !this.parametros.get(campo)?.valid &&
+      (this.parametros.get(campo)?.touched || this.parametros.get(campo)?.dirty)
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  getMensafield(field: string): string {
+    return this.parametros.get(field)?.errors?.message;
+  }
+
+  onHoje(event: MatCheckboxChange) {
+    if (event.checked) {
+      let hoje: string = new Date(Date.now()).toLocaleString().split(',')[0];
+      this.parametros.patchValue({
+        dtinicial: hoje,
+        dtfinal: hoje,
+        hoje: false,
+      });
+      this.onChangeParametros();
+    }
+  }
+
+  onLimpar(event: MatCheckboxChange) {
+    if (event.checked) {
+      this.parametros.patchValue({
+        dtinicial: '',
+        dtfinal: '',
+        cleardate: false,
+      });
+    }
+    this.onChangeParametros();
+  }
+}

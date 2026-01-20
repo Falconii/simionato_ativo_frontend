@@ -1,3 +1,5 @@
+import { SerachModel } from 'src/app/models/serachModel';
+
 export function DataYYYYMMDD(value: Date): string {
   let d: Date = new Date(value),
     month = '' + (d.getMonth() + 1),
@@ -273,13 +275,23 @@ export function GetValueJsonBoolean(obj: JSON, tag: string): boolean {
   return retorno;
 }
 
-
-export function ConvertNumberToInt(value:string): number {
+export function ConvertNumberToInt(value: string): number {
   let key = parseInt(value, 10);
-    if (isNaN(key)) {
-       return  0;
-    } else {
-       return  key;
-    }
+  if (isNaN(key)) {
+    return 0;
+  } else {
+    return key;
+  }
 }
 
+export function arraytostring(retorno: SerachModel[]): string {
+  if (retorno.length === 0) {
+    return '';
+  }
+  let valores: string = '';
+  retorno.forEach((element, index) => {
+    valores +=
+      element.codigo.toString() + (index < retorno.length - 1 ? ';' : '');
+  });
+  return valores;
+}

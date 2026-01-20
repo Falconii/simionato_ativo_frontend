@@ -51,6 +51,8 @@ import { AtualizaParametroImobilizadoInventario01 } from 'src/app/shared/classes
 import { RetornoOpcao } from 'src/app/shared/classes/retorno-opcao';
 import { ChangeMod02DialogComponent } from 'src/app/shared/components/change-mod02-dialog/change-mod02-dialog.component';
 import { ChangeMod02Data } from 'src/app/shared/components/change-mod02-dialog/change-mod02-data';
+import { ManuaisLinkData } from 'src/app/shared/components/manuais-link/manuais-link-data';
+import { ManuaisLinkComponent } from 'src/app/shared/components/manuais-link/manuais-link.component';
 
 @Component({
   selector: 'app-crud-imoinventario',
@@ -85,11 +87,11 @@ export class CrudImoinventarioComponent implements OnInit {
 
   erro: string = '';
 
-    tamPagina = 50;
+  tamPagina = 50;
 
   controlePaginas: ControlePaginas = new ControlePaginas(
     this.tamPagina,
-    this.tamPagina
+    this.tamPagina,
   );
 
   retorno: boolean = false;
@@ -132,7 +134,7 @@ export class CrudImoinventarioComponent implements OnInit {
     private lancamentoService: LancamentoService,
     private nfeService: NfeService,
     private valorService: ValorService,
-    private localStorageService:  LocalStorageService,
+    private localStorageService: LocalStorageService,
     private router: Router,
     private appSnackBar: AppSnackbar,
     private route: ActivatedRoute,
@@ -140,8 +142,8 @@ export class CrudImoinventarioComponent implements OnInit {
     private LancaDialog: MatDialog,
     private NfeDialog: MatDialog,
     private valorDialog: MatDialog,
-    private substrituirDialog:MatDialog,
-    private trocarDialog:MatDialog,
+    private substrituirDialog: MatDialog,
+    private trocarDialog: MatDialog,
   ) {
     this.localStorageService.clear();
     this.getCentroCustos();
@@ -150,8 +152,6 @@ export class CrudImoinventarioComponent implements OnInit {
   ngOnInit(): void {
     this.inventario = this.globalService.getInventario();
   }
-
-
 
   ngOnDestroy(): void {
     this.inscricaoGetAll?.unsubscribe();
@@ -163,7 +163,7 @@ export class CrudImoinventarioComponent implements OnInit {
     this.inscricaoNfe?.unsubscribe();
     this.inscricaoValores?.unsubscribe();
     this.localStorageService.removeItem(this.paramName);
-    this.localStorageService.removeItem("retorno");
+    this.localStorageService.removeItem('retorno');
   }
 
   getNfe(imobilizado: ImobilizadoinventarioModel) {
@@ -175,7 +175,7 @@ export class CrudImoinventarioComponent implements OnInit {
         imobilizado.id_imobilizado,
         imobilizado.imo_nfe,
         imobilizado.imo_serie,
-        imobilizado.imo_item
+        imobilizado.imo_item,
       )
       .subscribe(
         (data: NfeModel[]) => {
@@ -189,9 +189,9 @@ export class CrudImoinventarioComponent implements OnInit {
           this.globalService.setSpin(false);
           this.appSnackBar.openFailureSnackBar(
             `Pesquisa Nas Nfes ${messageError(error)}`,
-            'OK'
+            'OK',
           );
-        }
+        },
       );
   }
 
@@ -201,7 +201,7 @@ export class CrudImoinventarioComponent implements OnInit {
       .getValor(
         imobilizado.id_empresa,
         imobilizado.id_filial,
-        imobilizado.id_imobilizado
+        imobilizado.id_imobilizado,
       )
       .subscribe(
         (data: ValorModel) => {
@@ -213,12 +213,11 @@ export class CrudImoinventarioComponent implements OnInit {
           this.globalService.setSpin(false);
           this.appSnackBar.openFailureSnackBar(
             `Pesquisa Nos Valores ${messageError(error)}`,
-            'OK'
+            'OK',
           );
-        }
+        },
       );
   }
-
 
   getCentroCustos() {
     let par = new ParametroCentrocusto01();
@@ -273,9 +272,9 @@ export class CrudImoinventarioComponent implements OnInit {
           this.ccs_alterados = [];
           this.appSnackBar.openFailureSnackBar(
             `Pesquisa Nos Grupos ${messageError(error)}`,
-            'OK'
+            'OK',
           );
-        }
+        },
       );
   }
 
@@ -306,9 +305,9 @@ export class CrudImoinventarioComponent implements OnInit {
           this.grupos = [];
           this.appSnackBar.openFailureSnackBar(
             `Pesquisa Nos Grupos ${messageError(error)}`,
-            'OK'
+            'OK',
           );
-        }
+        },
       );
   }
 
@@ -321,7 +320,10 @@ export class CrudImoinventarioComponent implements OnInit {
 
     par.id_inventario = this.globalService.getInventario().codigo;
 
-    par = AtualizaParametroImobilizadoInventario01(par,this.parametro.getParametro());
+    par = AtualizaParametroImobilizadoInventario01(
+      par,
+      this.parametro.getParametro(),
+    );
 
     par.pagina = this.controlePaginas.getPaginalAtual();
 
@@ -333,7 +335,7 @@ export class CrudImoinventarioComponent implements OnInit {
           this.globalService.setSpin(false);
           this.atualizaTargetId();
           this.imoinv = data;
-          console.log("imoinv:",this.imoinv);
+          console.log('imoinv:', this.imoinv);
 
           /*
           if (this.atual.id_imobilizado !== 0) {
@@ -348,7 +350,7 @@ export class CrudImoinventarioComponent implements OnInit {
           Object(config).id_retorno = 0;
           Object(config).new = false;
           this.parametro.parametro = JSON.stringify(config); */
-         /*  if (this.globalService.mouseX >= 0){
+          /*  if (this.globalService.mouseX >= 0){
             console.log("Posicionando em ",this.globalService.mouseX,this.globalService.mouseY)
             this.poscionaWindow(this.globalService.mouseX,this.globalService.mouseY);
           } */
@@ -358,15 +360,13 @@ export class CrudImoinventarioComponent implements OnInit {
           this.imoinv = [];
           this.appSnackBar.openFailureSnackBar(
             `Pesquisa Nos Produtos De Inventário ${messageError(error)}`,
-            'OK'
+            'OK',
           );
-        }
+        },
       );
   }
 
-
   getImoIvenContador() {
-
     let par = new ParametroImobilizadoinventario01();
 
     par.id_empresa = this.globalService.getIdEmpresa();
@@ -375,7 +375,10 @@ export class CrudImoinventarioComponent implements OnInit {
 
     par.id_inventario = this.globalService.getInventario().codigo;
 
-    par =  AtualizaParametroImobilizadoInventario01(par,this.parametro.getParametro());
+    par = AtualizaParametroImobilizadoInventario01(
+      par,
+      this.parametro.getParametro(),
+    );
 
     par.contador = 'S';
 
@@ -390,11 +393,11 @@ export class CrudImoinventarioComponent implements OnInit {
           var pag = this.controlePaginas.getPaginalAtual();
           this.controlePaginas = new ControlePaginas(
             this.tamPagina,
-            data.total == 0 ? 1 : data.total
+            data.total == 0 ? 1 : data.total,
           );
           this.controlePaginas.setPaginaAtual(pag);
-          if  (data.total > 0){
-              this.getImoIven();
+          if (data.total > 0) {
+            this.getImoIven();
           } else {
             this.imoinv = [];
             this.controlePaginas = new ControlePaginas(this.tamPagina, 1);
@@ -405,7 +408,7 @@ export class CrudImoinventarioComponent implements OnInit {
           this.globalService.setSpin(false);
           this.imoinv = [];
           this.controlePaginas = new ControlePaginas(this.tamPagina, 1);
-        }
+        },
       );
   }
 
@@ -416,7 +419,7 @@ export class CrudImoinventarioComponent implements OnInit {
         imobilizado.id_empresa,
         imobilizado.id_filial,
         imobilizado.id_inventario,
-        imobilizado.id_imobilizado
+        imobilizado.id_imobilizado,
       )
       .subscribe(
         (data: any) => {
@@ -430,38 +433,39 @@ export class CrudImoinventarioComponent implements OnInit {
           this.lancamento = new LancamentoModel();
           this.appSnackBar.openFailureSnackBar(
             `Pesquisa Nos Lançamentos ${messageError(error)}`,
-            'OK'
+            'OK',
           );
-        }
+        },
       );
   }
 
-  onChangeParametros(param:ParametroModel) {
-    console.log("change chamdo",param);
+  onChangeParametros(param: ParametroModel) {
+    console.log('change chamdo', param);
     this.parametro = param;
-    let page:number = 1;
-    var pag = this.localStorageService.getNumber("page");
-    console.log("page:",pag);
+    let page: number = 1;
+    var pag = this.localStorageService.getNumber('page');
+    console.log('page:', pag);
     if (pag != null) {
-       page =  pag;
+      page = pag;
     }
     this.controlePaginas.setPaginaAtual(page);
-    this.localStorageService.removeItem("page");
+    this.localStorageService.removeItem('page');
     this.getImoIvenContador();
   }
-
 
   getTexto() {
     return MensagensBotoes;
   }
 
-  escolha(op:number, imobilizado: ImobilizadoinventarioModel) {
+  escolha(op: number, imobilizado: ImobilizadoinventarioModel) {
+    this.localStorageService.setParametroModel(this.paramName, this.parametro);
 
-    this.localStorageService.setParametroModel(this.paramName,this.parametro);
+    this.localStorageService.setNumber(
+      'page',
+      this.controlePaginas.getPaginalAtual(),
+    );
 
-    this.localStorageService.setNumber("page",this.controlePaginas.getPaginalAtual());
-
-    this.localStorageService.setNumber("retorno",imobilizado.id_imobilizado);
+    this.localStorageService.setNumber('retorno', imobilizado.id_imobilizado);
 
     if (op == 95) {
       this.getNfe(imobilizado);
@@ -473,13 +477,18 @@ export class CrudImoinventarioComponent implements OnInit {
       return;
     }
 
-    if (op == CadastroAcoes.Substituir){
+    if (op == CadastroAcoes.Substituir) {
       this.openSubstituirDialog(imobilizado);
       return;
     }
 
-    if (op == CadastroAcoes.Trocar){
+    if (op == CadastroAcoes.Trocar) {
       this.openTrocarDialog(imobilizado);
+      return;
+    }
+
+    if (op == CadastroAcoes.Link) {
+      this.openLinkDialog(imobilizado);
       return;
     }
 
@@ -508,15 +517,13 @@ export class CrudImoinventarioComponent implements OnInit {
   }
 
   onChangePage() {
-    this.localStorageService.removeItem("page");
+    this.localStorageService.removeItem('page');
     this.getImoIven();
   }
-
 
   onHome() {
     this.router.navigate(['']);
   }
-
 
   openNfeDialog(): void {
     const data: NfeData = new NfeData();
@@ -534,7 +541,6 @@ export class CrudImoinventarioComponent implements OnInit {
       });
   }
 
-
   openSubstituirDialog(imobilizado: ImobilizadoinventarioModel): void {
     const data: ChangeMod01Data = new ChangeMod01Data();
     data.ativo = imobilizado;
@@ -543,7 +549,8 @@ export class CrudImoinventarioComponent implements OnInit {
     dialogConfig.id = 'substituir';
     dialogConfig.width = '1200px';
     dialogConfig.data = data;
-    const modalDialog = this.substrituirDialog.open(ChangeMod01DialogComponent, dialogConfig)
+    const modalDialog = this.substrituirDialog
+      .open(ChangeMod01DialogComponent, dialogConfig)
       .beforeClosed()
       .subscribe((data: ChangeMod01Data) => {
         this.getImoIven();
@@ -558,14 +565,29 @@ export class CrudImoinventarioComponent implements OnInit {
     dialogConfig.id = 'trocar';
     dialogConfig.width = '1200px';
     dialogConfig.data = data;
-    const modalDialog = this.trocarDialog.open(ChangeMod02DialogComponent, dialogConfig)
+    const modalDialog = this.trocarDialog
+      .open(ChangeMod02DialogComponent, dialogConfig)
       .beforeClosed()
       .subscribe((data: ChangeMod02Data) => {
         this.getImoIven();
       });
   }
 
-
+  openLinkDialog(imobilizado: ImobilizadoinventarioModel): void {
+    const data: ManuaisLinkData = new ManuaisLinkData();
+    data.ativo = imobilizado;
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.id = 'linkmanual';
+    dialogConfig.width = '1200px';
+    dialogConfig.data = data;
+    const modalDialog = this.trocarDialog
+      .open(ManuaisLinkComponent, dialogConfig)
+      .beforeClosed()
+      .subscribe((data: ManuaisLinkData) => {
+        this.getImoIven();
+      });
+  }
 
   openValoresDialog(): void {
     const data: ValorData = new ValorData();
@@ -588,9 +610,9 @@ export class CrudImoinventarioComponent implements OnInit {
 
   openLancaDialog(
     opcao: number,
-    imobilizado: ImobilizadoinventarioModel
+    imobilizado: ImobilizadoinventarioModel,
   ): void {
-   /*  let config = this.parametro.getParametro();
+    /*  let config = this.parametro.getParametro();
     Object(config).new = false;
     Object(config).id_retorno = imobilizado.id_imobilizado;
     Object(config).page = this.controlePaginas.getPaginalAtual();
@@ -612,7 +634,7 @@ export class CrudImoinventarioComponent implements OnInit {
     dialogConfig.data = data;
     const modalDialog = this.LancaDialog.open(
       LancaDialogComponent,
-      dialogConfig
+      dialogConfig,
     )
       .beforeClosed()
       .subscribe((data: LancaData) => {
@@ -631,7 +653,7 @@ export class CrudImoinventarioComponent implements OnInit {
     dialogConfig.data = data;
     const modalDialog = this.LancaDialog.open(
       ImobilizadoDialogComponent,
-      dialogConfig
+      dialogConfig,
     )
       .beforeClosed()
       .subscribe((data: ImobilizadoData) => {
@@ -642,7 +664,7 @@ export class CrudImoinventarioComponent implements OnInit {
   onProcessar(retorno: RetornoLancamento) {
     if (retorno.opcao == CadastroAcoes.None) {
       if (this.atual.id_imobilizado !== 0) {
-       /* const idx = this.imoinv.findIndex(
+        /* const idx = this.imoinv.findIndex(
           (inv) => inv.id_imobilizado == this.atual.id_imobilizado);
           setTimeout(() => this.viewPort.scrollToIndex(idx), 10);
        */
@@ -654,40 +676,35 @@ export class CrudImoinventarioComponent implements OnInit {
     }
   }
 
-
-  onChangeHide(hide:boolean){
+  onChangeHide(hide: boolean) {
     this.hide = hide;
   }
 
   atualizaTargetId() {
+    const retorno = this.localStorageService.getNumber('retorno');
+    if (retorno != null) {
+      this.targetRowId = retorno;
 
-    const retorno  = this.localStorageService.getNumber("retorno");
-    if (retorno != null){
-
-        this.targetRowId = retorno;
-
-        this.localStorageService.removeItem("retorno");
-
+      this.localStorageService.removeItem('retorno');
     } else {
-
       this.targetRowId = 0;
     }
   }
-  onTopoPagina(){
-    this.poscionaWindow(0,0);
+  onTopoPagina() {
+    this.poscionaWindow(0, 0);
   }
 
-  novaConsulta(){
-    this.localStorageService.removeItem("page");
-    this.controlePaginas = new ControlePaginas(this.tamPagina,1);
+  novaConsulta() {
+    this.localStorageService.removeItem('page');
+    this.controlePaginas = new ControlePaginas(this.tamPagina, 1);
     this.getImoIvenContador();
   }
 
-  poscionaWindow(x:number,y:number){
-    window.scrollTo(x,y);
+  poscionaWindow(x: number, y: number) {
+    window.scrollTo(x, y);
   }
 
-  onPosiciona(){
-    this.poscionaWindow(0,0);
+  onPosiciona() {
+    this.poscionaWindow(0, 0);
   }
 }

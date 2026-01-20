@@ -9,24 +9,21 @@ import { GrupoModel } from '../models/grupo-model';
 import { CentrocustoModel } from '../models/centrocusto-model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SeachDialogService {
+  constructor(private searchDialog: MatDialog) {}
 
-  constructor(private searchDialog:MatDialog) { }
-
-  openSearchDialog(cadastro:CadastroEnum) {
+  openSearchDialog(cadastro: CadastroEnum) {
     const data: SeachDialogData = new SeachDialogData();
-    data.cadastro      = cadastro;
-    data.opcaoTodos    = true;
+    data.cadastro = cadastro;
+    data.opcaoTodos = true;
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
-    dialogConfig.id    = 'Pesquisa';
+    dialogConfig.id = 'Pesquisa';
     dialogConfig.width = '1200px';
-    dialogConfig.height = '600px';
-    dialogConfig.data  =  data;
-    return  this.searchDialog.open(SeachDialogComponent, dialogConfig);
+    dialogConfig.height = '650px';
+    dialogConfig.data = data;
+    return this.searchDialog.open(SeachDialogComponent, dialogConfig);
   }
-
-
 }

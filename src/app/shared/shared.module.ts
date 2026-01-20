@@ -42,6 +42,7 @@ import { LabelVerdeVermelhoDirective } from './diretivas/label-verde-vermelho.di
 import { SeachDialogComponent } from './components/seach-dialog/seach-dialog.component';
 import { ChangeMod02DialogComponent } from './components/change-mod02-dialog/change-mod02-dialog.component';
 import { menosumToSpacePipe } from './pipes/menos-um-to-space.pipe';
+import { ManuaisLinkComponent } from './components/manuais-link/manuais-link.component';
 @NgModule({
   declarations: [
     SimNaoPipe,
@@ -83,10 +84,16 @@ import { menosumToSpacePipe } from './pipes/menos-um-to-space.pipe';
     LabelValueDirective,
     SeachDialogComponent,
     ChangeMod02DialogComponent,
-    menosumToSpacePipe
+    menosumToSpacePipe,
+    ManuaisLinkComponent,
   ],
-  imports: [CommonModule, MaterialModule, FormsModule, ReactiveFormsModule,
-    NgxMaskModule.forChild(),],
+  imports: [
+    CommonModule,
+    MaterialModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgxMaskModule.forChild(),
+  ],
   exports: [
     SimNaoPipe,
     CadastroAcoesPipe,
@@ -113,7 +120,8 @@ import { menosumToSpacePipe } from './pipes/menos-um-to-space.pipe';
     CondicaoPipePipe,
     FiltroCadastroPadraoComponent,
     LabelValueDirective,
-    ChangeMod02DialogComponent
+    ChangeMod02DialogComponent,
+    ManuaisLinkComponent,
   ],
 })
 export class SharedModule {}

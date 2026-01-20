@@ -1,0 +1,208 @@
+<div class="padrao">
+    <div class="div-barra">
+        <mat-toolbar>
+            <span class="example-spacer">Rotina Para Transferir Lançamento e Fotos. ORIGEM->DESTINO</span
+      >
+    </mat-toolbar>
+  </div>
+  <div mat-dialog-content class="dialog-content">
+    <form [formGroup]="formulario" autocomplete="off">
+      <div class="col-med-4">
+        <mat-form-field appearance="outline" class="col-max">
+          <mat-label>Ativo De Origem</mat-label>
+          <input matInput formControlName="de" />
+        </mat-form-field>
+        <mat-form-field field appearance="outline" class="column-span-3">
+          <mat-label>Pesquisa</mat-label>
+          <input class="uppercase" matInput formControlName="dePesquisa" />
+          <button
+            *ngIf="hasValue('dePesquisa')"
+            matSuffix
+            mat-icon-button
+            aria-label="Clear"
+            (click)="clearValue('dePesquisa')"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+          <button
+            matSuffix
+            mat-icon-button
+            aria-label="Clear"
+            (click)="onPesquisar()"
+          >
+            <mat-icon>search</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+      <div class="col-med-2">
+        <mat-form-field appearance="outline" class="col-max">
+          <mat-label>Descrição</mat-label>
+          <input matInput formControlName="deDescricao" readonly="true" />
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="col-max">
+          <mat-label>Observação</mat-label>
+          <input matInput formControlName="deObs" readonly="true" />
+        </mat-form-field>
+      </div>
+      <mat-tab-group>
+        <mat-tab>
+          <ng-template mat-tab-label> Pesquisa </ng-template>
+          <div class="moldura">
+            <table class="Browse_Lanc">
+              <tr class="coluna-cabec">
+                <th>Cód Imobil.</th>
+                <th>Descrição/CC</th>
+                <th>Novos</th>
+                <th>Lançamento</th>
+                <th>NFE & Serie</th>
+                <th>AÇÕES</th>
+              </tr>
+              <tr *ngFor="let imo of lsAtivos; let i = index">
+                <td>
+                  <div>
+                    <mat-label class="Browse_Lanc_td">{{
+                      imo.id_imobilizado
+                    }}</mat-label>
+                  </div>
+                  <div>
+                    <mat-label class="Browse_Lanc_td"
+                      >{{ imo.imo_origem | origem }}
+                    </mat-label>
+                  </div>
+                  <div>
+                    <mat-label class="Browse_Lanc_td"
+                      >{{ imo.status | situacao }}
+                    </mat-label>
+                  </div>
+                  <div>
+                    <mat-label class="Browse_Lanc_td">{{
+                      imo.imo_apelido
+                    }}</mat-label>
+                  </div>
+                </td>
+                <td>
+                  <div>
+                    <mat-label class="Browse_Lanc_td"
+                      >Desc.: {{ imo.imo_descricao }}</mat-label
+                    >
+                  </div>
+                  <div>
+                    <mat-label class="Browse_Lanc_td"
+                      >C.C.: {{ imo.imo_cod_cc | ccpipe }}-{{
+                        imo.cc_descricao | embrancopipe
+                      }}
+                    </mat-label>
+                  </div>
+                  <div>
+                    <mat-label class="Browse_Lanc_td"
+                      >Grupo: {{ imo.grupo_descricao }}</mat-label
+                    >
+                  </div>
+                  <div *ngIf="imo.lanc_obs.trim().length > 0">
+                    <mat-label class="Browse_Lanc_td"
+                      >OBS:{{ imo.lanc_obs }}</mat-label
+                    >
+                  </div>
+                  <div *ngIf="imo.imo_principal > 0">
+                    <mat-label class="Browse_Lanc_td_red"
+                      >Princ.: {{ imo.imo_principal }}-{{
+                        imo.princ_descricao
+                      }}</mat-label
+                    >
+                  </div>
+                </td>
+                <td>
+                  <div>
+                    <mat-label class="Browse_Lanc_td"
+                      >Cód:{{ imo.new_codigo | zerotospacepipe }}</mat-label
+                    >
+                  </div>
+                  <div>
+                    <mat-label
+                      class="Browse_Lanc_td"
+                      [matTooltip]="imo.new_cc_descricao"
+                      matTooltipPosition="above"
+                    >
+                      C.C.:{{ imo.new_cc | ccpipe }}
+                    </mat-label>
+                  </div>
+                </td>
+                <td>
+                  <div>
+                    <mat-label class="Browse_Lanc_td"
+                      >Lanç:{{ imo.id_lanca | zerotospacepipe }}</mat-label
+                    >
+                  </div>
+                  <div>
+                    <mat-label class="Browse_Lanc_td"
+                      >Resp:{{ imo.usu_razao | firstName }}</mat-label
+                    >
+                  </div>
+                  <div>
+                    <mat-label class="Browse_Lanc_td"
+                      >Data:{{ imo.lanc_dt_lanca }}</mat-label
+                    >
+                  </div>
+                  <div>
+                    <mat-label class="Browse_Lanc_td"
+                      >Cond.:{{ imo.lanc_condicao | condicaopipe }}</mat-label
+                    >
+                  </div>
+                  <div>
+                    <mat-label class="Browse_Lanc_td"
+                      >Book.:{{ imo.lanc_book | simNao }}</mat-label
+                    >
+                  </div>
+                </td>
+                <td>
+                  <div>
+                    <mat-label class="Browse_Lanc_td"
+                      >{{ imo.imo_nfe }}-{{ imo.imo_serie }}</mat-label
+                    >
+                  </div>
+                </td>
+                <td>
+                  <barra-acoes
+                    [EXCLUIR]="imo.id_lanca > 0"
+                    [CONSULTAR]="imo.id_lanca > 0"
+                    [FOTOS]="false"
+                    [BARRA_VERTICAL]="true"
+                    [BARRA_NFE]="imo.imo_nfe !== ''"
+                    [BARRA_VALORES]="true"
+                    [BARRA_EXCLUIR]="false"
+                    [BARRA_ATIVIDADES]="false"
+                    [BARRA_SUBSTITUIR]="
+                      imo.imo_origem == 'M' && imo.id_lanca > 0
+                    "
+                    [BARRA_TROCAR]="true"
+                    [MANUAL_LINK]="true"
+                    (changeOpcao)="escolha($event, imo)"
+                  >
+                  </barra-acoes>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </mat-tab>
+        <mat-tab>
+          <ng-template mat-tab-label> Selecionados </ng-template>
+          <div class="moldura">
+            <div class="col-med-4">Ola</div>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </form>
+  </div>
+  <div mat-dialog-actions>
+    <div class="button-container-right">
+      <button mat-raised-button color="accent" (click)="closeModal()">
+        <mat-icon>cancel</mat-icon>
+        <span>{{ getLabelCancel() }}</span>
+            </button>
+            <button mat-raised-button color="primary" (click)="actionFunction()" [disabled]="!itsOK">
+        <mat-icon>check</mat-icon>
+        <span>SUBSTITUIR</span>
+      </button>
+    </div>
+</div>
+</div>

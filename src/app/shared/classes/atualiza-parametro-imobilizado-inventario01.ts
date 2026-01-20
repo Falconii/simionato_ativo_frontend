@@ -1,11 +1,11 @@
-import { ParametroImobilizadoinventario01 } from "src/app/parametros/parametro-imobilizadoinventario01";
+import { ParametroImobilizadoinventario01 } from 'src/app/parametros/parametro-imobilizadoinventario01';
 
-export function AtualizaParametroImobilizadoInventario01(par : ParametroImobilizadoinventario01 , config : JSON):ParametroImobilizadoinventario01 {
-
-    try {
-
-
-    let key:number = 0;
+export function AtualizaParametroImobilizadoInventario01(
+  par: ParametroImobilizadoinventario01,
+  config: JSON
+): ParametroImobilizadoinventario01 {
+  try {
+    let key: number = 0;
 
     if (Object(config).dtinicial?.trim() !== '') {
       par.dtinicial = Object(config).dtinicial;
@@ -81,6 +81,11 @@ export function AtualizaParametroImobilizadoInventario01(par : ParametroImobiliz
     if (Object(config).apelido?.trim() !== '') {
       par.apelido = Object(config).apelido;
     }
+
+    if (Object(config).nfe?.trim() !== '') {
+      par.nfe = Object(config).nfe;
+    }
+
     key = parseInt(Object(config).executor, 10);
 
     if (isNaN(key)) {
@@ -111,8 +116,7 @@ export function AtualizaParametroImobilizadoInventario01(par : ParametroImobiliz
     }
 
     return par;
-
-  } catch(error){
-     throw error
+  } catch (error) {
+    throw error;
   }
 }
