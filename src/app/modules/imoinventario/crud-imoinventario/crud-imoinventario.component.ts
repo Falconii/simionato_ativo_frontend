@@ -242,7 +242,7 @@ export class CrudImoinventarioComponent implements OnInit {
           this.ccs.push(semFiltro);
           const semAlter: CentrocustoModel = new CentrocustoModel();
           semAlter.codigo = '';
-          semAlter.descricao = 'Todos Não Alterados';
+          semAlter.descricao = 'Todos';
           this.ccs_alterados.push(semAlter);
           data.forEach((obj) => {
             var idx = obj.descricao.indexOf('-');

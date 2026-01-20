@@ -63,7 +63,7 @@ export class BookViewComponent implements OnInit {
 
   controlePaginas: ControlePaginas = new ControlePaginas(
     this.tamPagina,
-    this.tamPagina
+    this.tamPagina,
   );
 
   retorno: boolean = false;
@@ -90,7 +90,7 @@ export class BookViewComponent implements OnInit {
     private lancamentoService: LancamentoService,
     private router: Router,
     private appSnackBar: AppSnackbar,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) {
     this.parametros = formBuilder.group({
       ccs: [{ value: '' }],
@@ -169,7 +169,7 @@ export class BookViewComponent implements OnInit {
           semFiltro.id_usuario = 0;
           semFiltro.razao = 'Todos';
           this.executores.push(semFiltro);
-        }
+        },
       );
   }
 
@@ -196,7 +196,7 @@ export class BookViewComponent implements OnInit {
           this.ccs.push(semFiltro);
           const semAlter: CentrocustoModel = new CentrocustoModel();
           semAlter.codigo = '';
-          semAlter.descricao = 'Todos Não Alterados';
+          semAlter.descricao = 'Todos';
           this.ccs_alterados.push(semAlter);
           data.forEach((obj) => {
             var idx = obj.descricao.indexOf('-');
@@ -226,9 +226,9 @@ export class BookViewComponent implements OnInit {
           this.ccs_alterados = [];
           this.appSnackBar.openFailureSnackBar(
             `Pesquisa Nos Grupos ${messageError(error)}`,
-            'OK'
+            'OK',
           );
-        }
+        },
       );
   }
 
@@ -261,9 +261,9 @@ export class BookViewComponent implements OnInit {
           this.setValues();
           this.appSnackBar.openFailureSnackBar(
             `Pesquisa Nos Grupos ${messageError(error)}`,
-            'OK'
+            'OK',
           );
-        }
+        },
       );
   }
 
@@ -359,7 +359,7 @@ export class BookViewComponent implements OnInit {
           const idx = this.imoinv.findIndex(
             (inv) =>
               inv.id_imobilizado ==
-              GetValueJsonNumber(this.parametro.getParametro(), 'id_retorno')
+              GetValueJsonNumber(this.parametro.getParametro(), 'id_retorno'),
           );
           setTimeout(() => this.viewPort.scrollToIndex(idx), 10);
           this.retorno = false;
@@ -373,9 +373,9 @@ export class BookViewComponent implements OnInit {
           this.imoinv = [];
           this.appSnackBar.openFailureSnackBar(
             `Pesquisa Nos Produtos De Inventário ${messageError(error)}`,
-            'OK'
+            'OK',
           );
-        }
+        },
       );
   }
 
@@ -467,7 +467,7 @@ export class BookViewComponent implements OnInit {
           this.globalService.setSpin(false);
           this.controlePaginas = new ControlePaginas(
             this.tamPagina,
-            data.total == 0 ? 1 : data.total
+            data.total == 0 ? 1 : data.total,
           );
           //atualiza com o parametro
           if (this.retorno)
@@ -486,9 +486,9 @@ export class BookViewComponent implements OnInit {
           this.controlePaginas = new ControlePaginas(this.tamPagina, 1);
           this.appSnackBar.openFailureSnackBar(
             `Pesquisa Nos Produtos De Inventário ${messageError(error)}`,
-            'OK'
+            'OK',
           );
-        }
+        },
       );
   }
 
@@ -572,13 +572,13 @@ export class BookViewComponent implements OnInit {
           let config = this.parametro.getParametro();
           Object(config).id_retorno = GetValueJsonNumber(
             par.getParametro(),
-            'id_retorno'
+            'id_retorno',
           );
           this.parametro.parametro = JSON.stringify(config);
           //this.setPosicaoInclusao();
         } else {
           this.controlePaginas.setPaginaAtual(
-            GetValueJsonNumber(par.getParametro(), 'page')
+            GetValueJsonNumber(par.getParametro(), 'page'),
           );
           this.parametro.setParametro(par.getParametro());
         }
@@ -619,7 +619,7 @@ export class BookViewComponent implements OnInit {
           this.globalService.setSpin(false);
           this.setValues();
           this.getImoIvenContador();
-        }
+        },
       );
   }
 
@@ -659,9 +659,9 @@ export class BookViewComponent implements OnInit {
           this.globalService.setSpin(false);
           this.appSnackBar.openFailureSnackBar(
             `Gravação Dos Parametros ${messageError(error)}`,
-            'OK'
+            'OK',
           );
-        }
+        },
       );
   }
 

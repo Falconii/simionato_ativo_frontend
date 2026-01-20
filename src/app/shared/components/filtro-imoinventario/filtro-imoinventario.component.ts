@@ -529,7 +529,7 @@ export class FiltroImoinventarioComponent implements OnInit {
       apelido: '',
       nfe: '',
       cc_descricao: 'Todos',
-      ccnovo_descricao: 'Todos Não Alterados',
+      ccnovo_descricao: 'Todos',
       chaves: {
         cc: '',
         cc_novo: '',
@@ -571,7 +571,7 @@ export class FiltroImoinventarioComponent implements OnInit {
          "apelido":"",
          "nfe":"",
          "cc_descricao":"Todos",
-         "ccnovo_descricao":"Todos Não Alterados",
+         "ccnovo_descricao":"Todos",
          "orderby":"001",
          "page": 1,
          "new": false,

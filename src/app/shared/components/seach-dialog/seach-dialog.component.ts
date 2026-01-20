@@ -44,7 +44,7 @@ export class SeachDialogComponent implements OnInit {
     private globalService: GlobalService,
     private grupoService: GrupoService,
     private centrocustoService: CentrocustoService,
-    private appSnackBar: AppSnackbar
+    private appSnackBar: AppSnackbar,
   ) {
     this.formulario = formBuilder.group({
       codigo: [{ value: '' }],
@@ -61,7 +61,7 @@ export class SeachDialogComponent implements OnInit {
         map((value) => value.trim().toUpperCase()),
         filter((value) => value.length > 0),
         debounceTime(350),
-        distinctUntilChanged()
+        distinctUntilChanged(),
       )
       .subscribe((value: string) => {
         this.clearValue('codigo');
@@ -75,7 +75,7 @@ export class SeachDialogComponent implements OnInit {
         map((value) => value.trim().toUpperCase()),
         filter((value) => value.length > 0),
         debounceTime(350),
-        distinctUntilChanged()
+        distinctUntilChanged(),
       )
       .subscribe((value: string) => {
         this.clearValue('descricao');
@@ -132,9 +132,7 @@ export class SeachDialogComponent implements OnInit {
   }
 
   onFiltrar() {
-    this, (this.data.retorno = this.lsLista.filter((item) => item.check));
-
-    alert(this.data.retorno.length);
+    (this, (this.data.retorno = this.lsLista.filter((item) => item.check)));
 
     if (this.data.retorno.length == 0) {
       this.appSnackBar.openWarningnackBar(`Nenhum Registro Selecionado!`, 'OK');
@@ -147,8 +145,6 @@ export class SeachDialogComponent implements OnInit {
     escolha.check = true;
 
     this.data.retorno = this.lsLista.filter((item) => item.check);
-
-    alert(this.data.retorno.length);
 
     if (this.data.retorno.length == 0) {
       this.appSnackBar.openWarningnackBar(`Nenhum Registro Selecionado!`, 'OK');
@@ -336,9 +332,9 @@ export class SeachDialogComponent implements OnInit {
           this.lsLista = [];
           this.appSnackBar.openFailureSnackBar(
             `Sem Sucesso Na Pesquisa!`,
-            'OK'
+            'OK',
           );
-        }
+        },
       );
   }
 
@@ -383,9 +379,9 @@ export class SeachDialogComponent implements OnInit {
           this.lsLista = [];
           this.appSnackBar.openFailureSnackBar(
             `Sem Sucesso Na Pesquisa!`,
-            'OK'
+            'OK',
           );
-        }
+        },
       );
   }
 
