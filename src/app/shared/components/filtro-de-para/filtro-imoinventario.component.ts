@@ -1,5 +1,5 @@
-import { LocalStorageService } from './../../../services/localStorage.service';
-import { Orderby } from './../../classes/orderby';
+import { LocalStorageService } from '../../../services/localStorage.service';
+import { Orderby } from '../../classes/orderby';
 import { ControlePaginas } from 'src/app/shared/classes/controle-paginas';
 import { ParametrosService } from 'src/app/services/parametros.service';
 import {

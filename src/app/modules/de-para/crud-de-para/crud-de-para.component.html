@@ -1,0 +1,60 @@
+<div class="div-barra">
+  <mat-toolbar>
+    <span class="example-spacer">Controle De Para</span>
+    <app-navegator
+      [controle]="controlePaginas"
+      (changePage)="onChangePage()"
+    ></app-navegator>
+    <button
+      mat-icon-button
+      class="example-icon"
+      aria-label="Example icon-button with share icon"
+      (click)="onNovaConsulta()"
+      matTooltip="Atualizar"
+      matTooltipPosition="above"
+    >
+      <mat-icon>rotate_right</mat-icon>
+    </button>
+    <button
+      mat-icon-button
+      aria-label="Example icon-button with share icon "
+      matTooltipPosition="above"
+      (click)="onHome()"
+      matTooltip="Retorno"
+      matTooltipPosition="above"
+    >
+      <mat-icon>home</mat-icon>
+    </button>
+  </mat-toolbar>
+</div>
+<app-filtro-imoinventario
+  PARAMNAME="paramimoinv"
+  [HIDE]="hide"
+  [EMAIL]="true"
+  [DOWNLOAD]="true"
+  [CONTROLE_PAGINAS]="controlePaginas"
+  (changeParametro)="onChangeParametros($event)"
+  (changeHide)="onChangeHide($event)"
+></app-filtro-imoinventario>
+<table class="Browse_Lanc">
+  <tr class="coluna-cabec">
+    <th>DE</th>
+    <th>PARA</th>
+    <th>AÇÕES</th>
+  </tr>
+  <tr *ngFor="let depara of lsDePara; let i = index">
+    <td>
+      <div>
+        <mat-label class="Browse_Lanc_td">{{ depara.de }}</mat-label>
+      </div>
+    </td>
+    <td>
+      <div>
+        <mat-label class="Browse_Lanc_td">Desc.: {{ depara.para }}</mat-label>
+      </div>
+    </td>
+    <td class="acoes">
+      <barra-acoes (changeOpcao)="escolha($event, depara)"> </barra-acoes>
+    </td>
+  </tr>
+</table>

@@ -28,7 +28,7 @@ import { ValoresDialogComponent } from './valores-dialog/valores-dialog.componen
 import { OrigemPipe } from './pipes/origem.pipe';
 import { BarraAcoesAmbienteComponent } from './components/barra-acoes-ambiente/barra-acoes-ambiente.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { FiltroImoinventarioComponent } from './components/filtro-imoinventario/filtro-imoinventario.component';
+import { FiltroImoinventarioComponent } from './components/filtro-imoinventario/filtro-de-para.component';
 import { BrowserFotoComponent } from './components/browser-foto/browser-foto.component';
 import { EmailDialogComponent } from './components/email-dialog/email-dialog.component';
 import { DownloadDialogComponent } from './components/download-dialog/download-dialog.component';

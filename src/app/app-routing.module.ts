@@ -26,7 +26,9 @@ const routes: Routes = [
   {
     path: 'cadastro_padrao',
     loadChildren: () =>
-      import('./modules/padrao-cadastro/padrao-cadastro.module').then((m) => m.PadraoCadastroModule),
+      import('./modules/padrao-cadastro/padrao-cadastro.module').then(
+        (m) => m.PadraoCadastroModule,
+      ),
     canActivate: [DiganaoGuard],
   },
   {
@@ -46,7 +48,7 @@ const routes: Routes = [
     path: 'anexar-produtos',
     loadChildren: () =>
       import('./modules/anexar-produtos/anexar-produtos.module').then(
-        (m) => m.AnexarProdutosModule
+        (m) => m.AnexarProdutosModule,
       ),
     canActivate: [],
   },
@@ -60,7 +62,7 @@ const routes: Routes = [
     path: 'principais',
     loadChildren: () =>
       import('./modules/principal/principal.module').then(
-        (m) => m.PrincipalModule
+        (m) => m.PrincipalModule,
       ),
     canActivate: [],
   },
@@ -68,7 +70,7 @@ const routes: Routes = [
     path: 'imobilizados',
     loadChildren: () =>
       import('./modules/imobilizado/imobilizado.module').then(
-        (m) => m.ImobilizadoModule
+        (m) => m.ImobilizadoModule,
       ),
     canActivate: [],
   },
@@ -95,7 +97,7 @@ const routes: Routes = [
     path: 'centroscustos',
     loadChildren: () =>
       import('./modules/centrocusto/centrocusto.module').then(
-        (m) => m.CentrocustoModule
+        (m) => m.CentrocustoModule,
       ),
     canActivate: [],
   },
@@ -103,7 +105,7 @@ const routes: Routes = [
     path: 'upload-excel',
     loadChildren: () =>
       import('./modules/upload-files/upload-files.module').then(
-        (m) => m.UploadFilesModule
+        (m) => m.UploadFilesModule,
       ),
     canActivate: [],
   },
@@ -111,7 +113,7 @@ const routes: Routes = [
     path: 'inventarios',
     loadChildren: () =>
       import('./modules/inventario/inventario.module').then(
-        (m) => m.InventarioModule
+        (m) => m.InventarioModule,
       ),
     canActivate: [],
   },
@@ -119,7 +121,7 @@ const routes: Routes = [
     path: 'ambientes',
     loadChildren: () =>
       import('./modules/ambiente/ambiente.module').then(
-        (m) => m.AmbienteModule
+        (m) => m.AmbienteModule,
       ),
     canActivate: [],
   },
@@ -127,7 +129,7 @@ const routes: Routes = [
     path: 'imoinventarios',
     loadChildren: () =>
       import('./modules/imoinventario/imoinventario.module').then(
-        (m) => m.ImoinventarioModule
+        (m) => m.ImoinventarioModule,
       ),
     canActivate: [],
   },
@@ -141,7 +143,7 @@ const routes: Routes = [
     path: 'consulta_fotos',
     loadChildren: () =>
       import('./modules/consulta-foto/consulta-foto.module').then(
-        (m) => m.ConsultaFotoModule
+        (m) => m.ConsultaFotoModule,
       ),
     canActivate: [],
   },
@@ -160,13 +162,23 @@ const routes: Routes = [
   {
     path: 'websocket',
     loadChildren: () =>
-      import('./modules/websocket/websocket.module').then((m) => m.WebsocketModule),
+      import('./modules/websocket/websocket.module').then(
+        (m) => m.WebsocketModule,
+      ),
     canActivate: [],
   },
   {
     path: 'consulta_fotos_google',
     loadChildren: () =>
-      import('./modules/googlefotos/googlefotos.module').then((m) => m.GooglefotosModule),
+      import('./modules/googlefotos/googlefotos.module').then(
+        (m) => m.GooglefotosModule,
+      ),
+    canActivate: [],
+  },
+  {
+    path: 'de_para',
+    loadChildren: () =>
+      import('./modules/de-para/de-para.module').then((m) => m.DeParaModule),
     canActivate: [],
   },
   {
