@@ -15,5 +15,7 @@ export enum CadastroAcoes {
   Substituir = 23,
   Trocar = 24,
   Link = 25,
+  Processar_DePara_Um = 26,
+  Processar_DePara_Lote = 27,
   None = 99,
 }

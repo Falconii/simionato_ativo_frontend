@@ -1,0 +1,21 @@
+.alinhamento {
+  margin-top: 6px;
+}
+
+.pagination-container {
+  display: flex;
+  align-items: center;
+  /* Alinha verticalmente */
+  justify-content: center;
+  /* Centraliza horizontalmente */
+  gap: 8px;
+  /* Espaço entre os itens */
+}
+
+.page-indicator {
+  font-size: 14px;
+  font-weight: 500;
+  min-width: 80px;
+  /* Mantém largura fixa para não “pular” */
+  text-align: center;
+}

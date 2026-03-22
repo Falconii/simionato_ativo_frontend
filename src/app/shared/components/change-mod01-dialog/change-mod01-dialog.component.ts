@@ -16,6 +16,8 @@ import { CondicaoPipePipe } from '../../pipes/condicao-pipe.pipe';
 import { DeparaService } from 'src/app/services/depara.service';
 import { DeParaModel } from 'src/app/models/de-para-model';
 import { ParametroSubstituirAtivo } from 'src/app/parametros/parametro-substituir-ativo';
+import { DeparaModel } from 'src/app/models/depara-model';
+import { DeparaCustomService } from 'src/app/services/depara-custom.service';
 
 @Component({
   selector: 'app-change-mod01-dialog',
@@ -49,7 +51,8 @@ export class ChangeMod01DialogComponent implements OnInit {
     private simNaoPipe: SimNaoPipe,
     private origemPipe: OrigemPipe,
     private condicaoPipePipe: CondicaoPipePipe,
-    private deparaSrv: DeparaService
+    private deparaSrv: DeparaService,
+    private DeparaCustomService: DeparaCustomService,
   ) {
     this.formulario = formBuilder.group({
       de: [{ value: '' }],
@@ -84,7 +87,7 @@ export class ChangeMod01DialogComponent implements OnInit {
       this.formulario.markAllAsTouched();
       this.appSnackBar.openSuccessSnackBar(
         `Formulário Com Campos Inválidos.`,
-        'OK'
+        'OK',
       );
     }
   }
@@ -184,7 +187,7 @@ export class ChangeMod01DialogComponent implements OnInit {
             this.itsOK = false;
             this.appSnackBar.openFailureSnackBar(
               `Atenção! ${this.mensagem}`,
-              'OK'
+              'OK',
             );
             this.itsOK = false;
             return;
@@ -194,7 +197,7 @@ export class ChangeMod01DialogComponent implements OnInit {
             this.itsOK = false;
             this.appSnackBar.openFailureSnackBar(
               `Atenção! ${this.mensagem}`,
-              'OK'
+              'OK',
             );
             this.itsOK = false;
             return;
@@ -207,14 +210,14 @@ export class ChangeMod01DialogComponent implements OnInit {
           this.setValue();
           this.appSnackBar.openFailureSnackBar(
             `Pesquisa Nos Produtos De Inventário ${messageError(error)}`,
-            'OK'
+            'OK',
           );
-        }
+        },
       );
   }
 
   insereDePara() {
-    const depara: DeParaModel = new DeParaModel();
+    const depara: DeparaModel = new DeparaModel();
 
     depara.id_empresa = this.data.ativo.id_empresa;
     depara.id_local = this.data.ativo.id_filial;
@@ -237,9 +240,9 @@ export class ChangeMod01DialogComponent implements OnInit {
           'Não Foi Possivel Incluir A Solcitiação De Substtituição.';
         this.appSnackBar.openFailureSnackBar(
           `Falha Na Inclusão do De Para ${messageError(error)}`,
-          'OK'
+          'OK',
         );
-      }
+      },
     );
   }
 
@@ -251,22 +254,22 @@ export class ChangeMod01DialogComponent implements OnInit {
     param.id_inventario = this.data.ativo.id_inventario;
 
     this.globalService.setSpin(true);
-    this.inscricaoProcessarDePara = this.deparaSrv
-      .substituirAtivo(param)
-      .subscribe(
-        (data: any) => {
-          this.globalService.setSpin(false);
-          this.mensagem = 'Substituição Processada Com Sucesso!';
-          this.appSnackBar.openSuccessSnackBar(`${this.mensagem}`, 'OK');
-          this.data.processar = true;
-          this.closeModal();
-        },
-        (error: any) => {
-          this.globalService.setSpin(false);
-          this.mensagem = `Falha Na Substituição Do Ativo. ${error.message}`;
-          this.appSnackBar.openFailureSnackBar(`${this.mensagem}`, 'OK');
-        }
-      );
+    this.inscricaoProcessarDePara = this.DeparaCustomService.substituirAtivo(
+      param,
+    ).subscribe(
+      (data: any) => {
+        this.globalService.setSpin(false);
+        this.mensagem = 'Substituição Processada Com Sucesso!';
+        this.appSnackBar.openSuccessSnackBar(`${this.mensagem}`, 'OK');
+        this.data.processar = true;
+        this.closeModal();
+      },
+      (error: any) => {
+        this.globalService.setSpin(false);
+        this.mensagem = `Falha Na Substituição Do Ativo. ${error.message}`;
+        this.appSnackBar.openFailureSnackBar(`${this.mensagem}`, 'OK');
+      },
+    );
   }
 
   pesquisar() {

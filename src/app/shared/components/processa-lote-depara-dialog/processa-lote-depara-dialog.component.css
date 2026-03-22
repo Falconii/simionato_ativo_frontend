@@ -1,0 +1,70 @@
+/* tira o scroll do mat-dialog-content só neste dialog */
+
+.fullscreen-dialog .mat-dialog-content {
+  max-height: none !important;
+  overflow: hidden !important;
+}
+
+/* seu ajuste local da div que envolve a tabela */
+
+.moldura {
+  max-height: 700px;
+  /* ajusta conforme o espaço que você quer */
+  overflow-y: auto;
+  /* aqui fica o scroll */
+}
+
+/* o resto do seu CSS pode continuar igual */
+
+.padrao {
+  font-size: 14px;
+  padding: 5px;
+}
+
+.mat-form-field {
+  font-size: 12px;
+}
+
+.container {
+  display: flex;
+  margin-top: 3px;
+  margin-bottom: 3px;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+}
+
+.lancamento {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.mat-dialog-container {
+  box-shadow:
+    0 4px 8px rgba(0, 0, 0, 0.2),
+    0 6px 20px rgba(0, 0, 0, 0.19);
+}
+
+.fullscreen-dialog .mat-dialog-container {
+  width: 1200px !important;
+  height: 1100px !important;
+  max-width: 1200px !important;
+  min-width: 1200px !important;
+  min-height: 1100px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2aa;
+}
+
+tr:hover {
+  background-color: rgb(202, 169, 157);
+}
+
+h2 {
+  text-align: center;
+  color: #d32f2f;
+}

@@ -19,6 +19,7 @@ export class ParametroImobilizadoinventario01 {
   public id_principal: number = 0;
   public apelido: string = '';
   public nfe: string = '';
+  public filtra_depara: string = '';
   public pagina: number = 0;
   public tamPagina: number = 50;
   public contador: string = 'N';

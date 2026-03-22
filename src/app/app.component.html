@@ -1,17 +1,17 @@
 <mat-toolbar color="primary" class="div-barra">
-  <!-- Menu e título -->
-  <div class="toolbar-left">
-    <button mat-icon-button aria-label="Menu" routerLink="">
+    <!-- Menu e título -->
+    <div class="toolbar-left">
+        <button mat-icon-button aria-label="Menu" routerLink="">
       <mat-icon>menu</mat-icon>
     </button>
-    <img />
-    <ng-container *ngIf="showMenu">
-      <button mat-button [matMenuTriggerFor]="cadastros">Cadastros</button>
-      <button mat-button [matMenuTriggerFor]="locais">Locais</button>
-      <button mat-button [matMenuTriggerFor]="inventarios">Inventários</button>
-      <button mat-button [matMenuTriggerFor]="gerencial">Gerencial</button>
-      <button mat-button [matMenuTriggerFor]="sobre">Sobre</button>
-      <span>
+        <img />
+        <ng-container *ngIf="showMenu">
+            <button mat-button [matMenuTriggerFor]="cadastros">Cadastros</button>
+            <button mat-button [matMenuTriggerFor]="locais">Locais</button>
+            <button mat-button [matMenuTriggerFor]="inventarios">Inventários</button>
+            <button mat-button [matMenuTriggerFor]="gerencial">Gerencial</button>
+            <button mat-button [matMenuTriggerFor]="sobre">Sobre</button>
+            <span>
         <!-- #docregion sub-menu -->
         <mat-menu #cadastros="matMenu">
           <button mat-menu-item routerLink="empresas">Empresas</button>
@@ -91,6 +91,7 @@
           </button>
         </mat-menu>
         <mat-menu #gerencial="matMenu">
+          <!--
           <button mat-menu-item routerLink="ativar">Ativação Inventário</button>
           <button mat-menu-item routerLink="encerrar">
             Encenrrar Inventário
@@ -98,6 +99,7 @@
           <button mat-menu-item routerLink="relatorio">
             Relatório Fechamento
           </button>
+          -->
           <button mat-menu-item routerLink="de_para">Controle De Para</button>
         </mat-menu>
         <mat-menu #sobre="matMenu">
@@ -109,29 +111,22 @@
           <button mat-menu-item routerLink="websocket">Teste WS</button>
         </mat-menu>
       </span>
-    </ng-container>
-  </div>
-  <!-- Usuário e login -->
-  <div class="toolbar-right">
-    <div class="nav-item">
-      <button
-        mat-icon-button
-        class="example-icon"
-        aria-label="Example icon-button with share icon"
-        matTooltip="LOGIN"
-        matTooltipPosition="above"
-        (click)="onLogin()"
-      >
+        </ng-container>
+    </div>
+    <!-- Usuário e login -->
+    <div class="toolbar-right">
+        <div class="nav-item">
+            <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon" matTooltip="LOGIN" matTooltipPosition="above" (click)="onLogin()">
         <mat-icon>person</mat-icon>
       </button>
-      <span>{{ getUsuario() | firstName }}</span>
+            <span>{{ getUsuario() | firstName }}</span>
+        </div>
     </div>
-  </div>
 </mat-toolbar>
 <div class="div-spin">
-  <app-spins></app-spins>
+    <app-spins></app-spins>
 </div>
 <app-show-ativos></app-show-ativos>
 <div class="container">
-  <router-outlet></router-outlet>
+    <router-outlet></router-outlet>
 </div>

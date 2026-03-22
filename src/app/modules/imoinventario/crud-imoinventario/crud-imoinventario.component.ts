@@ -10,7 +10,13 @@ import { SituacaoInventario } from './../../../shared/classes/situacao-inventari
 import { ParametroModel } from './../../../models/parametro-model';
 import { ImobilizadoinventarioModel } from './../../../models/imobilizadoinventario-model';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  NgZone,
+  OnInit,
+  ViewChild,
+  PipeTransform,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 import { CentrocustoModel } from 'src/app/models/centrocusto-model';
 import { GrupoModel } from 'src/app/models/grupo-model';
@@ -53,6 +59,7 @@ import { ChangeMod02DialogComponent } from 'src/app/shared/components/change-mod
 import { ChangeMod02Data } from 'src/app/shared/components/change-mod02-dialog/change-mod02-data';
 import { ManuaisLinkData } from 'src/app/shared/components/manuais-link/manuais-link-data';
 import { ManuaisLinkComponent } from 'src/app/shared/components/manuais-link/manuais-link.component';
+import { PreencheZerosPipe } from 'src/app/shared/pipes/preenchezeros.pipe';
 
 @Component({
   selector: 'app-crud-imoinventario',
@@ -144,6 +151,7 @@ export class CrudImoinventarioComponent implements OnInit {
     private valorDialog: MatDialog,
     private substrituirDialog: MatDialog,
     private trocarDialog: MatDialog,
+    private preencheZeros: PreencheZerosPipe,
   ) {
     this.localStorageService.clear();
     this.getCentroCustos();
@@ -333,6 +341,7 @@ export class CrudImoinventarioComponent implements OnInit {
       .subscribe(
         (data: ImobilizadoinventarioModel[]) => {
           this.globalService.setSpin(false);
+          console.log('data:', data);
           this.atualizaTargetId();
           this.imoinv = data;
           console.log('imoinv:', this.imoinv);
@@ -579,13 +588,16 @@ export class CrudImoinventarioComponent implements OnInit {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.id = 'linkmanual';
-    dialogConfig.width = '1200px';
+    dialogConfig.panelClass = 'fullscreen-dialog';
     dialogConfig.data = data;
     const modalDialog = this.trocarDialog
       .open(ManuaisLinkComponent, dialogConfig)
       .beforeClosed()
       .subscribe((data: ManuaisLinkData) => {
-        this.getImoIven();
+        if (data?.processar && data?.depara) {
+          imobilizado.para_ativo = data.depara.para;
+          imobilizado.para_status = data.depara.status;
+        }
       });
   }
 
@@ -706,5 +718,15 @@ export class CrudImoinventarioComponent implements OnInit {
 
   onPosiciona() {
     this.poscionaWindow(0, 0);
+  }
+
+  deParaTexto(ativo: ImobilizadoinventarioModel): string {
+    if (ativo.de_ativo > 0) {
+      return `DE: ${this.preencheZeros.transform(ativo.de_ativo)}`;
+    }
+    if (ativo.para_ativo > 0) {
+      return `PARA: ${this.preencheZeros.transform(ativo.para_ativo)}`;
+    }
+    return '';
   }
 }

@@ -1,0 +1,131 @@
+<div class="div-barra">
+  <span class="example-spacer">Filtro Da Pesquisa</span>
+  <button
+    mat-icon-button
+    aria-label="Example icon-button with share icon "
+    matTooltipPosition="above"
+    (click)="onSaveConfig()"
+    matTooltip="Salvar Parâmetros"
+    matTooltipPosition="above"
+  >
+    <mat-icon>brightness_high</mat-icon>
+  </button>
+  <button
+    mat-icon-button
+    aria-label="Example icon-button with share icon "
+    matTooltipPosition="above"
+    (click)="onGetExcelToEmailOrDownLoad('e-mail')"
+    matTooltip="Enviar Consulta Por E-Mail"
+    matTooltipPosition="above"
+    *ngIf="email"
+  >
+    <mat-icon>email</mat-icon>
+  </button>
+  <button
+    mat-icon-button
+    aria-label="Example icon-button with share icon "
+    matTooltipPosition="above"
+    (click)="onGetExcelToEmailOrDownLoad('download')"
+    matTooltip="Baixar A Consulta"
+    matTooltipPosition="above"
+    *ngIf="download"
+  >
+    <mat-icon>cloud_download</mat-icon>
+  </button>
+  <button
+    mat-icon-button
+    aria-label="Example icon-button with share icon "
+    matTooltipPosition="above"
+    (click)="onHide()"
+    matTooltip="Mostrar/Esconder"
+    matTooltipPosition="above"
+  >
+    <mat-icon>remove_red_eye</mat-icon>
+  </button>
+</div>
+<form [formGroup]="formulario" autocomplete="off" *ngIf="!hide">
+  <div class="col-med-3">
+    <mat-form-field field appearance="outline" class="col-max">
+      <mat-label>Ordernado Por</mat-label>
+      <mat-select
+        formControlName="orderby"
+        (selectionChange)="onChangeParametros()"
+      >
+        <mat-option *ngFor="let ordem of orderby" [value]="ordem.sigla">
+          {{ ordem.descricao }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field field appearance="outline" class="col-max">
+      <mat-label>De</mat-label>
+      <input matInput formControlName="de" />
+      <button
+        *ngIf="hasValue('de')"
+        matSuffix
+        mat-icon-button
+        aria-label="Clear"
+        (click)="clearValue('de')"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+    <mat-form-field field appearance="outline" class="col-max">
+      <mat-label>Para</mat-label>
+      <input matInput formControlName="para" />
+      <button
+        *ngIf="hasValue('para')"
+        matSuffix
+        mat-icon-button
+        aria-label="Clear"
+        (click)="clearValue('para')"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+  <div class="col-med-2">
+    <mat-form-field field appearance="outline" class="col-max">
+      <mat-label>Situação</mat-label>
+      <mat-select
+        formControlName="status"
+        (selectionChange)="onChangeParametros()"
+      >
+        <mat-option *ngFor="let situacao of situacoes" [value]="situacao.sigla">
+          {{ situacao.descricao }}
+        </mat-option>
+      </mat-select>
+      <button
+        *ngIf="hasValue('status')"
+        mat-icon-button
+        matSuffix
+        matTooltip="Limpar seleção"
+        (click)="clearValue('status'); $event.stopPropagation()"
+        class="clear-button"
+      >
+        <mat-icon>clear</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <mat-form-field field appearance="outline" class="col-max">
+      <mat-label>Usuário</mat-label>
+      <mat-select
+        formControlName="id_usuario"
+        (selectionChange)="onChangeParametros()"
+      >
+        <mat-option *ngFor="let usuario of lsUsuarios" [value]="usuario.id">
+          {{ usuario.razao }}
+        </mat-option>
+      </mat-select>
+      <button
+        *ngIf="hasValue('id_usuario')"
+        mat-icon-button
+        matSuffix
+        matTooltip="Limpar seleção"
+        (click)="clearValue('id_usuario'); $event.stopPropagation()"
+        class="clear-button"
+      >
+        <mat-icon>clear</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+</form>

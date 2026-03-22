@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { DiganaoGuard } from './guards/diganao.guard';
+import { DeparaGuard } from './guards/depara.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -179,7 +180,7 @@ const routes: Routes = [
     path: 'de_para',
     loadChildren: () =>
       import('./modules/de-para/de-para.module').then((m) => m.DeParaModule),
-    canActivate: [],
+    canActivate: [DeparaGuard],
   },
   {
     path: '**',

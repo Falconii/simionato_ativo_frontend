@@ -50,13 +50,12 @@ export class ImoinventarioViewComponent implements OnInit {
 
   fotos: FotoModel[] = [];
 
-
   constructor(
     private formBuilder: FormBuilder,
     private globalService: GlobalService,
     private appSnackBar: AppSnackbar,
     private lancamentoService: LancamentoService,
-    private fotoService: FotoService
+    private fotoService: FotoService,
   ) {
     this.formulario = formBuilder.group({
       usuario: [{ value: '' }],
@@ -74,7 +73,7 @@ export class ImoinventarioViewComponent implements OnInit {
       condicao_: [{ value: '' }],
       book: [{ value: '' }],
       book_: [{ value: '' }],
-      obs: [{ value: '' },[ValidatorStringLen(1, 255, false)]],
+      obs: [{ value: '' }, [ValidatorStringLen(1, 255, false)]],
       apelido: [{ value: '' }],
     });
     const sim: SimNao = new SimNao();
@@ -115,7 +114,7 @@ export class ImoinventarioViewComponent implements OnInit {
       this.formulario.markAllAsTouched();
       this.appSnackBar.openSuccessSnackBar(
         `Formulário Com Campos Inválidos.`,
-        'OK'
+        'OK',
       );
     }
   }
@@ -150,9 +149,9 @@ export class ImoinventarioViewComponent implements OnInit {
         this.fotos = [];
         this.appSnackBar.openFailureSnackBar(
           `Pesquisa Nas Fotos  ${messageError(error)}`,
-          'OK'
+          'OK',
         );
-      }
+      },
     );
   }
 
@@ -225,7 +224,12 @@ export class ImoinventarioViewComponent implements OnInit {
       console.log('trocando o valor');
       this.lancamento.estado = this.formulario.value.situacao;
     }
-    console.log('Lancamento', this.lancamento,'this.formulario.value.situacao',this.formulario.value.situacao);
+    console.log(
+      'Lancamento',
+      this.lancamento,
+      'this.formulario.value.situacao',
+      this.formulario.value.situacao,
+    );
     switch (+this.idAcao) {
       case CadastroAcoes.Inclusao:
         this.globalService.setSpin(true);
@@ -239,12 +243,12 @@ export class ImoinventarioViewComponent implements OnInit {
             },
             (error: any) => {
               this.gravando = false;
-              console.log('Error', error);
+              this.globalService.setSpin(false);
               this.appSnackBar.openFailureSnackBar(
                 ` Falha Na Inclusão ${messageError(error)}`,
-                'OK'
+                'OK',
               );
-            }
+            },
           );
         break;
       case CadastroAcoes.Edicao:
@@ -259,12 +263,12 @@ export class ImoinventarioViewComponent implements OnInit {
             },
             (error: any) => {
               this.gravando = false;
-              console.log('Error', error.error);
+              this.globalService.setSpin(false);
               this.appSnackBar.openFailureSnackBar(
                 ` ${messageError(error)}`,
-                'OK'
+                'OK',
               );
-            }
+            },
           );
         break;
       case CadastroAcoes.Exclusao:
@@ -274,7 +278,7 @@ export class ImoinventarioViewComponent implements OnInit {
             this.lancamento.id_empresa,
             this.lancamento.id_filial,
             this.lancamento.id_inventario,
-            this.lancamento.id_imobilizado
+            this.lancamento.id_imobilizado,
           )
           .subscribe(
             async (data: any) => {
@@ -283,11 +287,12 @@ export class ImoinventarioViewComponent implements OnInit {
             },
             (error: any) => {
               this.gravando = false;
+              this.globalService.setSpin(false);
               this.appSnackBar.openFailureSnackBar(
                 `Erro Na Exclusao ${messageError(error)}`,
-                'OK'
+                'OK',
               );
-            }
+            },
           );
         break;
       default:
@@ -329,7 +334,10 @@ export class ImoinventarioViewComponent implements OnInit {
       descricao: this.lancamento.imo_descricao,
       cc_original: idx == -1 ? 'C.C. NÃO CADASTRADO!' : this.ccs[idx].descricao,
       cc_novo: this.lancamento.new_cc,
-      cc_novo_: idx3 == -1 ? 'C.C. NÃO CADASTRADO!' : this.ccs_alterados[idx3].descricao,
+      cc_novo_:
+        idx3 == -1
+          ? 'C.C. NÃO CADASTRADO!'
+          : this.ccs_alterados[idx3].descricao,
       condicao: this.lancamento.condicao,
       condicao_:
         this.idAcao == CadastroAcoes.Consulta ||
@@ -343,7 +351,7 @@ export class ImoinventarioViewComponent implements OnInit {
           ? this.respostas[this.lancamento.book == 'S' ? 0 : 1].descricao
           : '',
       obs: this.lancamento.obs,
-      apelido: this.lancamento.imo_apelido
+      apelido: this.lancamento.imo_apelido,
     });
   }
 
@@ -361,7 +369,6 @@ export class ImoinventarioViewComponent implements OnInit {
     return this.formulario.get(field)?.errors?.message;
   }
 
-
   onRetorno(op: number) {
     const retorno: RetornoLancamento = new RetornoLancamento();
     retorno.opcao = op;
@@ -376,35 +383,31 @@ export class ImoinventarioViewComponent implements OnInit {
     this.submmit.emit(retorno);
   }
 
+  getFotosAtivo(): FotosAtivo[] {
+    let result: FotosAtivo[] = [];
 
-  getFotosAtivo():FotosAtivo[]{
+    let idx: number = 1;
 
-    let  result:FotosAtivo[] =  [];
+    let ct: number = 0;
 
-    let  idx:number = 1;
-
-    let ct:number = 0;
-
-    if (this.fotos.length == 0){
+    if (this.fotos.length == 0) {
       return result;
     }
 
-    let tempo:FotosAtivo = new FotosAtivo(idx,[]);
+    let tempo: FotosAtivo = new FotosAtivo(idx, []);
 
-    if(this.fotos.length > 0) {
-
-      this.fotos.forEach(item => {
-
-        if (ct ==3){
-           result.push(tempo);
-           ct = 0;
-           idx++;
-           tempo = new FotosAtivo(idx,[]);
+    if (this.fotos.length > 0) {
+      this.fotos.forEach((item) => {
+        if (ct == 3) {
+          result.push(tempo);
+          ct = 0;
+          idx++;
+          tempo = new FotosAtivo(idx, []);
         }
         tempo.fotos.push(item);
         ct++;
       });
-      if (tempo.fotos.length > 0){
+      if (tempo.fotos.length > 0) {
         result.push(tempo);
       }
     }

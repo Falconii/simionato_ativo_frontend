@@ -17,7 +17,6 @@ import { NgxMaskModule } from 'ngx-mask';
 import { SimNaoPipe } from './shared/pipes/sim-nao.pipe';
 import localePt from '@angular/common/locales/pt';
 import { FirstNamePipe } from './shared/pipes/first-name.pipe';
-import { SituacaoPipe } from './shared/pipes/situacao.pipe';
 import { OrigemPipe } from './shared/pipes/origem.pipe';
 import { MAT_DIALOG_SCROLL_STRATEGY } from '@angular/material/dialog';
 import { ScrollStrategyOptions } from '@angular/cdk/overlay';
@@ -25,7 +24,8 @@ import { LocalStorageService } from './services/localStorage.service';
 import { CondicaoPipePipe } from './shared/pipes/condicao-pipe.pipe';
 import { SeachDialogService } from './services/seach-dialog.service';
 import { SeachDialogComponent } from './shared/components/seach-dialog/seach-dialog.component';
-import { WsServiceService } from './services/ws-service.service';
+//import { WsServiceService } from './services/ws-service.service';
+import { PreencheZerosPipe } from './shared/pipes/preenchezeros.pipe';
 
 registerLocaleData(localePt);
 
@@ -48,9 +48,9 @@ registerLocaleData(localePt);
     DecimalPipe,
     SimNaoPipe,
     FirstNamePipe,
-    SituacaoPipe,
     OrigemPipe,
     CondicaoPipePipe,
+    PreencheZerosPipe,
     { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' },
     { provide: LOCALE_ID, useValue: 'pt' },
     DiganaoGuard,
@@ -59,7 +59,7 @@ registerLocaleData(localePt);
     { provide: MatPaginatorIntl, useClass: BrPaginatorIntl },
     SeachDialogService,
   ],
-  entryComponents:[SeachDialogComponent],
+  entryComponents: [SeachDialogComponent],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

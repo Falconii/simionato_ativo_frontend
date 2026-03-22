@@ -1,0 +1,117 @@
+<div class="padrao">
+  <div class="div-barra">
+    <mat-toolbar>
+      <span class="example-spacer">
+        Rotina Para Incluir Ativo Na Fila Do "DE PARA"
+      </span>
+    </mat-toolbar>
+  </div>
+
+  <div mat-dialog-content class="dialog-content">
+    <h2>SITUAÇÃO DOS REGISTROS DO "DE PARA"</h2>
+    <br />
+    <h3>Total De Registros: {{ totalRegistros }}</h3>
+
+    <div class="moldura">
+      <table class="Browse_Lanc" *ngIf="lsDeparas.length > 0">
+        <tr class="coluna-cabec">
+          <th>Situação</th>
+          <th>DE</th>
+          <th>PARA</th>
+        </tr>
+
+        <tr *ngFor="let depara of lsDeparas; let i = index">
+          <td>
+            <div>
+              <mat-label class="Browse_Lanc_td">
+                Situação: {{ depara.status | situacaoDepara }}
+              </mat-label>
+            </div>
+          </td>
+
+          <td>
+            <div>
+              <mat-label class="Browse_Lanc_td"
+                >Ativo: {{ depara.de }}</mat-label
+              >
+            </div>
+            <div>
+              <mat-label class="Browse_Lanc_td"
+                >Descrição: {{ depara.de_descricao }}</mat-label
+              >
+            </div>
+            <div>
+              <mat-label class="Browse_Lanc_td">
+                Incluído Por: {{ depara.id_usuario }} -
+                {{ depara.exec_nome | firstName }}
+              </mat-label>
+            </div>
+            <div>
+              <mat-label class="Browse_Lanc_td">
+                As: {{ depara.updated_at | date: "short" }}
+              </mat-label>
+            </div>
+          </td>
+
+          <td>
+            <div>
+              <mat-label class="Browse_Lanc_td"
+                >Ativo: {{ depara.para }}</mat-label
+              >
+            </div>
+            <div>
+              <mat-label class="Browse_Lanc_td"
+                >Descrição: {{ depara.imob_descricao }}</mat-label
+              >
+            </div>
+            <div>
+              <mat-label class="Browse_Lanc_td">
+                Processado Por: {{ depara.user_update }} -
+                {{ depara.proc_nome | firstName }}
+              </mat-label>
+            </div>
+            <div>
+              <mat-label class="Browse_Lanc_td">
+                As: {{ depara.dt_processamento | date: "short" }}
+              </mat-label>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div mat-dialog-actions>
+    <div class="button-container-right">
+      <button
+        mat-raised-button
+        color="accent"
+        (click)="onCancelar()"
+        *ngIf="!data.processar"
+      >
+        <mat-icon>cancel</mat-icon>
+        <span>Cancelar</span>
+      </button>
+
+      <button
+        mat-raised-button
+        color="accent"
+        (click)="onVoltar()"
+        *ngIf="totalRegistros > 0 && data.processar"
+      >
+        <mat-icon>cancel</mat-icon>
+        <span>Voltar</span>
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="onProcessar()"
+        *ngIf="totalRegistros > 0"
+        [disabled]="processando"
+      >
+        <mat-icon>check</mat-icon>
+        <span>Processar</span>
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,10 +1,10 @@
 <div class="div-barra">
   <mat-toolbar>
     <span class="example-spacer">Controle De Para</span>
-    <app-navegator
+    <app-navegador-v2
       [controle]="controlePaginas"
       (changePage)="onChangePage()"
-    ></app-navegator>
+    ></app-navegador-v2>
     <button
       mat-icon-button
       class="example-icon"
@@ -19,6 +19,17 @@
       mat-icon-button
       aria-label="Example icon-button with share icon "
       matTooltipPosition="above"
+      (click)="onProcessarLote()"
+      matTooltip="Processamento Em Lote"
+      matTooltipPosition="above"
+    >
+      <mat-icon>all_inbox</mat-icon>
+    </button>
+
+    <button
+      mat-icon-button
+      aria-label="Example icon-button with share icon "
+      matTooltipPosition="above"
       (click)="onHome()"
       matTooltip="Retorno"
       matTooltipPosition="above"
@@ -27,34 +38,87 @@
     </button>
   </mat-toolbar>
 </div>
-<app-filtro-imoinventario
-  PARAMNAME="paramimoinv"
+<app-filtro-depara
+  PARAMNAME="paramdepara"
   [HIDE]="hide"
   [EMAIL]="true"
   [DOWNLOAD]="true"
   [CONTROLE_PAGINAS]="controlePaginas"
   (changeParametro)="onChangeParametros($event)"
   (changeHide)="onChangeHide($event)"
-></app-filtro-imoinventario>
+>
+</app-filtro-depara>
 <table class="Browse_Lanc">
   <tr class="coluna-cabec">
+    <th>Situação</th>
     <th>DE</th>
     <th>PARA</th>
     <th>AÇÕES</th>
   </tr>
-  <tr *ngFor="let depara of lsDePara; let i = index">
+  <tr *ngFor="let depara of lsDeparas; let i = index">
     <td>
       <div>
-        <mat-label class="Browse_Lanc_td">{{ depara.de }}</mat-label>
+        <mat-label class="Browse_Lanc_td"
+          >Situação: {{ depara.status | situacaoDepara }}</mat-label
+        >
       </div>
     </td>
     <td>
       <div>
-        <mat-label class="Browse_Lanc_td">Desc.: {{ depara.para }}</mat-label>
+        <mat-label class="Browse_Lanc_td">Ativo: {{ depara.de }}</mat-label>
+      </div>
+      <div>
+        <mat-label class="Browse_Lanc_td"
+          >Descrição:{{ depara.de_descricao }}</mat-label
+        >
+      </div>
+      <div>
+        <mat-label class="Browse_Lanc_td"
+          >Incluído Por:{{ depara.id_usuario }}-{{
+            depara.exec_nome | firstName
+          }}
+        </mat-label>
+      </div>
+      <div>
+        <mat-label class="Browse_Lanc_td"
+          >As: {{ depara.updated_at | date: "short" }}</mat-label
+        >
+      </div>
+    </td>
+    <td>
+      <div>
+        <mat-label class="Browse_Lanc_td">Ativo: {{ depara.para }}</mat-label>
+      </div>
+      <div>
+        <mat-label class="Browse_Lanc_td"
+          >Descrição:{{ depara.imob_descricao }}</mat-label
+        >
+      </div>
+      <div>
+        <mat-label class="Browse_Lanc_td"
+          >Processado Por:{{ depara.user_update }}-{{
+            depara.proc_nome | firstName
+          }}
+        </mat-label>
+      </div>
+      <div>
+        <mat-label class="Browse_Lanc_td"
+          >As: {{ depara.dt_processamento | date: "short" }}</mat-label
+        >
       </div>
     </td>
     <td class="acoes">
-      <barra-acoes (changeOpcao)="escolha($event, depara)"> </barra-acoes>
+      <barra-acoes
+        [CONSULTAR]="false"
+        [ALTERAR]="false"
+        [EXCLUIR]="false"
+        [BARRA_VERTICAL]="depara.status == 0"
+        [BARRA_EXCLUIR]="depara.status == 0"
+        [EXCLUIR]="false"
+        [PROCESSA_DEPARA_UM]="depara.status < 4"
+        (changeOpcao)="escolha($event, depara, i)"
+      >
+      </barra-acoes>
     </td>
   </tr>
 </table>

@@ -10,19 +10,24 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 export class QuestionDialogComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<QuestionDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: QuestionDialogData
+    @Inject(MAT_DIALOG_DATA) public data: QuestionDialogData,
   ) {}
 
   ngOnInit(): void {
     this.data.resposta = 'N';
   }
 
-  actionFunction() {
+  onExecutar() {
     this.data.resposta = 'S';
     this.closeModal();
   }
 
+  onCancelar() {
+    this.data.resposta = 'N';
+    this.closeModal();
+  }
+
   closeModal() {
-    this.dialogRef.close();
+    this.dialogRef.close(this.data);
   }
 }

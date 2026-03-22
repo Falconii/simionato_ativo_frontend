@@ -17,8 +17,8 @@ export class ImobilizadoinventarioModel {
   public imo_nfe: string = '';
   public imo_serie: string = '';
   public imo_item: number = 0;
-  public imo_origem: string = "";
-  public imo_principal:number = 0;
+  public imo_origem: string = '';
+  public imo_principal: number = 0;
   public imo_apelido: string = '';
   public cc_descricao: string = '';
   public grupo_descricao: string = '';
@@ -30,5 +30,9 @@ export class ImobilizadoinventarioModel {
   public lanc_book: string = 'N';
   public usu_razao: string = '';
   public new_cc_descricao: string = '';
-  public princ_descricao:string = '';
+  public princ_descricao: string = '';
+  public para_ativo: number = 0;
+  public para_status: number = 0;
+  public de_ativo: number = 0;
+  public de_status: number = 0;
 }

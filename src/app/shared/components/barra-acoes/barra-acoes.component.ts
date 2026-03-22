@@ -13,6 +13,7 @@ export class BarraAcoesComponent implements OnInit {
   @Input('SUBCONTA') subconta: boolean = false;
   @Input('CONSULTAR') consulta: boolean = true;
   @Input('FOTOS') fotos: boolean = false;
+  @Input('INCLUIR') incluir: boolean = false;
   @Input('ALTERAR') alterar: boolean = true;
   @Input('EXCLUIR') excluir: boolean = true;
   @Input('FINACEIRO') financeiro: boolean = false;
@@ -28,7 +29,9 @@ export class BarraAcoesComponent implements OnInit {
   @Input('BARRA_NFE') barra_nfe: boolean = false;
   @Input('BARRA_SUBSTITUIR') barra_substituir: boolean = false;
   @Input('BARRA_TROCAR') barra_trocar: boolean = false;
-  @Input('MANUAL_LINK') link_manual: boolean = false;
+  @Input('FILA_DEPARA') fila_depara: boolean = false;
+  @Input('PROCESSA_DEPARA_UM') processa_depara_um: boolean = false;
+  @Input('PROCESSA_DEPARA_LOTE') processa_depara_lote: boolean = false;
   @Output('changeOpcao') changeOpcao = new EventEmitter<number>();
 
   constructor() {}

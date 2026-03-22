@@ -17,6 +17,9 @@
     <button mat-icon-button aria-label="Example icon-button with share icon " class="botoes" (click)="onChangeOpcao(getAcoes().Fotos)" [matTooltip]="getTexto().foto" *ngIf="fotos" matTooltipPosition="above">
     <mat-icon class="icon-size">photo</mat-icon>
   </button>
+    <button mat-icon-button aria-label="Example icon-button with share icon " class="botoes" (click)="onChangeOpcao(getAcoes().Inclusao)" [matTooltip]="getTexto().incluir" *ngIf="incluir" matTooltipPosition="above">
+    <mat-icon class="icon-size">add_circle_outline</mat-icon>
+  </button>
     <button mat-icon-button aria-label="Example icon-button with share icon " class="botoes" (click)="onChangeOpcao(getAcoes().Edicao)" [matTooltip]="getTexto().alterar" *ngIf="alterar" matTooltipPosition="above">
     <mat-icon class="icon-size">edit</mat-icon>
   </button>
@@ -28,6 +31,9 @@
   </button>
     <button mat-icon-button class="botoes" [matTooltip]="getTexto().financeiro" *ngIf="financeiro" (click)="onChangeOpcao(getAcoes().Exclusao)" matTooltipPosition="above">
     <mat-icon class="icon-size">attach_money</mat-icon>
+  </button>
+    <button mat-icon-button class="botoes" [matTooltip]="getTexto().processa_depara_um" *ngIf="processa_depara_um" (click)="onChangeOpcao(getAcoes().Processar_DePara_Um)" matTooltipPosition="above">
+    <mat-icon class="icon-size">play_circle_filled</mat-icon>
   </button>
     <button mat-icon-button [matMenuTriggerFor]="appMenu" aria-label="Example icon-button with share icon " *ngIf="barra">
     <mat-icon>more_vert</mat-icon>
@@ -74,9 +80,9 @@
         <mat-icon>person</mat-icon>
         <span>Correção Ativos Celia</span>
       </button>
-            <button mat-menu-item (click)="onChangeOpcao(getAcoes().Link)" *ngIf="link_manual">
-        <mat-icon>person</mat-icon>
-        <span>Criação Do Links Manuais</span>
+            <button mat-menu-item (click)="onChangeOpcao(getAcoes().Link)" *ngIf="fila_depara">
+        <mat-icon>add_to_queue</mat-icon>
+        <span>Fila "De Para"</span>
       </button>
         </ng-template>
     </mat-menu>

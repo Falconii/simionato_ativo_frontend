@@ -28,7 +28,6 @@ import { ValoresDialogComponent } from './valores-dialog/valores-dialog.componen
 import { OrigemPipe } from './pipes/origem.pipe';
 import { BarraAcoesAmbienteComponent } from './components/barra-acoes-ambiente/barra-acoes-ambiente.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { FiltroImoinventarioComponent } from './components/filtro-imoinventario/filtro-de-para.component';
 import { BrowserFotoComponent } from './components/browser-foto/browser-foto.component';
 import { EmailDialogComponent } from './components/email-dialog/email-dialog.component';
 import { DownloadDialogComponent } from './components/download-dialog/download-dialog.component';
@@ -43,6 +42,14 @@ import { SeachDialogComponent } from './components/seach-dialog/seach-dialog.com
 import { ChangeMod02DialogComponent } from './components/change-mod02-dialog/change-mod02-dialog.component';
 import { menosumToSpacePipe } from './pipes/menos-um-to-space.pipe';
 import { ManuaisLinkComponent } from './components/manuais-link/manuais-link.component';
+import { FiltroImoinventarioComponent } from './components/filtro-imoinventario/filtro-imoinventario.component';
+import { FiltroDeParaComponent } from './components/filtro-de-para/filtro-de-para.component';
+import { AaaammddtoddmmaaaaPipe } from './pipes/aaaammddtoddmmaaaa.pipe';
+import { SharedNavegadorV2Component } from './components/shared-navegador-v2/shared-navegador-v2.component';
+import { SituacaoDeparaPipe } from './pipes/situacao-depara.pipe';
+import { PreencheZerosPipe } from './pipes/preenchezeros.pipe';
+import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
+import { ProcessaLoteDeparaDialogComponent } from './components/processa-lote-depara-dialog/processa-lote-depara-dialog.component';
 @NgModule({
   declarations: [
     SimNaoPipe,
@@ -61,10 +68,12 @@ import { ManuaisLinkComponent } from './components/manuais-link/manuais-link.com
     LocalPadraoDialogComponent,
     BarraAcoesComponent,
     SituacaoPipe,
+    SituacaoDeparaPipe,
     EmBrancoPipe,
     ZeroToSpacePipe,
     FirstNamePipe,
     OrigemPipe,
+    AaaammddtoddmmaaaaPipe,
     LancaDialogComponent,
     SetfocusDirective,
     LabelVerdeVermelhoDirective,
@@ -74,11 +83,13 @@ import { ManuaisLinkComponent } from './components/manuais-link/manuais-link.com
     BarraAcoesAmbienteComponent,
     DashboardComponent,
     FiltroImoinventarioComponent,
+    FiltroDeParaComponent,
     BrowserFotoComponent,
     EmailDialogComponent,
     DownloadDialogComponent,
     CcPipePipe,
     CondicaoPipePipe,
+    PreencheZerosPipe,
     FiltroCadastroPadraoComponent,
     ChangeMod01DialogComponent,
     LabelValueDirective,
@@ -86,6 +97,10 @@ import { ManuaisLinkComponent } from './components/manuais-link/manuais-link.com
     ChangeMod02DialogComponent,
     menosumToSpacePipe,
     ManuaisLinkComponent,
+    SharedNavegadorV2Component,
+    SituacaoDeparaPipe,
+    ConfirmDialogComponent,
+    ProcessaLoteDeparaDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -106,15 +121,19 @@ import { ManuaisLinkComponent } from './components/manuais-link/manuais-link.com
     BarraAcoesAmbienteComponent,
     EstadoProdutoPipe,
     SituacaoPipe,
+    SituacaoDeparaPipe,
     EmBrancoPipe,
     ZeroToSpacePipe,
     FirstNamePipe,
     OrigemPipe,
     menosumToSpacePipe,
+    AaaammddtoddmmaaaaPipe,
+    PreencheZerosPipe,
     SetfocusDirective,
     LabelVerdeVermelhoDirective,
     DashboardComponent,
     FiltroImoinventarioComponent,
+    FiltroDeParaComponent,
     BrowserFotoComponent,
     CcPipePipe,
     CondicaoPipePipe,
@@ -122,6 +141,9 @@ import { ManuaisLinkComponent } from './components/manuais-link/manuais-link.com
     LabelValueDirective,
     ChangeMod02DialogComponent,
     ManuaisLinkComponent,
+    SharedNavegadorV2Component,
+    ConfirmDialogComponent,
+    ProcessaLoteDeparaDialogComponent,
   ],
 })
 export class SharedModule {}

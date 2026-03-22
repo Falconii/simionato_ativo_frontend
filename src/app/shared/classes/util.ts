@@ -83,6 +83,8 @@ export class MensagensBotoes {
   static sub_conta = 'Acesso As SubContas.';
   static financeiro = 'Financeiro';
   static multi_edicao = 'Alteração Em Lote';
+  static processa_depara_um = 'Processa De Para';
+  static processa_depara_lote = 'Processa De Para Em Lote';
 }
 
 export function adicionaZero(numero: number) {
@@ -154,7 +156,7 @@ export function horahexa(value: number): string {
 export function setHorario(
   value: Date,
   horas: string,
-  minutos: string
+  minutos: string,
 ): string {
   let retorno: string = '';
   let dt = new Date(value);
