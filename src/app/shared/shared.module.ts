@@ -50,6 +50,7 @@ import { SituacaoDeparaPipe } from './pipes/situacao-depara.pipe';
 import { PreencheZerosPipe } from './pipes/preenchezeros.pipe';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { ProcessaLoteDeparaDialogComponent } from './components/processa-lote-depara-dialog/processa-lote-depara-dialog.component';
+import { SituacaoUploadFotoPipe } from './pipes/status-upload-foto';
 @NgModule({
   declarations: [
     SimNaoPipe,
@@ -90,6 +91,7 @@ import { ProcessaLoteDeparaDialogComponent } from './components/processa-lote-de
     CcPipePipe,
     CondicaoPipePipe,
     PreencheZerosPipe,
+    SituacaoUploadFotoPipe,
     FiltroCadastroPadraoComponent,
     ChangeMod01DialogComponent,
     LabelValueDirective,
@@ -131,6 +133,7 @@ import { ProcessaLoteDeparaDialogComponent } from './components/processa-lote-de
     PreencheZerosPipe,
     SetfocusDirective,
     LabelVerdeVermelhoDirective,
+    SituacaoUploadFotoPipe,
     DashboardComponent,
     FiltroImoinventarioComponent,
     FiltroDeParaComponent,

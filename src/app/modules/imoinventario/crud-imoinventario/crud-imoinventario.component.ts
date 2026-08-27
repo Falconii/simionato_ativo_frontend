@@ -60,6 +60,8 @@ import { ChangeMod02Data } from 'src/app/shared/components/change-mod02-dialog/c
 import { ManuaisLinkData } from 'src/app/shared/components/manuais-link/manuais-link-data';
 import { ManuaisLinkComponent } from 'src/app/shared/components/manuais-link/manuais-link.component';
 import { PreencheZerosPipe } from 'src/app/shared/pipes/preenchezeros.pipe';
+import { AlterObsDialogData } from './alter-obs-dialog/alter-obs-dialog-Data';
+import { AlterObsDialogComponent } from './alter-obs-dialog/alter-obs-dialog.component';
 
 @Component({
   selector: 'app-crud-imoinventario',
@@ -148,9 +150,11 @@ export class CrudImoinventarioComponent implements OnInit {
     private ngZone: NgZone,
     private LancaDialog: MatDialog,
     private NfeDialog: MatDialog,
+    private AlterObs: MatDialog,
     private valorDialog: MatDialog,
     private substrituirDialog: MatDialog,
     private trocarDialog: MatDialog,
+    private alteracaoObsDialog: MatDialog,
     private preencheZeros: PreencheZerosPipe,
   ) {
     this.localStorageService.clear();
@@ -476,6 +480,11 @@ export class CrudImoinventarioComponent implements OnInit {
 
     this.localStorageService.setNumber('retorno', imobilizado.id_imobilizado);
 
+    if (op == CadastroAcoes.Alter_Obs) {
+      this.alterObsDialog(imobilizado);
+      return;
+    }
+
     if (op == 95) {
       this.getNfe(imobilizado);
       return;
@@ -547,6 +556,26 @@ export class CrudImoinventarioComponent implements OnInit {
       .beforeClosed()
       .subscribe((data: NfeData) => {
         //faço nada
+      });
+  }
+
+  alterObsDialog(imobilizado: ImobilizadoinventarioModel): void {
+    const data: AlterObsDialogData = new AlterObsDialogData();
+    data.imoInven = imobilizado;
+    data.result = false;
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.id = 'alter_obs';
+    dialogConfig.width = '1200px';
+    dialogConfig.data = data;
+    const modalDialog = this.alteracaoObsDialog
+      .open(AlterObsDialogComponent, dialogConfig)
+      .beforeClosed()
+      .subscribe((data: AlterObsDialogData) => {
+        if (data.result) {
+          imobilizado.lanc_obs = data.imoInven.lanc_obs;
+          imobilizado.imo_descricao = data.imoInven.imo_descricao;
+        }
       });
   }
 

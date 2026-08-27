@@ -1,15 +1,4 @@
- /* backend antigo: https://simionato-backend-production.up.railway.app/
- export const environment = {
-  versao: 'V 01.00 - Beta',
-  data: '09/11/2023',
-  production: false,
-  ambiente: 'Desenvolvimento',
-  apiURL:    'https://simionatobackendativo-production.up.railway.app/api/',
-  apiOAuth2: 'https://simionatobackendativo-production.up.railway.app/',
-  wsURL:     'wss://simionatobackendativo-production.up.railway.app'
-};
-*/
-/*
+/* intelli
 //https://simionatobackendativo-production.up.railway.app/
  export const environment = {
   versao: 'V 01.00 - Beta',
@@ -22,8 +11,7 @@
 };
 */
 
-
-
+/* local */
 export const environment = {
   versao: 'V 01.00 - Beta',
   data: '09/11/2023',
@@ -35,14 +23,15 @@ export const environment = {
 };
 
 
-/*
+
+/* casa da criança
 export const environment = {
   versao: 'V 01.00 - Beta',
   data: '09/11/2023',
   production: false,
   ambiente: 'Desenvolvimento',
-  apiURL:    'https://simionatoativobackend-production.up.railway.app/api/',
-  apiOAuth2: 'https://simionatoativobackend-production.up.railway.app/',
-  wsURL: 'ws://localhost:8080'
+  apiURL: 'https://casa-da-crianca-backend-production.up.railway.app/api/',
+  apiOAuth2: 'https://casa-da-crianca-backend-production.up.railway.app/',
+  wsURL: 'ws://localhost:8080',
 };
 */

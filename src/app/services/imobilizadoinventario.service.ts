@@ -15,60 +15,60 @@ export class ImobilizadoinventarioService {
   constructor(private http: HttpClient) {}
   getImobilizadosinventarios(): Observable<ImobilizadoinventarioModel[]> {
     return this.http.get<ImobilizadoinventarioModel[]>(
-      `${this.apiURL}Imobilizadosinventarios`
+      `${this.apiURL}Imobilizadosinventarios`,
     );
   }
   getImobilizadosinventariosParametro_01(
-    params: ParametroImobilizadoinventario01
+    params: ParametroImobilizadoinventario01,
   ): Observable<ImobilizadoinventarioModel[]> {
     return this.http.post<ImobilizadoinventarioModel[]>(
       `${this.apiURL}imobilizadosinventarios`,
-      params
+      params,
     );
   }
   getImobilizadosinventariosFotos(
-    params: ParametroImobilizadoinventario01
+    params: ParametroImobilizadoinventario01,
   ): Observable<ImobilizadoinventarioModel[]> {
     return this.http.post<ImobilizadoinventarioModel[]>(
       `${this.apiURL}imobilizadosinventariosfotos`,
-      params
+      params,
     );
   }
   getImobilizadoinventario(
     id_empresa: number,
     id_filial: number,
     id_inventario: number,
-    id_imobilizado: number
+    id_imobilizado: number,
   ): Observable<ImobilizadoinventarioModel> {
     return this.http.get<ImobilizadoinventarioModel>(
-      `${this.apiURL}imobilizadoinventario/${id_empresa}/${id_filial}/${id_inventario}/${id_imobilizado}`
+      `${this.apiURL}imobilizadoinventario/${id_empresa}/${id_filial}/${id_inventario}/${id_imobilizado}`,
     );
   }
   imobilizadoinventarioInsert(
-    imobilizadoinventario: ImobilizadoinventarioModel
+    imobilizadoinventario: ImobilizadoinventarioModel,
   ): Observable<ImobilizadoinventarioModel> {
     return this.http.post<ImobilizadoinventarioModel>(
       `${this.apiURL}imobilizadoinventario`,
-      imobilizadoinventario
+      imobilizadoinventario,
     );
   }
 
   imobilizadoinventarioUpdate(
-    imobilizadoinventario: ImobilizadoinventarioModel
+    imobilizadoinventario: ImobilizadoinventarioModel,
   ): Observable<ImobilizadoinventarioModel> {
     return this.http.put<ImobilizadoinventarioModel>(
       `${this.apiURL}imobilizadoinventario`,
-      imobilizadoinventario
+      imobilizadoinventario,
     );
   }
   imobilizadoinventarioDelete(
     id_empresa: number,
     id_filial: number,
     id_inventario: number,
-    id_imobilizado: number
+    id_imobilizado: number,
   ): Observable<any> {
     return this.http.delete<any>(
-      `${this.apiURL}imobilizadoinventario/${id_empresa}/${id_filial}/${id_inventario}/${id_imobilizado}`
+      `${this.apiURL}imobilizadoinventario/${id_empresa}/${id_filial}/${id_inventario}/${id_imobilizado}`,
     );
   }
 
@@ -78,6 +78,13 @@ export class ImobilizadoinventarioService {
 
   getExcelv2(params: ParametroImobilizadoinventario01): Observable<any> {
     console.log(params);
-    return this.http.post<any>(`${this.apiURL}imobilizadosinventariosexcelv2`, params);
+    return this.http.post<any>(
+      `${this.apiURL}imobilizadosinventariosexcelv2`,
+      params,
+    );
+  }
+
+  alter_obs(params: any): Observable<any> {
+    return this.http.post<any>(`${this.apiURL}alter_obs`, params);
   }
 }

@@ -10,12 +10,14 @@ import { NgxMaskModule } from 'ngx-mask';
 import { ImoinventarioViewComponent } from './imoinventario-view/imoinventario-view.component';
 import { ShowFotosComponent } from './show-fotos/show-fotos.component';
 import { NgImageSliderModule } from 'ng-image-slider';
+import { AlterObsDialogComponent } from './crud-imoinventario/alter-obs-dialog/alter-obs-dialog.component';
 
 @NgModule({
   declarations: [
     CrudImoinventarioComponent,
     ImoinventarioViewComponent,
     ShowFotosComponent,
+    AlterObsDialogComponent,
   ],
   imports: [
     CommonModule,

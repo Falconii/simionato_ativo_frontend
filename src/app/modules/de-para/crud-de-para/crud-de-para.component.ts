@@ -19,6 +19,7 @@ import { ProcessaLoteDeparaDialogComponent } from 'src/app/shared/components/pro
 import { messageError } from 'src/app/shared/classes/util';
 import { DeparaCustomService } from 'src/app/services/depara-custom.service';
 import { ParametroDeparaAtivo } from 'src/app/parametros/parametro-depara-ativo';
+import { ParametroDeparaCencelar } from 'src/app/parametros/parametro-depara-cancelar';
 
 @Component({
   selector: 'app-crud-de-para',
@@ -28,6 +29,7 @@ import { ParametroDeparaAtivo } from 'src/app/parametros/parametro-depara-ativo'
 export class CrudDeParaComponent implements OnInit {
   inscricaoGetDe_Para!: Subscription;
   inscricaoProcessaDePara!: Subscription;
+  inscricaoReverter!:Subscription;
 
   tamPagina = 50;
 
@@ -63,6 +65,7 @@ export class CrudDeParaComponent implements OnInit {
   ngOnDestroy(): void {
     this.inscricaoGetDe_Para?.unsubscribe();
     this.inscricaoProcessaDePara?.unsubscribe();
+    this.inscricaoReverter?.unsubscribe();
   }
 
   onChangePage() {
@@ -263,6 +266,50 @@ export class CrudDeParaComponent implements OnInit {
           }
         });
     }
+    if (acao == CadastroAcoes.Reverter) {
+      this.confirmDialog
+        .open({
+          title: 'Reversão De "DE PARA',
+          message: 'Deseja Realmente Reverter O "DE PARA" ?',
+          icon: 'delete',
+          iconColor: 'warn',
+          confirmText: 'Reverter',
+          cancelText: 'Cancelar',
+        })
+        .subscribe((result) => {
+          if (result) {
+            const par = new ParametroDeparaCencelar();
+            par.id_empresa = model.id_empresa;
+            par.id_local   = model.id_local;
+            par.id_inventario = model.id_inventario;
+            par.id_usuario = this.globalService.getUsuario().id;
+            par.de = model.de;
+            par.para = model.para;
+            this.inscricaoReverter = this.deparaCustomSrv
+              .canceladepara(par)
+              .subscribe(
+                (data: any) => {
+                  this.globalService.setSpin(false);
+                  this.Snackbar.openSuccessSnackBar(
+                    '"DE PARA" Revertido Com Sucesso!',
+                    'OK',
+                  );
+                  this.lsDeparas.splice(index, 1);
+                },
+                (error: any) => {
+                  this.globalService.setSpin(false);
+                  this.appSnackBar.openFailureSnackBar(
+                    `Pesquisa Nos Usuários ${error.error.tabela} - ${error.error.erro} - ${error.error.message}`,
+                    'OK',
+                  );
+                },
+              );
+          }
+        });
+    }
+
+
+
   }
 
   onProcessarLote() {

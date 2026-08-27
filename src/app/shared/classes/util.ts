@@ -1,3 +1,6 @@
+import { FotoModel } from 'src/app/models/foto-model';
+import { LancamentoModel } from 'src/app/models/lancamento-model';
+import { ParsedFileName } from 'src/app/models/ParsedFileName';
 import { SerachModel } from 'src/app/models/serachModel';
 
 export function DataYYYYMMDD(value: Date): string {
@@ -85,6 +88,7 @@ export class MensagensBotoes {
   static multi_edicao = 'Alteração Em Lote';
   static processa_depara_um = 'Processa De Para';
   static processa_depara_lote = 'Processa De Para Em Lote';
+  static alter_obs = 'Alterar Observação';
 }
 
 export function adicionaZero(numero: number) {
@@ -296,4 +300,41 @@ export function arraytostring(retorno: SerachModel[]): string {
       element.codigo.toString() + (index < retorno.length - 1 ? ';' : '');
   });
   return valores;
+}
+
+
+export function parseFileName(filename: string): ParsedFileName {
+  // Remove a extensão
+  const nameWithoutExt = filename.replace(/\.[^/.]+$/, "");
+
+  // Quebra pelos "_"
+  const parts = nameWithoutExt.split("_");
+
+  let retorno: ParsedFileName;
+
+  if (parts.length < 5) {
+    retorno = {
+      id_empresa:0,
+      id_local: 0,
+      id_inventario: 0,
+      id_imobilizado: 0,
+      uuid: '',
+      handle: null,
+      foto: new FotoModel(),
+      status: "7"
+    }
+  } else {
+    retorno = {
+      id_empresa: Number(parts[0]),
+      id_local: Number(parts[1]),
+      id_inventario: Number(parts[2]),
+      id_imobilizado: Number(parts[3]),
+      uuid: parts[4],
+      handle: null,
+      foto: new FotoModel(),
+      status: "0"
+    }
+  }
+
+  return retorno;
 }

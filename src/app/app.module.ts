@@ -26,6 +26,7 @@ import { SeachDialogService } from './services/seach-dialog.service';
 import { SeachDialogComponent } from './shared/components/seach-dialog/seach-dialog.component';
 //import { WsServiceService } from './services/ws-service.service';
 import { PreencheZerosPipe } from './shared/pipes/preenchezeros.pipe';
+import { SituacaoUploadFotoPipe } from './shared/pipes/status-upload-foto';
 
 registerLocaleData(localePt);
 
@@ -51,6 +52,7 @@ registerLocaleData(localePt);
     OrigemPipe,
     CondicaoPipePipe,
     PreencheZerosPipe,
+    SituacaoUploadFotoPipe,
     { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' },
     { provide: LOCALE_ID, useValue: 'pt' },
     DiganaoGuard,

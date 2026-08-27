@@ -1,0 +1,78 @@
+<div class="toolbar-alinhada">
+  <mat-toolbar>
+    <span class="example-spacer">
+      <mat-label>Upload De Arquivos Do PAF</mat-label>
+    </span>
+    <div class="button-container">
+      <button mat-raised-button color="accent" (click)="onCancelar()">
+        <mat-icon>cancel</mat-icon>
+        Cancelar
+      </button>
+    </div>
+  </mat-toolbar>
+</div>
+<div>
+  <mat-label class="cancelado" *ngIf="isCancelando"
+    >Upload Cancelado Pelo Usuário.
+  </mat-label>
+</div>
+<form [formGroup]="formulario" autocomplete="off" class="form-container">
+  <div class="col-med-1">
+    <mat-form-field appearance="outline" class="col-max">
+      <mat-label>Arquivo</mat-label>
+      <input matInput formControlName="caminho" />
+
+      <button
+        mat-icon-button
+        matSuffix
+        matTooltip="Limpar seleção"
+        (click)="selecionarPasta()"
+      >
+        <mat-icon>search</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+</form>
+<table class="Browse_Lanc" *ngIf="lsFiles.length > 0">
+  <tr class="coluna-cabec">
+    <th>Seq</th>
+    <th>Parametros</th>
+    <th>Nome Foto</th>
+    <th>Lanc. Nuvem</th>
+    <th>Status</th>
+  </tr>
+  <tr *ngFor="let arquivo of lsFiles; let i = index">
+    <td>
+      <div class="alinha_centro">
+        <mat-label class="Browse_Lanc_td">{{ i + 1 | zeroPad:4 }} </mat-label>
+      </div>
+    </td>
+    <td>
+      <div class="alinha_centro">
+        <mat-label class="Browse_Lanc_td">{{ arquivo.id_empresa | zeroPad:2 }}-{{ arquivo.id_local | zeroPad:6 }}-{{ arquivo.id_inventario | zeroPad:6 }}-{{ arquivo.id_imobilizado | zeroPad:6 }} </mat-label>
+      </div>
+    </td>
+    <td>
+      <div class="alinha_esquerda">
+        <mat-label class="Browse_Lanc_td"
+          >{{ arquivo.handle ? arquivo.handle.name : "Arquivo Não Encontrado" }}
+        </mat-label>
+      </div>
+    </td>
+    <td>
+      <div class="alinha_centro">
+        <mat-label class="Browse_Lanc_td"
+          >{{ arquivo.foto.id_imobilizado > 0 ? "OK" : "Sem Lançamento" }}
+        </mat-label>
+      </div>
+    </td>
+    <td>
+      <div class="alinha_centro">
+        <mat-label class="Browse_Lanc_td"
+          >{{ arquivo.status | SituacaoUploadFotoPipe}}
+        </mat-label>
+      </div>
+    </td>
+  </tr>
+</table>
+

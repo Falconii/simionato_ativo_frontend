@@ -183,6 +183,12 @@ const routes: Routes = [
     canActivate: [DeparaGuard],
   },
   {
+    path: 'upload_pasta',
+    loadChildren: () =>
+      import('./modules/upload-fotos/upload-fotos.module').then((m) => m.UploadFotosModule),
+    canActivate: [DeparaGuard],
+  },
+  {
     path: '**',
     redirectTo: 'home',
   },

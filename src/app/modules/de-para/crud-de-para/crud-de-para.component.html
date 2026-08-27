@@ -112,10 +112,10 @@
         [CONSULTAR]="false"
         [ALTERAR]="false"
         [EXCLUIR]="false"
-        [BARRA_VERTICAL]="depara.status == 0"
+        [BARRA_VERTICAL]="depara.status == 0 || depara.status == 4 && depara.de_descricao.trim().length > 0"
         [BARRA_EXCLUIR]="depara.status == 0"
-        [EXCLUIR]="false"
         [PROCESSA_DEPARA_UM]="depara.status < 4"
+        [BARRA_REVERTE_DEPARA]="depara.status == 4 && depara.de_descricao.trim().length > 0"
         (changeOpcao)="escolha($event, depara, i)"
       >
       </barra-acoes>

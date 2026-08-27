@@ -83,7 +83,7 @@ export class CrudImobilizadoComponent implements OnInit {
     private router: Router,
     private appSnackBar: AppSnackbar,
     private route: ActivatedRoute,
-    private ngZone: NgZone
+    private ngZone: NgZone,
   ) {
     this.parametros = formBuilder.group({
       ordenacao: [null],
@@ -121,10 +121,10 @@ export class CrudImobilizadoComponent implements OnInit {
       Object(config).id_retorno = imobilizado.codigo;
       Object(config).page = this.controlePaginas.getPaginalAtual();
       Object(config).op_ordenacao = this.opcoesOrdenacao.findIndex(
-        (op) => this.parametros.value.ordenacao == op
+        (op) => this.parametros.value.ordenacao == op,
       );
       Object(config).op_pesquisar = this.opcoesCampo.findIndex(
-        (op) => this.parametros.value.campo == op
+        (op) => this.parametros.value.campo == op,
       );
       Object(config).descricao = this.parametros.value.filtro;
       this.parametro.parametro = JSON.stringify(config);
@@ -142,10 +142,10 @@ export class CrudImobilizadoComponent implements OnInit {
       Object(config).id_retorno = 0;
       Object(config).page = this.controlePaginas.getPaginalAtual();
       Object(config).op_ordenacao = this.opcoesOrdenacao.findIndex(
-        (op) => this.parametros.value.ordenacao == op
+        (op) => this.parametros.value.ordenacao == op,
       );
       Object(config).op_pesquisar = this.opcoesCampo.findIndex(
-        (op) => this.parametros.value.campo == op
+        (op) => this.parametros.value.campo == op,
       );
       Object(config).descricao = this.parametros.value.filtro;
       this.parametro.parametro = JSON.stringify(config);
@@ -206,9 +206,9 @@ export class CrudImobilizadoComponent implements OnInit {
           this.grupos = [];
           this.appSnackBar.openFailureSnackBar(
             `Pesquisa Nos Grupos ${messageError(error)}`,
-            'OK'
+            'OK',
           );
-        }
+        },
       );
   }
 
@@ -238,9 +238,9 @@ export class CrudImobilizadoComponent implements OnInit {
           this.ccs = [];
           this.appSnackBar.openFailureSnackBar(
             `Pesquisa Nos Grupos ${messageError(error)}`,
-            'OK'
+            'OK',
           );
-        }
+        },
       );
   }
 
@@ -314,7 +314,7 @@ export class CrudImobilizadoComponent implements OnInit {
           const idx = this.imobilizados.findIndex(
             (cli) =>
               cli.codigo ==
-              GetValueJsonNumber(this.parametro.getParametro(), 'id_retorno')
+              GetValueJsonNumber(this.parametro.getParametro(), 'id_retorno'),
           );
           setTimeout(() => this.viewPort.scrollToIndex(idx), 10);
           this.retorno = false;
@@ -331,10 +331,10 @@ export class CrudImobilizadoComponent implements OnInit {
           this.globalService.setSpin(false);
           this.imobilizados = [];
           this.appSnackBar.openFailureSnackBar(
-            `Pesquisa Nos Locais ${messageError(error)}`,
-            'OK'
+            `Pesquisa Nos Imobilizados ${messageError(error)}`,
+            'OK',
           );
-        }
+        },
       );
   }
 
@@ -380,7 +380,7 @@ export class CrudImobilizadoComponent implements OnInit {
           this.globalService.setSpin(false);
           this.controlePaginas = new ControlePaginas(
             this.tamPagina,
-            data.total == 0 ? 1 : data.total
+            data.total == 0 ? 1 : data.total,
           );
           //atualiza com o parametro
           if (this.retorno)
@@ -398,9 +398,9 @@ export class CrudImobilizadoComponent implements OnInit {
           this.controlePaginas = new ControlePaginas(this.tamPagina, 0);
           this.appSnackBar.openFailureSnackBar(
             `Pesquisa Nos Imobilizados ${messageError(error)}`,
-            'OK'
+            'OK',
           );
-        }
+        },
       );
   }
 
@@ -443,11 +443,11 @@ export class CrudImobilizadoComponent implements OnInit {
 
     this.opcoesOrdenacao = GetValueJsonStringArray(
       this.parametro.getParametro(),
-      'ordenacao'
+      'ordenacao',
     );
     this.opcoesCampo = GetValueJsonStringArray(
       this.parametro.getParametro(),
-      'pesquisar'
+      'pesquisar',
     );
     if (this.retorno && this.globalService.estadoFind('imobilizado') !== null) {
       const par = this.globalService.estadoFind('imobilizado');
@@ -456,13 +456,13 @@ export class CrudImobilizadoComponent implements OnInit {
           let config = this.parametro.getParametro();
           Object(config).id_retorno = GetValueJsonNumber(
             par.getParametro(),
-            'id_retorno'
+            'id_retorno',
           );
           this.parametro.parametro = JSON.stringify(config);
           this.setPosicaoInclusao();
         } else {
           this.controlePaginas.setPaginaAtual(
-            GetValueJsonNumber(par.getParametro(), 'page')
+            GetValueJsonNumber(par.getParametro(), 'page'),
           );
           this.parametro.setParametro(par.getParametro());
         }
@@ -507,11 +507,11 @@ export class CrudImobilizadoComponent implements OnInit {
           this.parametro.user_update = data[0].user_update;
           this.opcoesOrdenacao = GetValueJsonStringArray(
             this.parametro.getParametro(),
-            'ordenacao'
+            'ordenacao',
           );
           this.opcoesCampo = GetValueJsonStringArray(
             this.parametro.getParametro(),
-            'pesquisar'
+            'pesquisar',
           );
           this.setValues();
           this.getGrupos();
@@ -520,7 +520,7 @@ export class CrudImobilizadoComponent implements OnInit {
           this.globalService.setSpin(false);
           this.setValues();
           this.getGrupos();
-        }
+        },
       );
   }
 
@@ -530,10 +530,10 @@ export class CrudImobilizadoComponent implements OnInit {
     this.parametro.user_update = this.globalService.usuario.id;
     let config = this.parametro.getParametro();
     Object(config).op_ordenacao = this.opcoesOrdenacao.findIndex(
-      (op) => this.parametros.value.ordenacao == op
+      (op) => this.parametros.value.ordenacao == op,
     );
     Object(config).op_pesquisar = this.opcoesCampo.findIndex(
-      (op) => this.parametros.value.campo == op
+      (op) => this.parametros.value.campo == op,
     );
     Object(config).descricao = this.parametros.value.filtro;
     Object(config).page = 0;
@@ -550,9 +550,9 @@ export class CrudImobilizadoComponent implements OnInit {
           this.globalService.setSpin(false);
           this.appSnackBar.openFailureSnackBar(
             `Gravação Dos Parametros ${messageError(error)}`,
-            'OK'
+            'OK',
           );
-        }
+        },
       );
   }
 }

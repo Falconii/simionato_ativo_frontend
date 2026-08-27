@@ -1,0 +1,62 @@
+<p>
+  <mat-toolbar>
+    <span class="example-spacer">
+      <mat-label>{{ labelCadastro }}</mat-label>
+    </span>
+    <div class="button-container-right">
+      <button mat-raised-button color="primary" (click)="onProcessar()">
+        <mat-icon>check</mat-icon>
+        Gravar
+      </button>
+      <button mat-raised-button color="accent" (click)="onCancel()">
+        <mat-icon>cancel</mat-icon>
+        {{ getLabelCancel() }}
+      </button>
+    </div>
+  </mat-toolbar>
+</p>
+<form [formGroup]="formulario" autocomplete="off">
+  <div class="col-med-2">
+    <mat-form-field appearance="outline" class="col-70">
+      <mat-label>Cód Imobilizado</mat-label>
+      <input matInput formControlName="codigo" [readonly]="true" />
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="col-max">
+      <mat-label>Origem</mat-label>
+      <input matInput formControlName="origem" [readonly]="true" />
+    </mat-form-field>
+  </div>
+  <div class="col-med-1">
+    <mat-form-field appearance="outline" class="col-max">
+      <mat-label>Descrição</mat-label>
+      <input matInput formControlName="descricao" [readonly]="true" />
+    </mat-form-field>
+  </div>
+  <div class="col-med-1">
+    <mat-form-field appearance="outline" class="col-max">
+      <mat-label>Observação</mat-label>
+      <input matInput formControlName="obs" class="uppercase" />
+      <mat-error
+        *ngIf="formulario.get('obs')?.invalid && formulario.get('obs')?.touched"
+      >
+        {{ getMensafield("obs") }}
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div class="col-med-1">
+    <mat-form-field appearance="outline" class="col-max">
+      <mat-label>Sugestão</mat-label>
+      <input matInput formControlName="sugestao" class="uppercase" />
+      <button
+        *ngIf="hasValue('sugestao')"
+        matSuffix
+        mat-icon-button
+        color="primary"
+        aria-label="Clear"
+        (click)="copySugestao()"
+      >
+        <mat-icon>check</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+</form>

@@ -58,7 +58,7 @@ export class ImobilizadoViewComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private appSnackBar: AppSnackbar,
-    private globalService: GlobalService
+    private globalService: GlobalService,
   ) {
     this.formulario = formBuilder.group({
       codigo: [{ value: '' }, [Validators.required, Validators.min(1)]],
@@ -103,14 +103,18 @@ export class ImobilizadoViewComponent implements OnInit {
   }
 
   onSubmit() {
+    if (this.idAcao == CadastroAcoes.Exclusao) {
+      this.executaAcao();
+    } else {
     if (this.formulario.valid) {
       this.executaAcao();
     } else {
-      this.formulario.markAllAsTouched();
-      this.appSnackBar.openSuccessSnackBar(
-        `Formulário Com Campos Inválidos.`,
-        'OK'
-      );
+            this.formulario.markAllAsTouched();
+            this.appSnackBar.openSuccessSnackBar(
+              `Formulário Com Campos Inválidos.`,
+              'OK',
+            );
+          }
     }
   }
 
@@ -145,7 +149,7 @@ export class ImobilizadoViewComponent implements OnInit {
       .getImobilizado(
         this.imobilizado.id_empresa,
         this.imobilizado.id_filial,
-        this.imobilizado.codigo
+        this.imobilizado.codigo,
       )
       .subscribe(
         (data: ImobilizadoModel) => {
@@ -158,9 +162,9 @@ export class ImobilizadoViewComponent implements OnInit {
           this.globalService.setSpin(false);
           this.appSnackBar.openFailureSnackBar(
             `Pesquisa Nos Imobilizados ${error.error.tabela} - ${error.error.erro} - ${error.error.message}`,
-            'OK'
+            'OK',
           );
-        }
+        },
       );
   }
 
@@ -195,9 +199,9 @@ export class ImobilizadoViewComponent implements OnInit {
           this.grupos = [];
           this.appSnackBar.openFailureSnackBar(
             `Pesquisa Nos Grupos ${messageError(error)}`,
-            'OK'
+            'OK',
           );
-        }
+        },
       );
   }
 
@@ -240,9 +244,9 @@ export class ImobilizadoViewComponent implements OnInit {
           this.ccs = [];
           this.appSnackBar.openFailureSnackBar(
             `Pesquisa Nos Centros De Custos => ${messageError(error)}`,
-            'OK'
+            'OK',
           );
-        }
+        },
       );
   }
 
@@ -337,9 +341,9 @@ export class ImobilizadoViewComponent implements OnInit {
               this.globalService.setSpin(false);
               this.appSnackBar.openFailureSnackBar(
                 `Erro Na Inclusão ${messageError(error)}`,
-                'OK'
+                'OK',
               );
-            }
+            },
           );
         break;
       case CadastroAcoes.Edicao:
@@ -356,9 +360,9 @@ export class ImobilizadoViewComponent implements OnInit {
               this.globalService.setSpin(false);
               this.appSnackBar.openFailureSnackBar(
                 `Erro Na Alteração ${messageError(error)}`,
-                'OK'
+                'OK',
               );
-            }
+            },
           );
         break;
       case CadastroAcoes.Exclusao:
@@ -372,6 +376,13 @@ export class ImobilizadoViewComponent implements OnInit {
           .subscribe(
             async (data: any) => {
               this.globalService.setSpin(false);
+              if (data.inventarios) {
+                this.appSnackBar.openWarningnackBar(
+                  `Imobilizado Com Movimento No Inventário. Exclusão Não Permitida!`,
+                  'OK',
+                );
+                return;
+              }
               this.onRetorno();
             },
             (error: any) => {
@@ -379,9 +390,9 @@ export class ImobilizadoViewComponent implements OnInit {
               console.log(error);
               this.appSnackBar.openFailureSnackBar(
                 `Erro Na Exclusão ${messageError(error)}`,
-                'OK'
+                'OK',
               );
-            }
+            },
           );
         break;
       default:

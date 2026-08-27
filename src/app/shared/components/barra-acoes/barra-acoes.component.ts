@@ -29,9 +29,11 @@ export class BarraAcoesComponent implements OnInit {
   @Input('BARRA_NFE') barra_nfe: boolean = false;
   @Input('BARRA_SUBSTITUIR') barra_substituir: boolean = false;
   @Input('BARRA_TROCAR') barra_trocar: boolean = false;
+  @Input('BARRA_REVERTE_DEPARA') barra_reverte: boolean = false;
   @Input('FILA_DEPARA') fila_depara: boolean = false;
   @Input('PROCESSA_DEPARA_UM') processa_depara_um: boolean = false;
   @Input('PROCESSA_DEPARA_LOTE') processa_depara_lote: boolean = false;
+  @Input('ALTER_OBS') alter_obs: boolean = false;
   @Output('changeOpcao') changeOpcao = new EventEmitter<number>();
 
   constructor() {}

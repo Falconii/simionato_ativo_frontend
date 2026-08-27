@@ -6,6 +6,7 @@
         "start": "npx -p @angular/cli@12 ng serve",
         "build_falconi": "npx -p @angular/cli@12 ng build --base-href https://falconii.github.io/simionato_ativo_frontend/ && copy docs\\index.html docs\\404.html ",
         "build_simionato": "powershell -Command \"npx -p @angular/cli@12 ng build --base-href https://simionatodev.github.io/aplicativo_inventario_ativo/; Copy-Item 'docs\\index.html' -Destination 'docs\\404.html'; node backup_doc.js; Copy-Item 'docs' -Destination 'C:\\Repositorios\\Simionato_Dev\\ativo\\aplicativo_inventario_ativo' -Recurse -Force\"",
+        "build_cava": "powershell -Command \"npx -p @angular/cli@12 ng build --base-href https://falconii.github.io/aplicativo_casa_da_crianca/; Copy-Item 'docs\\index.html' -Destination 'docs\\404.html'; node backup_doc_cava.js; Copy-Item 'docs' -Destination 'C:\\Repositorios\\Simionato_Dev\\casa_da_crianca\\aplicativo_casa_da_crianca' -Recurse -Force\"",
         "watch": "ng build --watch --configuration development",
         "test": "ng test"
     },

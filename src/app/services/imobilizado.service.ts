@@ -11,42 +11,45 @@ import { ParametroImobilizado01 } from '../parametros/parametro-imobilizado01';
 })
 export class ImobilizadoService {
   apiURL: string = environment.apiURL;
-  constructor(private http: HttpClient, private globalService: GlobalService) {}
+  constructor(
+    private http: HttpClient,
+    private globalService: GlobalService,
+  ) {}
 
   getImobilizados(): Observable<ImobilizadoModel[]> {
     return this.http.get<ImobilizadoModel[]>(`${this.apiURL}Imobilizados`);
   }
   getImobilizadosParametro_01(
-    params: ParametroImobilizado01
+    params: ParametroImobilizado01,
   ): Observable<ImobilizadoModel[]> {
     return this.http.post<ImobilizadoModel[]>(
       `${this.apiURL}imobilizados`,
-      params
+      params,
     );
   }
   getImobilizado(
     id_empresa: number,
     id_filial: number,
-    codigo: number
+    codigo: number,
   ): Observable<ImobilizadoModel> {
     return this.http.get<ImobilizadoModel>(
-      `${this.apiURL}imobilizado/${id_empresa}/${id_filial}/${codigo}`
+      `${this.apiURL}imobilizado/${id_empresa}/${id_filial}/${codigo}`,
     );
   }
   imobilizadoInsert(
-    imobilizado: ImobilizadoModel
+    imobilizado: ImobilizadoModel,
   ): Observable<ImobilizadoModel> {
     return this.http.post<ImobilizadoModel>(
       `${this.apiURL}imobilizado`,
-      imobilizado
+      imobilizado,
     );
   }
   imobilizadoInsertInv(
-    imobilizado: ImobilizadoModel
+    imobilizado: ImobilizadoModel,
   ): Observable<ImobilizadoModel> {
     const params = new HttpParams().append(
       'inventario',
-      this.globalService.getInventario().codigo
+      this.globalService.getInventario().codigo,
     );
 
     return this.http.post<ImobilizadoModel>(
@@ -54,15 +57,15 @@ export class ImobilizadoService {
       imobilizado,
       {
         params: params,
-      }
+      },
     );
   }
   imobilizadoUpdate(
-    imobilizado: ImobilizadoModel
+    imobilizado: ImobilizadoModel,
   ): Observable<ImobilizadoModel> {
     return this.http.put<ImobilizadoModel>(
       `${this.apiURL}imobilizado`,
-      imobilizado
+      imobilizado,
     );
   }
   imobilizadoDelete(
@@ -71,7 +74,7 @@ export class ImobilizadoService {
     codigo: number
   ): Observable<any> {
     return this.http.delete<any>(
-      `${this.apiURL}imobilizado/${id_empresa}/${id_filial}/${codigo}`
+      `${this.apiURL}imobilizado/${id_empresa}/${id_filial}/${codigo}`,
     );
   }
 }

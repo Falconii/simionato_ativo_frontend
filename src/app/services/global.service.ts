@@ -14,6 +14,7 @@ import { EstadoProduto } from '../shared/classes/estado-produto';
 import { SituacaoInventario } from '../shared/classes/situacao-inventario';
 import { Condicoes } from '../shared/classes/condicoes';
 import { Origem } from '../shared/classes/Origem';
+import { SituacaoDepara } from '../shared/classes/situacao-depara';
 
 @Injectable({
   providedIn: 'root',
@@ -29,6 +30,7 @@ export class GlobalService {
   estadoProduto: EstadoProduto[] = [];
   lsCondicoes: Condicoes[] = [];
   lsOrigens: Origem[] = [];
+  situacoesDePara: SituacaoDepara[] = [];
 
   guadiaoMestre: GuardiaoMestre[] = [];
   guardiaoOpcoes: GuardiaoOpcoes[] = [];
@@ -74,6 +76,8 @@ export class GlobalService {
   getOrigens(): Origem[] {
     return this.lsOrigens;
   }
+
+ 
 
   loadCondicoes() {
     this.lsCondicoes = [
@@ -206,6 +210,24 @@ export class GlobalService {
     return "";
   }
 
+  loadSitacoesDePara() {
+    this.situacoesDePara =
+      [
+        new SituacaoDepara('Não Processado'),
+        new SituacaoDepara('Estágio 1'),
+        new SituacaoDepara('Estagio 2'),
+        new SituacaoDepara('Fotos'),
+        new SituacaoDepara('Encerrado'),
+        new SituacaoDepara('Falha Inclusão Ativo'),
+        new SituacaoDepara('Falha Anexar Inventario'),
+        new SituacaoDepara('Falha Alterar Lançamento'),
+        new SituacaoDepara('Falha Na Atualização Do Status Do DE PARA'),
+        new SituacaoDepara('De Para Revertido'),
+      ];
+  }
+  getSituacoesDePara(): SituacaoDepara[]{
+    return this.situacoesDePara;
+  }
 
   getEstados(): EstadoProduto[] {
     return this.estadoProduto;
