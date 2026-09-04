@@ -17,7 +17,7 @@
           <input matInput formControlName="de" />
         </mat-form-field>
         <mat-form-field field appearance="outline" class="column-span-3">
-          <mat-label>Pesquisar</mat-label>
+          <mat-label>Pesquisa {{ getTextoTipoPesquisa() }}</mat-label>
           <input class="uppercase" matInput formControlName="dePesquisa" />
           <button
             *ngIf="hasValue('dePesquisa')"

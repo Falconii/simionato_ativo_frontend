@@ -28,7 +28,7 @@ import { DeParaModel } from 'src/app/models/de-para-model';
 import { ParametroImobilizadoinventario01 } from 'src/app/parametros/parametro-imobilizadoinventario01';
 import { ParametroSubstituirAtivo } from 'src/app/parametros/parametro-substituir-ativo';
 import { CadastroAcoes } from '../../classes/cadastro-acoes';
-import { messageError } from '../../classes/util';
+import { hasNonNumeric, messageError } from '../../classes/util';
 import { DeparaModel } from 'src/app/models/depara-model';
 import { ControlePaginasV2 } from '../../classes/controle-paginasv2';
 import { TipoOperacao } from '../../classes/tipo-operacao';
@@ -36,6 +36,7 @@ import { QuestionDialogData } from '../question-dialog/Question-Dialog-Data';
 import { QuestionDialogComponent } from '../question-dialog/question-dialog.component';
 import { SimNao } from '../../classes/sim-nao';
 import { ProcessaLoteDeparaData } from '../processa-lote-depara-dialog/processa-lote-deparaData';
+import { TipoPesquisa } from '../../classes/tipo-pesquisa';
 
 @Component({
   selector: 'app-manuais-link',
@@ -298,7 +299,21 @@ export class ManuaisLinkComponent implements OnInit {
 
     par.id_filial = this.globalService.getLocal().id;
 
-    par.descricao = this.formulario.value.dePesquisa.toUpperCase();
+    if (this.definirPesquisa() == TipoPesquisa.Codigo) {
+
+      const key = parseInt(this.formulario.value.dePesquisa, 10);
+
+      if (isNaN(key)) {
+        par.id_imobilizado = 0;
+      } else {
+        par.id_imobilizado = key;
+      }
+
+    }
+
+    if (this.definirPesquisa() == TipoPesquisa.Descricao) {
+      par.descricao = this.formulario.value.dePesquisa.toUpperCase();
+    }
 
     par.status = 0;
 
@@ -376,4 +391,34 @@ export class ManuaisLinkComponent implements OnInit {
         }
       });
   }
+
+  definirPesquisa(): TipoPesquisa {
+    const texto = this.formulario.value.dePesquisa.toUpperCase();
+    if (texto.trim().length == 0) {
+      return TipoPesquisa.None;
+    }
+    const isTexto = hasNonNumeric(texto);
+    if (isTexto) {
+      return TipoPesquisa.Descricao;
+    }
+    if (texto.trim().length <= 6) {
+      return TipoPesquisa.Codigo;
+    }
+    return TipoPesquisa.Descricao;
+  }
+
+  getTextoTipoPesquisa(): string {
+    const value: TipoPesquisa = this.definirPesquisa();
+    switch (value) {
+      case TipoPesquisa.Codigo:
+        return 'Pelo Código';
+
+      case TipoPesquisa.Descricao:
+        return 'Pela Descrição';
+
+      default:
+        return '';
+    }
+  }
+
 }

@@ -338,3 +338,8 @@ export function parseFileName(filename: string): ParsedFileName {
 
   return retorno;
 }
+
+
+export function hasNonNumeric(value: string): boolean {
+  return /\D/.test(value);
+}
