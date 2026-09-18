@@ -93,6 +93,9 @@ export class ImoinventarioViewComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.formulario.get('situacao')?.valueChanges.subscribe(() => {
+      this.formulario.get('condicao')?.updateValueAndValidity();
+    });
     this.ccs_alterados = [...this.ccs];
     this.ccs_alterados[0].descricao = 'Centro Custo Não Alterado!';
     this.setAcao(this.idAcao);

@@ -519,6 +519,7 @@ export class CrudImoinventarioComponent implements OnInit {
       this.lancamento.id_imobilizado = imobilizado.id_imobilizado;
       this.lancamento.id_inventario = imobilizado.id_inventario;
       this.lancamento.imo_cod_cc = imobilizado.imo_cod_cc;
+      this.lancamento.new_cc = imobilizado.imo_cod_cc;
       this.lancamento.imo_cod_grupo = imobilizado.imo_cod_grupo;
       this.lancamento.condicao = imobilizado.condicao;
       this.lancamento.book = imobilizado.book;
