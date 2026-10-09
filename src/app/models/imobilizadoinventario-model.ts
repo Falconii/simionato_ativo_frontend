@@ -35,4 +35,9 @@ export class ImobilizadoinventarioModel {
   public para_status: number = 0;
   public de_ativo: number = 0;
   public de_status: number = 0;
+  public val_data_aquisicao: string = '';
+  public nfes_nfes_qtd: number = 0;
+  public nfes_nfes_punit: number = 0;
+  public nfes_nfes_totalitem: number = 0;
+  public nfes_nfes_vlrcontabil: number = 0;
 }

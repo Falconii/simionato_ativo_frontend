@@ -108,6 +108,11 @@
           >Princ.: {{ imo.imo_principal }}-{{ imo.princ_descricao }}</mat-label
         >
       </div>
+       <div *ngIf="imo.val_data_aquisicao !== ''">
+        <mat-label class="Browse_Lanc_td_red"
+          >Dt Aquisição: {{ imo.val_data_aquisicao }}</mat-label
+        >
+      </div>
     </td>
     <td [class.highlight]="imo.id_imobilizado == targetRowId">
       <div>
