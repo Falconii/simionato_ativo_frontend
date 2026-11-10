@@ -1,3 +1,8 @@
+::ng-deep .texto-vermelho {
+  color: red !important;
+}
+
+
 .content {
   height: 95%;
   overflow: auto;

@@ -68,11 +68,15 @@
           >{{ imo.imo_origem | origem }}
         </mat-label>
       </div>
-      <div>
-        <mat-label class="Browse_Lanc_td"
-          >{{ imo.status | situacao }}
-        </mat-label>
-      </div>
+     <div>
+      <mat-label
+        class="Browse_Lanc_td"
+        [ngClass]="{ 'texto-vermelho': imo.status >= 5 }"
+      >
+        {{ imo.status | situacao }}
+      </mat-label>
+    </div>
+
       <div>
         <mat-label class="Browse_Lanc_td">{{ imo.imo_apelido }}</mat-label>
       </div>
@@ -85,6 +89,7 @@
     <td [class.highlight]="imo.id_imobilizado == targetRowId">
       <div>
         <mat-label class="Browse_Lanc_td"
+          [ngClass]="{ 'texto-vermelho': imo.status >= 5 }"
           >Desc.: {{ imo.imo_descricao }}</mat-label
         >
       </div>
